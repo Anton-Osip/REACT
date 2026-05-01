@@ -3,7 +3,6 @@ import s from './character-page.module.css';
 import { SearchForm, STORAGE_KEY } from '../../features/search-form';
 import { CharacterList } from '../../features/character-list';
 import { loadFromStorage } from '../../utils';
-import { ErrorBoundary } from '../../features/error-boundary';
 
 interface CharacterPageState {
   searchName: string;
@@ -32,9 +31,7 @@ export class CharacterPage extends Component<
           submitInput={this.searchCharactersByName}
           defaultValue={this.state.searchName}
         />
-        <ErrorBoundary>
-          <CharacterList searchName={this.state.searchName} />
-        </ErrorBoundary>
+        <CharacterList searchName={this.state.searchName} />
       </div>
     );
   }
