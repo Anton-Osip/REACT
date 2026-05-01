@@ -14,11 +14,29 @@ export const getCharacters = async (
     const response = await fetch(url);
 
     if (response.status === 404) {
-      return null;
+      return {
+        info: {
+          count: 0,
+          pages: 0,
+          next: null,
+          prev: null,
+        },
+        results: [],
+      };
+    }
+
+    if (response.status === 400) {
+      throw new Error('400: Bad Request - Invalid search parameters');
+    }
+
+    if (response.status === 500) {
+      throw new Error('500: Internal Server Error - Server is having issues');
     }
 
     if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+      throw new Error(
+        `${response.status}: ${response.statusText || 'Request failed'}`
+      );
     }
 
     return await response.json();
