@@ -2,3 +2,4 @@ export { Typography } from './typography';
 export { Button } from './button';
 export * from './icons';
 export { TextField } from './text-field';
+export { Container } from './container';
