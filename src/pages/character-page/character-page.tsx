@@ -1,7 +1,8 @@
 import { Component } from 'react';
 import s from './character-page.module.css';
-import { SearchForm } from '../../features/search-form';
+import { SearchForm, STORAGE_KEY } from '../../features/search-form';
 import { CharacterList } from '../../features/character-list';
+import { loadFromStorage } from '../../utils';
 
 interface CharacterPageState {
   searchName: string;
@@ -13,8 +14,9 @@ export class CharacterPage extends Component<
 > {
   constructor(props: Record<string, never>) {
     super(props);
+    const searchName = loadFromStorage<string>(STORAGE_KEY, '');
     this.state = {
-      searchName: '',
+      searchName: searchName,
     };
   }
 
@@ -25,7 +27,10 @@ export class CharacterPage extends Component<
   render() {
     return (
       <div className={s.characterPage}>
-        <SearchForm submitInput={this.searchCharactersByName} />
+        <SearchForm
+          submitInput={this.searchCharactersByName}
+          defaultValue={this.state.searchName}
+        />
         <CharacterList searchName={this.state.searchName} />
       </div>
     );

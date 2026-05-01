@@ -1,1 +1,1 @@
-export { SearchForm } from './search-form';
+export { SearchForm, STORAGE_KEY } from './search-form';
