@@ -2,6 +2,7 @@ import { Component } from 'react';
 import s from './character-list.module.css';
 import clsx from 'clsx';
 import { type CharactersResponse, getCharacters } from '../../api/character';
+import { CharacterCard } from './character-card';
 
 interface CharacterListProps {
   className?: string;
@@ -68,7 +69,14 @@ export class CharacterList extends Component<
         {characters && characters.results.length !== 0 && (
           <div className={s.grid}>
             {characters.results.map((character) => (
-              <div key={character.name}>{character.name}</div>
+              <CharacterCard
+                key={character.id}
+                image={character.image}
+                name={character.name}
+                species={character.species}
+                location={character.location.name}
+                status={character.status}
+              />
             ))}
           </div>
         )}
