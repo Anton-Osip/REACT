@@ -7,7 +7,7 @@ export class App extends Component {
   render() {
     return (
       <div className={s.app}>
-        <Container>
+        <Container className={s.container}>
           <CharacterPage />
         </Container>
       </div>

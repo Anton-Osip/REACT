@@ -23,6 +23,10 @@ export class SearchForm extends Component<SearchFormProps, SearchFormState> {
   onSubmitHandler = (e: FormEvent) => {
     e.preventDefault();
     const inputText = this.state.value.trim();
+
+    if (this.state.value === '') {
+      this.props.submitInput('');
+    }
     if (inputText !== '') {
       this.props.submitInput(inputText);
     }
