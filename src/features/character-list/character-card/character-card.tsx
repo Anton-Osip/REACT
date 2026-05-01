@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { PureComponent } from 'react';
 
 import s from './character-card.module.css';
 import type { CharacterStatus } from '../../../api/character';
@@ -13,7 +13,7 @@ export type PokemonCardProps = {
   status: CharacterStatus;
 };
 
-export class CharacterCard extends Component<PokemonCardProps> {
+export class CharacterCard extends PureComponent<PokemonCardProps> {
   constructor(props: PokemonCardProps) {
     super(props);
     this.state = {};

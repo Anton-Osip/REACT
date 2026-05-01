@@ -1,10 +1,10 @@
-import { Component } from 'react';
+import { PureComponent } from 'react';
 import s from './character-list.module.css';
 import clsx from 'clsx';
 import { type CharactersResponse, getCharacters } from '../../api/character';
 import { CharacterCard } from './character-card';
-import { Skeleton } from '../../components';
-
+import { Button, Skeleton, Typography } from '../../components';
+import emptyPageImage from '../../assets/image/emptyPageImage.png';
 interface CharacterListProps {
   className?: string;
   searchName?: string;
@@ -13,10 +13,12 @@ interface CharacterListProps {
 interface CharacterListState {
   characters: CharactersResponse | null;
   charactersIsLoading: boolean;
-  charactersIsError: boolean;
+  charactersIsError: Error | null;
 }
 
-export class CharacterList extends Component<
+const SKELETON_COUNT = 20;
+
+export class CharacterList extends PureComponent<
   CharacterListProps,
   CharacterListState
 > {
@@ -25,7 +27,7 @@ export class CharacterList extends Component<
     this.state = {
       characters: null,
       charactersIsLoading: false,
-      charactersIsError: false,
+      charactersIsError: null,
     };
   }
 
@@ -35,6 +37,7 @@ export class CharacterList extends Component<
 
   async componentDidUpdate(prevProps: CharacterListProps) {
     if (prevProps.searchName !== this.props.searchName) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
       await this.loadCharacters(this.props.searchName);
     }
   }
@@ -43,7 +46,7 @@ export class CharacterList extends Component<
     this.setState({
       characters: null,
       charactersIsLoading: true,
-      charactersIsError: false,
+      charactersIsError: null,
     });
 
     try {
@@ -52,30 +55,48 @@ export class CharacterList extends Component<
         characters: res,
         charactersIsLoading: false,
       });
-    } catch {
+    } catch (error) {
       this.setState({
         characters: null,
         charactersIsLoading: false,
-        charactersIsError: true,
+        charactersIsError:
+          error instanceof Error ? error : new Error(String(error)),
       });
     }
   };
 
   render() {
     const { className } = this.props;
-    const { characters, charactersIsLoading } = this.state;
+    const { characters, charactersIsLoading, charactersIsError } = this.state;
 
-    if (!characters && charactersIsLoading) {
-      return (
-        <div className={s.grid}>
-          {Array.from({ length: 20 }).map((_, index) => (
-            <Skeleton key={`skeleton-${index}`} />
-          ))}
-        </div>
-      );
-    }
+    const renderError = () => (
+      <div className={s.error}>
+        <Typography variant="h3">Something went wrong</Typography>
+        <Typography>{this.state.charactersIsError?.message}</Typography>
+        <button onClick={() => this.loadCharacters(this.props.searchName)}>
+          Try again
+        </button>
+      </div>
+    );
 
-    return (
+    const renderEmpty = () => (
+      <div className={s.empty}>
+        <img className={s.emptyImage} src={emptyPageImage} alt="empty page" />
+        <Typography className={s.emptyText} variant={'h3'}>
+          Nothing found.
+        </Typography>
+      </div>
+    );
+
+    const renderLoading = () => (
+      <div className={s.grid}>
+        {Array.from({ length: SKELETON_COUNT }).map((_, index) => (
+          <Skeleton key={`skeleton-${index}`} />
+        ))}
+      </div>
+    );
+
+    const renderContent = () => (
       <div className={clsx(s.characterList, className)}>
         {characters && characters.results.length !== 0 && (
           <div className={s.grid}>
@@ -92,6 +113,18 @@ export class CharacterList extends Component<
           </div>
         )}
       </div>
+    );
+
+    return (
+      <>
+        {charactersIsError && renderError()}
+        {!characters && !charactersIsLoading && renderEmpty()}
+        {!characters && charactersIsLoading && renderLoading()}
+        {characters && renderContent()}
+        <Button variant={'secondary'} className={s.button}>
+          Error Button
+        </Button>
+      </>
     );
   }
 }
