@@ -3,6 +3,7 @@ import s from './character-list.module.css';
 import clsx from 'clsx';
 import { type CharactersResponse, getCharacters } from '../../api/character';
 import { CharacterCard } from './character-card';
+import { Skeleton } from '../../components';
 
 interface CharacterListProps {
   className?: string;
@@ -62,7 +63,17 @@ export class CharacterList extends Component<
 
   render() {
     const { className } = this.props;
-    const { characters } = this.state;
+    const { characters, charactersIsLoading } = this.state;
+
+    if (!characters && charactersIsLoading) {
+      return (
+        <div className={s.grid}>
+          {Array.from({ length: 20 }).map((_, index) => (
+            <Skeleton key={`skeleton-${index}`} />
+          ))}
+        </div>
+      );
+    }
 
     return (
       <div className={clsx(s.characterList, className)}>

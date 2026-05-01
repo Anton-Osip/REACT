@@ -189,7 +189,7 @@ Successful response.
 |                                                       |
 |  +------------------ Top controls ------------------+ |
 |  | +--------------------------+ +-----------------+ | |
-|  | | [Search Input Field]     | | [Search Container] | | |
+|  | | [Search Input Field]     | | [Search Skeleton] | | |
 |  | +--------------------------+ +-----------------+ | |
 |  +--------------------------------------------------+ |
 |                                                       |
@@ -201,7 +201,7 @@ Successful response.
 |  | | [Item 2]   | [Description 2]                 | | |
 |  | | ...        | ...                             | | |
 |  +--------------------------------------------------+ |
-|                                       [Error Container]  |
+|                                       [Error Skeleton]  |
 +-------------------------------------------------------+
 ```
 
@@ -212,7 +212,7 @@ Non-successful response.
 |                                                       |
 |  +------------------ Top controls ------------------+ |
 |  | +--------------------------+ +-----------------+ | |
-|  | | [Search Input Field]     | | [Search Container] | | |
+|  | | [Search Input Field]     | | [Search Skeleton] | | |
 |  | +--------------------------+ +-----------------+ | |
 |  +--------------------------------------------------+ |
 |                                                       |
@@ -221,7 +221,7 @@ Non-successful response.
 |  |                 Error description                | |
 |  |                                                  | |
 |  +--------------------------------------------------+ |
-|                                       [Error Container]  |
+|                                       [Error Skeleton]  |
 +-------------------------------------------------------+
 ```
 
@@ -233,7 +233,7 @@ Non-successful response.
 
 3. Pick a RESTfull api which supports search and pagination (pagination might be referred as _offset_ and _limit_ params). E.g. <https://pokeapi.co/>, for Star Wars fans <https://swapi.dev/api>, for Star Trek fans <https://stapi.co/api-documentation> (OpenApi spec can be checked here <https://editor.swagger.io/?url=https://stapi.co/api/v1/rest/common/download/stapi.yaml>), or you can select another one complying with the requirements.
 
-4. All logical parts should be set into separate components such as CardList, Container, Search, Header, Main etc.
+4. All logical parts should be set into separate components such as CardList, Skeleton, Search, Header, Main etc.
 
 5. **Use class components to get access to lifecycle events or state. Using hooks is forbidden at this stage. Patience, it won't last long.**
 
