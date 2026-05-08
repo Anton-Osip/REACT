@@ -7,7 +7,7 @@ import {
 } from 'react';
 import s from './button.module.css';
 
-export type ButtonProps<T extends ElementType = 'button'> = {
+export type ButtonProps<T extends ElementType = 'button' | 'a'> = {
   as?: T;
   children: ReactNode;
   variant?: 'primary' | 'secondary';
@@ -16,7 +16,7 @@ export type ButtonProps<T extends ElementType = 'button'> = {
   icon?: ReactNode;
 } & ComponentPropsWithoutRef<T>;
 
-export class Button<T extends ElementType = 'button'> extends Component<
+export class Button<T extends ElementType = 'button' | 'a'> extends Component<
   ButtonProps<T>
 > {
   constructor(props: ButtonProps<T>) {
