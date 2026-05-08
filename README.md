@@ -175,7 +175,7 @@ You must use **Jest** or **Vitest** as the test runner and **React Testing Libra
 coverage: {
   include: ['src/**/*.{js,jsx,ts,tsx}'],
   exclude: [
-    'src/**/*.test.{js,jsx,ts,tsx}',
+    'src/**/*.tests.{js,jsx,ts,tsx}',
     'src/**/*.spec.{js,jsx,ts,tsx}',
     'src/index.{js,jsx,ts,tsx}',
     'src/setupTests.{js,ts}',
