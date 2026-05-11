@@ -1,22 +1,21 @@
-import { describe, expect, it, afterEach } from 'vitest';
-import { render, screen, cleanup } from '@testing-library/react';
-import { Container } from './container.tsx';
-import '@testing-library/jest-dom/vitest';
+import { afterEach, describe, expect, it } from 'vitest';
+import { cleanup, render, screen } from '@testing-library/react';
+import { Container } from './container';
 
 describe('Container', () => {
   afterEach(() => {
     cleanup();
   });
 
-  it('should render div element by default', () => {
+  it('renders a div with children', () => {
     render(<Container>Content</Container>);
 
-    const container = screen.getByText('Content');
-    expect(container.tagName).toBe('DIV');
-    expect(container).toHaveTextContent('Content');
+    const el = screen.getByText('Content');
+    expect(el.tagName).toBe('DIV');
+    expect(el).toHaveTextContent('Content');
   });
 
-  it('should render children correctly', () => {
+  it('renders multiple children', () => {
     render(
       <Container>
         <span>Child 1</span>
@@ -24,12 +23,28 @@ describe('Container', () => {
       </Container>
     );
 
-    const child1 = screen.getByText('Child 1');
-    const child2 = screen.getByText('Child 2');
+    expect(screen.getByText('Child 1')).toBeInTheDocument();
+    expect(screen.getByText('Child 2')).toBeInTheDocument();
+  });
 
-    expect(child1).toBeInTheDocument();
-    expect(child1).toHaveTextContent('Child 1');
-    expect(child2).toBeInTheDocument();
-    expect(child2).toHaveTextContent('Child 2');
+  it('merges className onto the root div', () => {
+    const { container } = render(
+      <Container className="layout-root">Inner</Container>
+    );
+
+    const root = container.firstElementChild;
+    expect(root).toHaveClass('layout-root');
+  });
+
+  it('forwards native div attributes', () => {
+    render(
+      <Container data-testid="page-shell" role="presentation">
+        Body
+      </Container>
+    );
+
+    const shell = screen.getByTestId('page-shell');
+    expect(shell).toHaveAttribute('role', 'presentation');
+    expect(shell).toHaveTextContent('Body');
   });
 });

@@ -1,26 +1,27 @@
-import { describe, expect, it, afterEach } from 'vitest';
-import { render, screen, cleanup } from '@testing-library/react';
-import { Button } from './button.tsx';
-import '@testing-library/jest-dom/vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
+import { cleanup, render, screen } from '@testing-library/react';
+import { Button } from './button';
 
 describe('Button', () => {
   afterEach(() => {
     cleanup();
   });
-  it('should render button with children when children is provided', () => {
+
+  it('renders button with children', () => {
     render(<Button>button</Button>);
 
     const btn = screen.getByRole('button');
     expect(btn).toBeInTheDocument();
     expect(btn).toHaveTextContent('button');
   });
-  it('should render button as button element by default', () => {
+
+  it('renders native button by default', () => {
     render(<Button>Click me</Button>);
 
-    const btn = screen.getByRole('button');
-    expect(btn.tagName).toBe('BUTTON');
+    expect(screen.getByRole('button').tagName).toBe('BUTTON');
   });
-  it('should render custom element when "as" prop is provided', () => {
+
+  it('renders as anchor when as="a" and passes href', () => {
     render(
       <Button as="a" href="/test">
         Link Button
@@ -28,21 +29,38 @@ describe('Button', () => {
     );
 
     const link = screen.getByRole('link');
-    expect(link).toBeInTheDocument();
     expect(link.tagName).toBe('A');
     expect(link).toHaveAttribute('href', '/test');
   });
 
-  it('should handle onClick events', () => {
-    let clicked = false;
-    const handleClick = () => {
-      clicked = true;
-    };
-
+  it('calls onClick when button is activated', () => {
+    const handleClick = vi.fn();
     render(<Button onClick={handleClick}>Click me</Button>);
 
-    const button = screen.getByRole('button');
-    button.click();
-    expect(clicked).toBe(true);
+    screen.getByRole('button').click();
+    expect(handleClick).toHaveBeenCalledTimes(1);
+  });
+
+  it('renders secondary variant', () => {
+    render(<Button variant="secondary">Secondary</Button>);
+    expect(screen.getByRole('button')).toBeInTheDocument();
+  });
+
+  it('renders icon alongside children', () => {
+    render(<Button icon={<span data-testid="btn-icon">★</span>}>Label</Button>);
+
+    expect(screen.getByTestId('btn-icon')).toBeInTheDocument();
+    expect(screen.getByRole('button')).toHaveTextContent('★');
+    expect(screen.getByRole('button')).toHaveTextContent('Label');
+  });
+
+  it('merges custom className onto the element', () => {
+    render(<Button className="extra-class">X</Button>);
+    expect(screen.getByRole('button')).toHaveClass('extra-class');
+  });
+
+  it('applies fullWidth layout class when fullWidth is set', () => {
+    render(<Button fullWidth>Wide</Button>);
+    expect(screen.getByRole('button').className).toMatch(/fullWidth/);
   });
 });

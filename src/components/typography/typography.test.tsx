@@ -1,6 +1,5 @@
-import { describe, it, expect, afterEach } from 'vitest';
+import { afterEach, describe, expect, it } from 'vitest';
 import { cleanup, render, screen } from '@testing-library/react';
-import '@testing-library/jest-dom/vitest';
 import { Typography } from './typography';
 
 describe('Typography', () => {
@@ -8,19 +7,17 @@ describe('Typography', () => {
     cleanup();
   });
 
-  it('renders children correctly', () => {
+  it('renders children', () => {
     render(<Typography>Hello World</Typography>);
-    const text = screen.getByText('Hello World');
-    expect(text).toBeInTheDocument();
+    expect(screen.getByText('Hello World')).toBeInTheDocument();
   });
 
-  it('renders as p tag by default', () => {
+  it('uses paragraph element by default', () => {
     render(<Typography>Paragraph text</Typography>);
-    const element = screen.getByText('Paragraph text');
-    expect(element.tagName).toBe('P');
+    expect(screen.getByText('Paragraph text').tagName).toBe('P');
   });
 
-  it('renders as specified HTML element', () => {
+  it('renders requested polymorphic elements', () => {
     render(
       <>
         <Typography as="h1">Heading 1</Typography>
@@ -34,6 +31,16 @@ describe('Typography', () => {
     expect(screen.getByText('Span text').tagName).toBe('SPAN');
     expect(screen.getByText('Div text').tagName).toBe('DIV');
     expect(screen.getByText('Label text').tagName).toBe('LABEL');
+  });
+
+  it('merges className onto the element', () => {
+    render(
+      <Typography className="muted-copy" data-testid="typo">
+        Styled
+      </Typography>
+    );
+
+    expect(screen.getByTestId('typo')).toHaveClass('muted-copy');
   });
 
   it('passes through additional DOM attributes', () => {
@@ -54,7 +61,7 @@ describe('Typography', () => {
     expect(element).toHaveAttribute('title', 'Tooltip text');
   });
 
-  it('renders heading levels correctly', () => {
+  it('renders heading tags when as matches heading level', () => {
     render(
       <>
         <Typography as="h1" variant="h1">
@@ -69,12 +76,8 @@ describe('Typography', () => {
       </>
     );
 
-    const h1 = screen.getByText('Main Title');
-    const h2 = screen.getByText('Section Title');
-    const h3 = screen.getByText('Subsection Title');
-
-    expect(h1.tagName).toBe('H1');
-    expect(h2.tagName).toBe('H2');
-    expect(h3.tagName).toBe('H3');
+    expect(screen.getByText('Main Title').tagName).toBe('H1');
+    expect(screen.getByText('Section Title').tagName).toBe('H2');
+    expect(screen.getByText('Subsection Title').tagName).toBe('H3');
   });
 });
