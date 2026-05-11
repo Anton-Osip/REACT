@@ -1,6 +1,5 @@
 import clsx from 'clsx';
 import {
-  Component,
   type ComponentPropsWithoutRef,
   type ElementType,
   type ReactNode,
@@ -39,27 +38,22 @@ export type TypographyProps<T extends ElementType = TypographyElementType> = {
   className?: string;
 } & ComponentPropsWithoutRef<T>;
 
-export class Typography<
-  T extends ElementType = TypographyElementType,
-> extends Component<TypographyProps<T>> {
-  constructor(props: TypographyProps<T>) {
-    super(props);
-    this.state = {};
-  }
+export function Typography<T extends ElementType = TypographyElementType>(
+  props: TypographyProps<T>
+) {
+  const {
+    variant = 'body1',
+    className,
+    as: Component = 'p',
+    children,
+    ...rest
+  } = props;
 
-  render() {
-    const {
-      variant = 'body1',
-      className,
-      as: Component = 'p',
-      children,
-      ...rest
-    } = this.props;
-    const Element: ElementType = Component;
-    return (
-      <Element className={clsx(s.typography, s[variant], className)} {...rest}>
-        {children}
-      </Element>
-    );
-  }
+  const Element: ElementType = Component;
+
+  return (
+    <Element className={clsx(s.typography, s[variant], className)} {...rest}>
+      {children}
+    </Element>
+  );
 }

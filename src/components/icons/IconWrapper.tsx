@@ -1,9 +1,9 @@
 import {
-  Component,
   type ReactNode,
   type CSSProperties,
   type SVGProps,
   type HTMLProps,
+  type FC,
 } from 'react';
 
 export type IconProps = {
@@ -17,37 +17,33 @@ interface IconWrapperProps extends IconProps {
   icon: ReactNode;
 }
 
-export class IconWrapper extends Component<IconWrapperProps> {
-  render() {
-    const {
-      backgroundColor = 'var(--color-neutral-light-50)',
-      color: colorProp,
-      icon,
-      size: sizeProp,
-      ...restProps
-    } = this.props;
+export const IconWrapper: FC<IconWrapperProps> = ({
+  backgroundColor = 'var(--color-neutral-light-50)',
+  color: colorProp,
+  icon,
+  size: sizeProp,
+  ...restProps
+}) => {
+  const color = colorProp ? colorProp : 'currentColor';
+  const size = sizeProp ? `${sizeProp}px` : '24px';
 
-    const color = colorProp ? colorProp : 'currentColor';
-    const size = sizeProp ? `${sizeProp}px` : '24px';
-
-    return (
-      <span
-        aria-hidden={'true'}
-        role={'img'}
-        style={
-          {
-            '--color-bg-icon': backgroundColor,
-            color: color,
-            display: 'inline-flex',
-            fontSize: 'inherit',
-            height: size,
-            width: size,
-          } as CSSProperties
-        }
-        {...restProps}
-      >
-        {icon}
-      </span>
-    );
-  }
-}
+  return (
+    <span
+      aria-hidden={'true'}
+      role={'img'}
+      style={
+        {
+          '--color-bg-icon': backgroundColor,
+          color: color,
+          display: 'inline-flex',
+          fontSize: 'inherit',
+          height: size,
+          width: size,
+        } as CSSProperties
+      }
+      {...restProps}
+    >
+      {icon}
+    </span>
+  );
+};

@@ -1,4 +1,4 @@
-import { type ChangeEvent, Component, type FormEvent } from 'react';
+import { type ChangeEvent, type FC, type FormEvent, useState } from 'react';
 import s from './search-form.module.css';
 import clsx from 'clsx';
 import { Button, SearchIcon, TextField } from '../../components';
@@ -10,54 +10,43 @@ interface SearchFormProps {
   defaultValue?: string;
 }
 
-interface SearchFormState {
-  value: string;
-}
-
 export const STORAGE_KEY = 'searchFormValue';
 
-export class SearchForm extends Component<SearchFormProps, SearchFormState> {
-  constructor(props: SearchFormProps) {
-    super(props);
-    const savedValue = this.props.defaultValue ?? '';
+export const SearchForm: FC<SearchFormProps> = ({
+  className,
+  submitInput,
+  defaultValue = '',
+}) => {
+  const [value, setValue] = useState<string>(defaultValue);
 
-    this.state = {
-      value: savedValue,
-    };
-  }
-
-  onSubmitHandler = (e: FormEvent) => {
+  const onSubmitHandler = (e: FormEvent) => {
     e.preventDefault();
-    const inputText = this.state.value.trim();
+    const inputText = value.trim();
 
-    if (this.state.value === '') {
+    if (value === '') {
       saveToStorage(STORAGE_KEY, '');
-      this.props.submitInput('');
+      submitInput('');
     }
     if (inputText !== '') {
       saveToStorage(STORAGE_KEY, inputText);
-      this.props.submitInput(inputText);
+      submitInput(inputText);
     }
   };
 
-  onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    this.setState({ value: value });
+  const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    const newValue = e.target.value;
+    setValue(newValue);
   };
 
-  render() {
-    const { className } = this.props;
-
-    return (
-      <form className={clsx(s.form, className)} onSubmit={this.onSubmitHandler}>
-        <TextField
-          iconStart={<SearchIcon size={20} />}
-          placeholder={'Search'}
-          value={this.state.value}
-          onChange={this.onChangeHandler}
-        />
-        <Button type={'submit'}>Search</Button>
-      </form>
-    );
-  }
-}
+  return (
+    <form className={clsx(s.form, className)} onSubmit={onSubmitHandler}>
+      <TextField
+        iconStart={<SearchIcon size={20} />}
+        placeholder={'Search'}
+        value={value}
+        onChange={onChangeHandler}
+      />
+      <Button type={'submit'}>Search</Button>
+    </form>
+  );
+};

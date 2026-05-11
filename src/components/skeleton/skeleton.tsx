@@ -1,15 +1,11 @@
 import clsx from 'clsx';
-import { Component, type ComponentPropsWithoutRef } from 'react';
+import { type ComponentPropsWithoutRef, type FC } from 'react';
 import s from './skeleton.module.css';
 
 export type SkeletonProps = {
   className?: string;
 } & ComponentPropsWithoutRef<'div'>;
 
-export class Skeleton extends Component<SkeletonProps> {
-  render() {
-    const { className, ...rest } = this.props;
-
-    return <div className={clsx(s.skeleton, className)} {...rest}></div>;
-  }
-}
+export const Skeleton: FC<SkeletonProps> = ({ className, ...rest }) => {
+  return <div className={clsx(s.skeleton, className)} {...rest}></div>;
+};
