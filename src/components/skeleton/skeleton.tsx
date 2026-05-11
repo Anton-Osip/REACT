@@ -8,8 +8,8 @@ export type SkeletonProps = {
 
 export class Skeleton extends Component<SkeletonProps> {
   render() {
-    const { className } = this.props;
+    const { className, ...rest } = this.props;
 
-    return <div className={clsx(s.skeleton, className)}></div>;
+    return <div className={clsx(s.skeleton, className)} {...rest}></div>;
   }
 }

@@ -21,16 +21,27 @@ type TypographyVariant =
   | 'link1'
   | 'link2';
 
-export type TypographyProps<T extends ElementType = 'p'> = {
+type TypographyElementType =
+  | 'p'
+  | 'h1'
+  | 'h2'
+  | 'h3'
+  | 'h4'
+  | 'h5'
+  | 'span'
+  | 'div'
+  | 'label';
+
+export type TypographyProps<T extends ElementType = TypographyElementType> = {
   as?: T;
   children: ReactNode;
   variant?: TypographyVariant;
   className?: string;
 } & ComponentPropsWithoutRef<T>;
 
-export class Typography<T extends ElementType = 'p'> extends Component<
-  TypographyProps<T>
-> {
+export class Typography<
+  T extends ElementType = TypographyElementType,
+> extends Component<TypographyProps<T>> {
   constructor(props: TypographyProps<T>) {
     super(props);
     this.state = {};
