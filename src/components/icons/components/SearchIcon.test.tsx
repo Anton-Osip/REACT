@@ -32,12 +32,12 @@ describe('SearchIcon', () => {
 
   it('forwards svgProps to the svg element', () => {
     const { container } = render(
-      <SearchIcon svgProps={{ 'data-testid': 'search-svg' }} />
+      <SearchIcon svgProps={{ id: 'search-svg-forward-test' }} />
     );
 
     expect(container.querySelector('svg')).toHaveAttribute(
-      'data-testid',
-      'search-svg'
+      'id',
+      'search-svg-forward-test'
     );
   });
 });
