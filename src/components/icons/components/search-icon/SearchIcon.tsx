@@ -1,5 +1,5 @@
 import { type FC } from 'react';
-import { type IconProps, IconWrapper } from '../IconWrapper';
+import { type IconProps, IconWrapper } from '../../IconWrapper.tsx';
 
 type Props = IconProps;
 

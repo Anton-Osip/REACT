@@ -4,3 +4,4 @@ export * from './icons';
 export { TextField } from './text-field';
 export { Container } from './container';
 export { Skeleton } from './skeleton';
+export { Pagination } from './pagination';

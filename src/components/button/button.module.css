@@ -25,7 +25,7 @@
   gap: 10px;
 }
 
-.button:active {
+.button:active:not(:disabled) {
   transform: scale(0.95);
 }
 
@@ -34,7 +34,7 @@
   color: var(--color-light-900);
 }
 
-.button:focus-visible {
+.button:focus-visible:not(:disabled) {
   outline: 2px solid var(--color-info-700);
 }
 
@@ -43,11 +43,11 @@
   box-shadow: 0 4px 18px 0 #8c61ff59;
 }
 
-.primary:hover {
+.primary:hover:not(:disabled) {
   background: var(--color-accent-300);
 }
 
-.primary:active {
+.primary:active:not(:disabled) {
   background: var(--color-accent-700);
 }
 
@@ -60,16 +60,34 @@
   box-shadow: 0 2px 10px 0 #6d6d6d40;
 }
 
-.secondary:hover {
+.secondary:hover:not(:disabled) {
   background: var(--color-dark-100);
 }
 
-.secondary:active {
+.secondary:active:not(:disabled) {
   background: var(--color-dark-500);
 }
 
 .secondary:disabled {
   background: var(--color-dark-300);
+}
+
+.ghost {
+  background: transparent;
+  color: var(--color-light-100);
+}
+
+.ghost:hover:not(:disabled) {
+  background: var(--color-dark-500);
+}
+
+.ghost:active:not(:disabled) {
+  background: var(--color-light-100);
+  color: var(--color-dark-900);
+}
+
+.ghost:disabled {
+  color: var(--color-dark-100);
 }
 
 .fullWidth {

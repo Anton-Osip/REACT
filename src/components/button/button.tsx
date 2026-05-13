@@ -9,7 +9,7 @@ import s from './button.module.css';
 export type ButtonProps<T extends ElementType = 'button' | 'a'> = {
   as?: T;
   children: ReactNode;
-  variant?: 'primary' | 'secondary';
+  variant?: 'primary' | 'secondary' | 'ghost';
   fullWidth?: boolean;
   className?: string;
   icon?: ReactNode;

@@ -3,7 +3,7 @@ import s from './character-list.module.css';
 import clsx from 'clsx';
 import { type CharactersResponse, getCharacters } from '../../api/character';
 import { CharacterCard } from './character-card';
-import { Button, Skeleton, Typography } from '../../components';
+import { Button, Pagination, Skeleton, Typography } from '../../components';
 import emptyPageImage from '../../assets/image/emptyPageImage.png';
 import errorPageImage from '../../assets/image/errorPageImage.png';
 
@@ -104,22 +104,25 @@ export const CharacterList: FC<CharacterListProps> = ({
   );
 
   const renderContent = () => (
-    <div className={clsx(s.characterList, className)}>
-      {characters && characters.results.length !== 0 && (
-        <div className={s.grid}>
-          {characters.results.map((character) => (
-            <CharacterCard
-              key={character.id}
-              image={character.image}
-              name={character.name}
-              species={character.species}
-              location={character.location.name}
-              status={character.status}
-            />
-          ))}
-        </div>
-      )}
-    </div>
+    <>
+      <div className={clsx(s.characterList, className)}>
+        {characters && characters.results.length !== 0 && (
+          <div className={s.grid}>
+            {characters.results.map((character) => (
+              <CharacterCard
+                key={character.id}
+                image={character.image}
+                name={character.name}
+                species={character.species}
+                location={character.location.name}
+                status={character.status}
+              />
+            ))}
+          </div>
+        )}
+      </div>
+      <Pagination pages={10} currentPage={1} onPageChange={() => {}} />
+    </>
   );
 
   return (

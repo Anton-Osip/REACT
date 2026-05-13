@@ -1,8 +1,8 @@
 import { afterEach, describe, expect, it } from 'vitest';
 import { cleanup, render, screen } from '@testing-library/react';
-import { SearchIcon } from './SearchIcon';
+import { SearchIcon } from './SearchIcon.tsx';
 
-describe('SearchIcon', () => {
+describe('ChevronRightIcon', () => {
   afterEach(() => {
     cleanup();
   });
