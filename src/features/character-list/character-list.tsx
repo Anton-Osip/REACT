@@ -10,6 +10,8 @@ import errorPageImage from '../../assets/image/errorPageImage.png';
 interface CharacterListProps {
   className?: string;
   searchName?: string;
+  page: number;
+  onPageChange: (page: number) => void;
 }
 
 const SKELETON_COUNT = 20;
@@ -17,6 +19,8 @@ const SKELETON_COUNT = 20;
 export const CharacterList: FC<CharacterListProps> = ({
   className,
   searchName,
+  page,
+  onPageChange,
 }) => {
   const [characters, setCharacters] = useState<CharactersResponse | null>(null);
   const [charactersIsLoading, setCharactersIsLoading] =
@@ -25,7 +29,6 @@ export const CharacterList: FC<CharacterListProps> = ({
     null
   );
   const [shouldThrowError, setShouldThrowError] = useState<boolean>(false);
-  const [currentPage, setCurrentPage] = useState<number>(1);
 
   const loadCharacters = useCallback(
     async (name?: string): Promise<void> => {
@@ -34,7 +37,7 @@ export const CharacterList: FC<CharacterListProps> = ({
       setCharactersIsError(null);
 
       try {
-        const res = await getCharacters(name, currentPage);
+        const res = await getCharacters(name, page);
         setCharacters(res);
         setCharactersIsLoading(false);
       } catch (error) {
@@ -45,7 +48,7 @@ export const CharacterList: FC<CharacterListProps> = ({
         );
       }
     },
-    [currentPage]
+    [page]
   );
 
   const simulateError = useCallback((): void => {
@@ -53,16 +56,12 @@ export const CharacterList: FC<CharacterListProps> = ({
   }, []);
 
   useEffect(() => {
-    setCurrentPage(1);
-  }, [searchName]);
-
-  useEffect(() => {
     void loadCharacters(searchName);
   }, [loadCharacters, searchName]);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, [searchName, currentPage]);
+  }, [searchName]);
 
   if (shouldThrowError) {
     throw new Error('Test error from Error Button - Check console for details');
@@ -104,10 +103,12 @@ export const CharacterList: FC<CharacterListProps> = ({
   );
 
   const renderLoading = () => (
-    <div className={s.grid}>
-      {Array.from({ length: SKELETON_COUNT }).map((_, index) => (
-        <Skeleton key={`skeleton-${index}`} />
-      ))}
+    <div className={s.characterList}>
+      <div className={s.grid}>
+        {Array.from({ length: SKELETON_COUNT }).map((_, index) => (
+          <Skeleton key={`skeleton-${index}`} />
+        ))}
+      </div>
     </div>
   );
 
@@ -131,9 +132,9 @@ export const CharacterList: FC<CharacterListProps> = ({
       </div>
       <Pagination
         pages={characters?.info.pages ?? 1}
-        currentPage={currentPage}
+        currentPage={page}
         onPageChange={(page: number) => {
-          setCurrentPage(page);
+          onPageChange(page);
         }}
       />
     </>
@@ -146,7 +147,7 @@ export const CharacterList: FC<CharacterListProps> = ({
         !charactersIsLoading &&
         renderEmpty()}
       {!characters && charactersIsLoading && renderLoading()}
-      {characters?.results.length !== 0 && renderContent()}
+      {characters && characters?.results.length !== 0 && renderContent()}
       <Button
         variant={'secondary'}
         className={s.button}

@@ -1,8 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { cleanup, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { SearchForm, STORAGE_KEY } from './search-form';
-import * as storageUtils from '../../utils/SaveToStorage';
+import { SearchForm } from './search-form';
 
 describe('SearchForm', () => {
   const user = userEvent.setup();
@@ -38,6 +37,17 @@ describe('SearchForm', () => {
     expect(screen.getByPlaceholderText('Search')).toHaveValue('');
   });
 
+  it('syncs input when defaultValue prop changes', () => {
+    const submitInput = vi.fn();
+    const { rerender } = render(
+      <SearchForm submitInput={submitInput} defaultValue="alpha" />
+    );
+    expect(screen.getByPlaceholderText('Search')).toHaveValue('alpha');
+
+    rerender(<SearchForm submitInput={submitInput} defaultValue="beta" />);
+    expect(screen.getByPlaceholderText('Search')).toHaveValue('beta');
+  });
+
   it('updates input value when user types', async () => {
     const submitInput = vi.fn();
     render(<SearchForm submitInput={submitInput} />);
@@ -48,35 +58,29 @@ describe('SearchForm', () => {
     expect(input).toHaveValue('summer');
   });
 
-  it('persists trimmed search term and notifies parent on submit', async () => {
+  it('calls submitInput with trimmed value on submit', async () => {
     const submitInput = vi.fn();
-    const saveSpy = vi.spyOn(storageUtils, 'saveToStorage');
-
     render(<SearchForm submitInput={submitInput} />);
     const input = screen.getByPlaceholderText('Search');
 
     await user.type(input, '  beth  ');
     await user.click(screen.getByRole('button', { name: /search/i }));
 
-    expect(saveSpy).toHaveBeenCalledWith(STORAGE_KEY, 'beth');
     expect(submitInput).toHaveBeenCalledWith('beth');
   });
 
-  it('clears storage and notifies parent when submitting empty input', async () => {
+  it('calls submitInput with empty string when submitting empty input', async () => {
     const submitInput = vi.fn();
-    const saveSpy = vi.spyOn(storageUtils, 'saveToStorage');
-
     render(<SearchForm submitInput={submitInput} defaultValue="old" />);
     const input = screen.getByPlaceholderText('Search');
 
     await user.clear(input);
     await user.click(screen.getByRole('button', { name: /search/i }));
 
-    expect(saveSpy).toHaveBeenCalledWith(STORAGE_KEY, '');
     expect(submitInput).toHaveBeenCalledWith('');
   });
 
-  it('does not call submitInput with trimmed value when input is only whitespace', async () => {
+  it('does not call submitInput when input is only whitespace', async () => {
     const submitInput = vi.fn();
     render(<SearchForm submitInput={submitInput} />);
     const input = screen.getByPlaceholderText('Search');
@@ -87,10 +91,8 @@ describe('SearchForm', () => {
     expect(submitInput).not.toHaveBeenCalled();
   });
 
-  it('overwrites existing localStorage value after a new search', async () => {
+  it('notifies parent with new search term on submit', async () => {
     const submitInput = vi.fn();
-    localStorage.setItem(STORAGE_KEY, JSON.stringify('first'));
-
     render(<SearchForm submitInput={submitInput} defaultValue="first" />);
     const input = screen.getByPlaceholderText('Search');
 
@@ -98,9 +100,6 @@ describe('SearchForm', () => {
     await user.type(input, 'second');
     await user.click(screen.getByRole('button', { name: /search/i }));
 
-    expect(JSON.parse(localStorage.getItem(STORAGE_KEY) ?? '""')).toBe(
-      'second'
-    );
     expect(submitInput).toHaveBeenLastCalledWith('second');
   });
 });

@@ -1,16 +1,19 @@
-import { type ChangeEvent, type FC, type FormEvent, useState } from 'react';
+import {
+  type ChangeEvent,
+  type FC,
+  type FormEvent,
+  useEffect,
+  useState,
+} from 'react';
 import s from './search-form.module.css';
 import clsx from 'clsx';
 import { Button, SearchIcon, TextField } from '../../components';
-import { saveToStorage } from '../../utils';
 
 interface SearchFormProps {
   className?: string;
   submitInput: (value: string) => void;
   defaultValue?: string;
 }
-
-export const STORAGE_KEY = 'searchFormValue';
 
 export const SearchForm: FC<SearchFormProps> = ({
   className,
@@ -19,16 +22,18 @@ export const SearchForm: FC<SearchFormProps> = ({
 }) => {
   const [value, setValue] = useState<string>(defaultValue);
 
+  useEffect(() => {
+    setValue(defaultValue);
+  }, [defaultValue]);
+
   const onSubmitHandler = (e: FormEvent) => {
     e.preventDefault();
     const inputText = value.trim();
 
     if (value === '') {
-      saveToStorage(STORAGE_KEY, '');
       submitInput('');
     }
     if (inputText !== '') {
-      saveToStorage(STORAGE_KEY, inputText);
       submitInput(inputText);
     }
   };

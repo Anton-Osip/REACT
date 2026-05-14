@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { cleanup, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
@@ -12,12 +13,22 @@ vi.mock('../../api/character', () => ({
 
 const mockedGetCharacters = vi.mocked(getCharacters);
 
+function CharacterListHarness({ name }: { name: string }) {
+  const [page, setPage] = useState(1);
+  useEffect(() => {
+    setPage(1);
+  }, [name]);
+  return <CharacterList searchName={name} page={page} onPageChange={setPage} />;
+}
+
 describe('CharacterList', () => {
   const user = userEvent.setup();
+  let onPageChange: (page: number) => void;
 
   beforeEach(() => {
     vi.stubGlobal('scrollTo', vi.fn());
     mockedGetCharacters.mockReset();
+    onPageChange = vi.fn();
   });
 
   afterEach(() => {
@@ -28,7 +39,9 @@ describe('CharacterList', () => {
   it('shows loading grid while data is fetching', async () => {
     mockedGetCharacters.mockReturnValue(new Promise(() => {}));
 
-    const { container } = render(<CharacterList searchName="" />);
+    const { container } = render(
+      <CharacterList searchName="" page={1} onPageChange={onPageChange} />
+    );
 
     await waitFor(() => expect(mockedGetCharacters).toHaveBeenCalled());
 
@@ -39,7 +52,9 @@ describe('CharacterList', () => {
   it('renders character cards when data loads successfully', async () => {
     mockedGetCharacters.mockResolvedValue(createCharactersResponse());
 
-    render(<CharacterList searchName="" />);
+    render(
+      <CharacterList searchName="" page={1} onPageChange={onPageChange} />
+    );
 
     expect(await screen.findByText('Rick Sanchez')).toBeInTheDocument();
     expect(screen.getByText('Morty Smith')).toBeInTheDocument();
@@ -50,7 +65,13 @@ describe('CharacterList', () => {
       createCharactersResponse({ results: [] })
     );
 
-    render(<CharacterList searchName="zzz-unknown" />);
+    render(
+      <CharacterList
+        searchName="zzz-unknown"
+        page={1}
+        onPageChange={onPageChange}
+      />
+    );
 
     expect(await screen.findByText('Nothing found.')).toBeInTheDocument();
   });
@@ -58,7 +79,9 @@ describe('CharacterList', () => {
   it('shows error UI and message when API call fails', async () => {
     mockedGetCharacters.mockRejectedValue(new Error('Service unavailable'));
 
-    render(<CharacterList searchName="rick" />);
+    render(
+      <CharacterList searchName="rick" page={1} onPageChange={onPageChange} />
+    );
 
     expect(await screen.findByText('Service unavailable')).toBeInTheDocument();
     expect(screen.getByText('Something went wrong')).toBeInTheDocument();
@@ -69,7 +92,9 @@ describe('CharacterList', () => {
       .mockRejectedValueOnce(new Error('temporary'))
       .mockResolvedValueOnce(createCharactersResponse());
 
-    render(<CharacterList searchName="beth" />);
+    render(
+      <CharacterList searchName="beth" page={1} onPageChange={onPageChange} />
+    );
 
     expect(await screen.findByText('temporary')).toBeInTheDocument();
 
@@ -82,13 +107,13 @@ describe('CharacterList', () => {
   it('fetches again when searchName prop changes and scrolls to top', async () => {
     mockedGetCharacters.mockResolvedValue(createCharactersResponse());
 
-    const { rerender } = render(<CharacterList searchName="a" />);
+    const { rerender } = render(<CharacterListHarness name="a" />);
 
     await waitFor(() =>
       expect(mockedGetCharacters).toHaveBeenLastCalledWith('a', 1)
     );
 
-    rerender(<CharacterList searchName="b" />);
+    rerender(<CharacterListHarness name="b" />);
 
     await waitFor(() =>
       expect(mockedGetCharacters).toHaveBeenLastCalledWith('b', 1)
@@ -112,7 +137,7 @@ describe('CharacterList', () => {
       })
     );
 
-    const { rerender } = render(<CharacterList searchName="a" />);
+    const { rerender } = render(<CharacterListHarness name="a" />);
     await screen.findByText('Rick Sanchez');
 
     await user.click(screen.getByRole('button', { name: '2' }));
@@ -121,7 +146,7 @@ describe('CharacterList', () => {
       expect(mockedGetCharacters).toHaveBeenLastCalledWith('a', 2)
     );
 
-    rerender(<CharacterList searchName="b" />);
+    rerender(<CharacterListHarness name="b" />);
 
     await waitFor(() =>
       expect(mockedGetCharacters).toHaveBeenLastCalledWith('b', 1)
@@ -131,7 +156,9 @@ describe('CharacterList', () => {
   it('surfaces non-Error rejections as error messages', async () => {
     mockedGetCharacters.mockRejectedValue('plain string failure');
 
-    render(<CharacterList searchName="" />);
+    render(
+      <CharacterList searchName="" page={1} onPageChange={onPageChange} />
+    );
 
     expect(await screen.findByText('plain string failure')).toBeInTheDocument();
   });
@@ -142,7 +169,7 @@ describe('CharacterList', () => {
 
     render(
       <ErrorBoundary>
-        <CharacterList searchName="" />
+        <CharacterList searchName="" page={1} onPageChange={onPageChange} />
       </ErrorBoundary>
     );
 

@@ -1,25 +1,40 @@
-import { type JSX, useState } from 'react';
+import { type JSX } from 'react';
 import s from './character-page.module.css';
-import { SearchForm, STORAGE_KEY } from '../../features/search-form';
+import { SearchForm } from '../../features/search-form';
 import { CharacterList } from '../../features/character-list';
-import { loadFromStorage } from '../../utils';
+
+import { getRouteApi, useNavigate } from '@tanstack/react-router';
+import { saveToStorage } from '../../utils';
+
+const indexRoute = getRouteApi('/');
+
+export const STORAGE_KEY = 'searchCharacterValue';
 
 export function CharacterPage(): JSX.Element {
-  const [searchName, setSearchName] = useState<string>(() => {
-    return loadFromStorage<string>(STORAGE_KEY, '');
-  });
+  const navigate = useNavigate({ from: '/' });
+  const { page, search } = indexRoute.useSearch();
 
   const searchCharactersByName = (value: string): void => {
-    setSearchName(value);
+    saveToStorage(STORAGE_KEY, value);
+    void navigate({
+      search: (prev) => ({ ...prev, page: 1, search: value }),
+    });
+  };
+
+  const onPageChange = (nextPage: number) => {
+    void navigate({
+      search: (prev) => ({ ...prev, page: nextPage }),
+    });
   };
 
   return (
     <div className={s.characterPage}>
-      <SearchForm
-        submitInput={searchCharactersByName}
-        defaultValue={searchName}
+      <SearchForm submitInput={searchCharactersByName} defaultValue={search} />
+      <CharacterList
+        searchName={search}
+        page={page}
+        onPageChange={onPageChange}
       />
-      <CharacterList searchName={searchName} />
     </div>
   );
 }
