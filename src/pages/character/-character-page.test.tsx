@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { cleanup, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { CharacterPage } from './character-page';
+import { CharacterPage } from './-character-page.tsx';
 import { STORAGE_KEY } from '../../features/search-form';
 import { loadFromStorage } from '../../utils';
 import { getCharacters } from '../../api/character';

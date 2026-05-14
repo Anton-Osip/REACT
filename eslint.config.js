@@ -42,5 +42,11 @@ export default tseslint.config(
         version: 'detect',
       },
     },
+  },
+  {
+    files: ['src/pages/**/*.{ts,tsx}'],
+    rules: {
+      'react-refresh/only-export-components': 'off',
+    },
   }
 );

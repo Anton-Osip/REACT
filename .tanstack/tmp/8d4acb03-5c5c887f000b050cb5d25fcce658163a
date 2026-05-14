@@ -1,10 +1,15 @@
-import { type FC, useState } from 'react';
+import { createFileRoute } from '@tanstack/react-router';
+import { type JSX, useState } from 'react';
 import s from './character-page.module.css';
 import { SearchForm, STORAGE_KEY } from '../../features/search-form';
 import { CharacterList } from '../../features/character-list';
 import { loadFromStorage } from '../../utils';
 
-export const CharacterPage: FC = () => {
+export const Route = createFileRoute('/character/')({
+  component: CharacterPage,
+});
+
+function CharacterPage(): JSX.Element {
   const [searchName, setSearchName] = useState<string>(() => {
     return loadFromStorage<string>(STORAGE_KEY, '');
   });
@@ -22,4 +27,4 @@ export const CharacterPage: FC = () => {
       <CharacterList searchName={searchName} />
     </div>
   );
-};
+}
