@@ -25,28 +25,36 @@ export const CharacterList: FC<CharacterListProps> = ({
     null
   );
   const [shouldThrowError, setShouldThrowError] = useState<boolean>(false);
+  const [currentPage, setCurrentPage] = useState<number>(1);
 
-  const loadCharacters = useCallback(async (name?: string): Promise<void> => {
-    setCharacters(null);
-    setCharactersIsLoading(true);
-    setCharactersIsError(null);
-
-    try {
-      const res = await getCharacters(name);
-      setCharacters(res);
-      setCharactersIsLoading(false);
-    } catch (error) {
+  const loadCharacters = useCallback(
+    async (name?: string): Promise<void> => {
       setCharacters(null);
-      setCharactersIsLoading(false);
-      setCharactersIsError(
-        error instanceof Error ? error : new Error(String(error))
-      );
-    }
-  }, []);
+      setCharactersIsLoading(true);
+      setCharactersIsError(null);
+
+      try {
+        const res = await getCharacters(name, currentPage);
+        setCharacters(res);
+        setCharactersIsLoading(false);
+      } catch (error) {
+        setCharacters(null);
+        setCharactersIsLoading(false);
+        setCharactersIsError(
+          error instanceof Error ? error : new Error(String(error))
+        );
+      }
+    },
+    [currentPage]
+  );
 
   const simulateError = useCallback((): void => {
     setShouldThrowError(true);
   }, []);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchName]);
 
   useEffect(() => {
     void loadCharacters(searchName);
@@ -54,7 +62,7 @@ export const CharacterList: FC<CharacterListProps> = ({
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, [searchName]);
+  }, [searchName, currentPage]);
 
   if (shouldThrowError) {
     throw new Error('Test error from Error Button - Check console for details');
@@ -121,7 +129,13 @@ export const CharacterList: FC<CharacterListProps> = ({
           </div>
         )}
       </div>
-      <Pagination pages={10} currentPage={1} onPageChange={() => {}} />
+      <Pagination
+        pages={characters?.info.pages ?? 1}
+        currentPage={currentPage}
+        onPageChange={(page: number) => {
+          setCurrentPage(page);
+        }}
+      />
     </>
   );
 

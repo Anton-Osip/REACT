@@ -85,19 +85,47 @@ describe('CharacterList', () => {
     const { rerender } = render(<CharacterList searchName="a" />);
 
     await waitFor(() =>
-      expect(mockedGetCharacters).toHaveBeenLastCalledWith('a')
+      expect(mockedGetCharacters).toHaveBeenLastCalledWith('a', 1)
     );
 
     rerender(<CharacterList searchName="b" />);
 
     await waitFor(() =>
-      expect(mockedGetCharacters).toHaveBeenLastCalledWith('b')
+      expect(mockedGetCharacters).toHaveBeenLastCalledWith('b', 1)
     );
 
     expect(window.scrollTo).toHaveBeenCalledWith({
       top: 0,
       behavior: 'smooth',
     });
+  });
+
+  it('uses page 1 when searchName changes after navigating to another page', async () => {
+    mockedGetCharacters.mockResolvedValue(
+      createCharactersResponse({
+        info: {
+          count: 40,
+          pages: 2,
+          next: null,
+          prev: null,
+        },
+      })
+    );
+
+    const { rerender } = render(<CharacterList searchName="a" />);
+    await screen.findByText('Rick Sanchez');
+
+    await user.click(screen.getByRole('button', { name: '2' }));
+
+    await waitFor(() =>
+      expect(mockedGetCharacters).toHaveBeenLastCalledWith('a', 2)
+    );
+
+    rerender(<CharacterList searchName="b" />);
+
+    await waitFor(() =>
+      expect(mockedGetCharacters).toHaveBeenLastCalledWith('b', 1)
+    );
   });
 
   it('surfaces non-Error rejections as error messages', async () => {

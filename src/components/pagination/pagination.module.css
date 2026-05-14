@@ -27,3 +27,8 @@
   align-items: center;
   justify-content: center;
 }
+
+.dots {
+  width: 24px;
+  text-align: center;
+}

@@ -29,6 +29,12 @@ export const getCharacters = async (
       throw new Error('400: Bad Request - Invalid search parameters');
     }
 
+    if (response.status === 429) {
+      throw new Error(
+        "You're sending too many requests too quickly. Please wait a moment and try again. Thank you for your patience!;"
+      );
+    }
+
     if (response.status === 500) {
       throw new Error('500: Internal Server Error - Server is having issues');
     }

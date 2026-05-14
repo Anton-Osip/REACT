@@ -71,7 +71,11 @@ export const Pagination: FC<PaginationProps> = ({
       </Button>
 
       {showLeftDots && (
-        <Typography variant={'body2'} aria-hidden="true">
+        <Typography
+          variant={'body2'}
+          aria-hidden="true"
+          className={styles.dots}
+        >
           ...
         </Typography>
       )}
@@ -88,7 +92,11 @@ export const Pagination: FC<PaginationProps> = ({
       ))}
 
       {showRightDots && (
-        <Typography variant={'body2'} aria-hidden="true">
+        <Typography
+          variant={'body2'}
+          aria-hidden="true"
+          className={styles.dots}
+        >
           ...
         </Typography>
       )}

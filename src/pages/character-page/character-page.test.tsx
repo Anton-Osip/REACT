@@ -55,7 +55,9 @@ describe('CharacterPage', () => {
     render(<CharacterPage />);
 
     expect(screen.getByPlaceholderText('Search')).toHaveValue('');
-    await waitFor(() => expect(mockedGetCharacters).toHaveBeenCalledWith(''));
+    await waitFor(() =>
+      expect(mockedGetCharacters).toHaveBeenCalledWith('', 1)
+    );
   });
 
   it('updates list when user submits a new search', async () => {
@@ -93,6 +95,6 @@ describe('CharacterPage', () => {
     await user.click(screen.getByRole('button', { name: /search/i }));
 
     expect(await screen.findByText('Summer Smith')).toBeInTheDocument();
-    expect(mockedGetCharacters).toHaveBeenCalledWith('summer');
+    expect(mockedGetCharacters).toHaveBeenLastCalledWith('summer', 1);
   });
 });
