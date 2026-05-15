@@ -3,9 +3,14 @@ import s from './character-list.module.css';
 import clsx from 'clsx';
 import { type CharactersResponse, getCharacters } from '../../api/character';
 import { CharacterCard } from './character-card';
-import { Button, Pagination, Skeleton, Typography } from '../../components';
+import {
+  Button,
+  ErrorComponent,
+  Pagination,
+  Skeleton,
+  Typography,
+} from '../../components';
 import emptyPageImage from '../../assets/image/emptyPageImage.png';
-import errorPageImage from '../../assets/image/errorPageImage.png';
 
 interface CharacterListProps {
   className?: string;
@@ -67,32 +72,6 @@ export const CharacterList: FC<CharacterListProps> = ({
     throw new Error('Test error from Error Button - Check console for details');
   }
 
-  const renderError = () => (
-    <div className={s.error}>
-      <div className={s.errorContent}>
-        <Typography variant="h2" className={s.errorTitle}>
-          Something went wrong
-        </Typography>
-        <img
-          className={s.errorPageImage}
-          src={errorPageImage}
-          alt="error image"
-        />
-        <Typography variant="body2" className={s.errorMessage}>
-          {charactersIsError?.message || 'An unexpected error occurred'}
-        </Typography>
-        <Button
-          variant="secondary"
-          onClick={() => loadCharacters(searchName)}
-          className={s.resetButton}
-          fullWidth
-        >
-          Try Again
-        </Button>
-      </div>
-    </div>
-  );
-
   const renderEmpty = () => (
     <div className={s.empty}>
       <img className={s.emptyImage} src={emptyPageImage} alt="empty page" />
@@ -142,7 +121,11 @@ export const CharacterList: FC<CharacterListProps> = ({
 
   return (
     <>
-      {charactersIsError && renderError()}
+      <ErrorComponent
+        isError={Boolean(charactersIsError)}
+        errorText={charactersIsError?.message}
+        tryAgain={() => loadCharacters(searchName)}
+      />
       {characters?.results.length === 0 &&
         !charactersIsLoading &&
         renderEmpty()}
