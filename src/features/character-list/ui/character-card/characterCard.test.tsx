@@ -17,6 +17,7 @@ describe('CharacterCard', () => {
         status="Alive"
         species="Human"
         location="Earth"
+        id={1}
       />
     );
 
@@ -31,6 +32,7 @@ describe('CharacterCard', () => {
         status="Alive"
         species="Human"
         location="Earth"
+        id={1}
       />
     );
 
@@ -48,6 +50,7 @@ describe('CharacterCard', () => {
         status="Alive"
         species="Bird Person"
         location="Bird World"
+        id={1}
       />
     );
 
@@ -62,6 +65,7 @@ describe('CharacterCard', () => {
         status="Dead"
         species="Unknown"
         location="Earth"
+        id={1}
       />
     );
 
@@ -76,6 +80,7 @@ describe('CharacterCard', () => {
         status="unknown"
         species="Human"
         location="Citadel of Ricks"
+        id={1}
       />
     );
 
@@ -90,6 +95,7 @@ describe('CharacterCard', () => {
         status="Alive"
         species="Alien"
         location="Space"
+        id={1}
       />
     );
 
@@ -102,6 +108,7 @@ describe('CharacterCard', () => {
         status="Alive"
         species="Robot"
         location="Space"
+        id={1}
       />
     );
 
@@ -116,6 +123,7 @@ describe('CharacterCard', () => {
         status="Alive"
         species="Human"
         location="Jerryboree"
+        id={1}
       />
     );
 
@@ -132,6 +140,7 @@ describe('CharacterCard', () => {
         status="Alive"
         species="Human"
         location="Earth"
+        id={1}
       />
     );
 
@@ -148,6 +157,7 @@ describe('CharacterCard', () => {
         status="Alive"
         species="Human"
         location={longLocation}
+        id={1}
       />
     );
 

@@ -57,11 +57,9 @@ export const getCharacters = async (
 export const getCharacterDetails = async (
   characterId: number
 ): Promise<CharacterResponse> => {
-  const url = new URL(`/api/character/${characterId}`, API_BASE_URL);
-
   try {
+    const url = new URL(`/api/character/${characterId}`, API_BASE_URL);
     const response = await fetch(url);
-
     if (response.status === 404) {
       throw new Error('404: Bad Request - Invalid search parameters');
     }
