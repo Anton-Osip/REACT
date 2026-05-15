@@ -1,8 +1,9 @@
-import { type FC } from 'react';
+import { memo } from 'react';
 
 import s from './character-card.module.css';
 import type { CharacterStatus } from '../../../../api/character';
 import { Typography } from '../../../../components';
+import { useNavigate } from '@tanstack/react-router';
 
 export type CharacterCardProps = {
   className?: string;
@@ -11,17 +12,26 @@ export type CharacterCardProps = {
   species: string;
   location: string;
   status: CharacterStatus;
+  id: number;
 };
 
-export const CharacterCard: FC<CharacterCardProps> = ({
+export const CharacterCard = memo(function CharacterCard({
   image,
   name,
   status,
   species,
   location,
-}) => {
+  id,
+}: CharacterCardProps) {
+  const navigate = useNavigate({ from: '/' });
+  const onHandleClick = () => {
+    void navigate({
+      search: (prev) => ({ ...prev, details: id }),
+    });
+  };
+
   return (
-    <div className={s.card}>
+    <div className={s.card} onClick={onHandleClick}>
       <div className={s.imageWrapper}>
         <img className={s.image} src={image} alt={name} />
       </div>
@@ -45,4 +55,4 @@ export const CharacterCard: FC<CharacterCardProps> = ({
       </div>
     </div>
   );
-};
+});

@@ -97,6 +97,7 @@ export const CharacterList: FC<CharacterListProps> = ({
                     species={character.species}
                     location={character.location.name}
                     status={character.status}
+                    id={character.id}
                   />
                 ))}
               </div>
