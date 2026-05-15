@@ -18,10 +18,12 @@ export const CharacterLoading: FC<CharacterLoadingProps> = ({
 }) => {
   if (!isLoading) return null;
   return (
-    <div className={clsx(s.grid, className)}>
-      {Array.from({ length: length }).map((_, index) => (
-        <Skeleton key={`skeleton-${index}`} />
-      ))}
+    <div className={clsx(s.characterList, className)}>
+      <div className={s.grid}>
+        {Array.from({ length: length }).map((_, index) => (
+          <Skeleton key={`skeleton-${index}`} />
+        ))}
+      </div>
     </div>
   );
 };

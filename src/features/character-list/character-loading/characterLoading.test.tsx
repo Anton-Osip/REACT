@@ -18,13 +18,17 @@ describe('CharacterLoading', () => {
 
     const root = container.firstElementChild;
     expect(root).toBeInstanceOf(HTMLDivElement);
-    expect(root?.children).toHaveLength(20);
+    const grid = root?.firstElementChild;
+    expect(grid).toBeInstanceOf(HTMLDivElement);
+    expect(grid?.children).toHaveLength(20);
   });
 
   it('renders the requested number of skeletons when length is set', () => {
     const { container } = render(<CharacterLoading isLoading length={5} />);
 
-    expect(container.firstElementChild?.children).toHaveLength(5);
+    expect(
+      container.firstElementChild?.firstElementChild?.children
+    ).toHaveLength(5);
   });
 
   it('merges custom className onto the root element', () => {
