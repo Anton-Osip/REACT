@@ -7,6 +7,13 @@ export interface CharacterListState {
   shouldThrowError: boolean;
 }
 
+export const initialState: CharacterListState = {
+  characters: null,
+  charactersIsLoading: false,
+  charactersIsError: null,
+  shouldThrowError: false,
+};
+
 export const CharacterListActionTypes = {
   LOAD_START: 'LOAD_START',
   LOAD_SUCCESS: 'LOAD_SUCCESS',

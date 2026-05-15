@@ -78,14 +78,14 @@ describe('CharacterPage', () => {
     );
   });
 
-  it('uses empty search when storage has no saved value', async () => {
+  it('uses undefined search in API when storage has no saved value', async () => {
     mockedLoadFromStorage.mockReturnValue('');
 
     renderAppAt('/');
 
     expect(await screen.findByPlaceholderText('Search')).toHaveValue('');
     await waitFor(() =>
-      expect(mockedGetCharacters).toHaveBeenCalledWith('', 1)
+      expect(mockedGetCharacters).toHaveBeenCalledWith(undefined, 1)
     );
   });
 

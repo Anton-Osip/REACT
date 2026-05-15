@@ -3,9 +3,9 @@ import type { CharactersResponse } from '../../../api/character';
 import {
   CharacterListActionTypes,
   characterListReducer,
+  initialState,
   type CharacterListState,
 } from './character-list.state';
-import { initialState } from '../ui/character-list.tsx';
 
 const mockCharactersResponse: CharactersResponse = {
   info: {

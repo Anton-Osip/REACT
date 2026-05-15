@@ -28,7 +28,12 @@ export const Route = createFileRoute('/')({
     const urlSearch = readSearchFromUrl(raw);
 
     return {
-      search: urlSearch !== undefined ? urlSearch : searchFromStorage || '',
+      search:
+        urlSearch !== undefined && urlSearch !== ''
+          ? urlSearch
+          : searchFromStorage !== undefined && searchFromStorage !== ''
+            ? searchFromStorage
+            : undefined,
       page: Number.isFinite(page) && page > 0 ? page : 1,
       details: Number.isFinite(details) ? details : undefined,
     };

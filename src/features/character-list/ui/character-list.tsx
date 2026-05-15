@@ -5,7 +5,7 @@ import { getCharacters } from '../../../api/character';
 import {
   CharacterListActionTypes,
   characterListReducer,
-  type CharacterListState,
+  initialState,
 } from '../modal/character-list.state.ts';
 import { CharacterCard } from './character-card';
 import {
@@ -22,13 +22,6 @@ interface CharacterListProps {
   page: number;
   onPageChange: (page: number) => void;
 }
-
-export const initialState: CharacterListState = {
-  characters: null,
-  charactersIsLoading: false,
-  charactersIsError: null,
-  shouldThrowError: false,
-};
 
 export const CharacterList: FC<CharacterListProps> = ({
   className,
