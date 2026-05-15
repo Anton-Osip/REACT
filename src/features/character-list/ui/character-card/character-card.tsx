@@ -1,8 +1,8 @@
 import { type FC } from 'react';
 
 import s from './character-card.module.css';
-import type { CharacterStatus } from '../../../api/character';
-import { Typography } from '../../../components';
+import type { CharacterStatus } from '../../../../api/character';
+import { Typography } from '../../../../components';
 
 export type CharacterCardProps = {
   className?: string;

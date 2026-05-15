@@ -5,7 +5,7 @@ const API_BASE_URL = 'https://rickandmortyapi.com';
 export const getCharacters = async (
   name?: string,
   page?: number
-): Promise<CharactersResponse | null> => {
+): Promise<CharactersResponse> => {
   const url = new URL('/api/character', API_BASE_URL);
   if (name) url.searchParams.append('name', name);
   if (page) url.searchParams.append('page', page.toString());

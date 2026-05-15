@@ -2,12 +2,12 @@ import { useEffect, useState } from 'react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { cleanup, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { CharacterList } from './character-list';
-import { ErrorBoundary } from '../error-boundary';
-import { createCharactersResponse } from '../../test-utils';
-import { getCharacters } from '../../api/character';
+import { CharacterList } from './character-list.tsx';
+import { ErrorBoundary } from '../../error-boundary';
+import { createCharactersResponse } from '../../../test-utils';
+import { getCharacters } from '../../../api/character';
 
-vi.mock('../../api/character', () => ({
+vi.mock('../../../api/character', () => ({
   getCharacters: vi.fn(),
 }));
 

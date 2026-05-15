@@ -1,7 +1,7 @@
 import { type FC } from 'react';
 
 import s from './character-loading.module.css';
-import { Skeleton } from '../../../components';
+import { Skeleton } from '../../../../components';
 import clsx from 'clsx';
 
 export type CharacterLoadingProps = {

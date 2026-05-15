@@ -1,1 +1,1 @@
-export { CharacterList } from './character-list.tsx';
+export { CharacterList } from './ui/character-list.tsx';

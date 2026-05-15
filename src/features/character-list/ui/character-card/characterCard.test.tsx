@@ -2,7 +2,7 @@ import { describe, it, expect, afterEach } from 'vitest';
 import { cleanup, render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom/vitest';
 import { CharacterCard } from './character-card.tsx';
-import mockImage from '../../../assets/image/errorPageImage.png';
+import mockImage from '../../../../assets/image/errorPageImage.png';
 
 describe('CharacterCard', () => {
   afterEach(() => {

@@ -1,14 +1,19 @@
-import { useState, useEffect, useCallback, type FC } from 'react';
+import { useReducer, useEffect, useCallback, type FC } from 'react';
 import s from './character-list.module.css';
 import clsx from 'clsx';
-import { type CharactersResponse, getCharacters } from '../../api/character';
+import { getCharacters } from '../../../api/character';
+import {
+  CharacterListActionTypes,
+  characterListReducer,
+  type CharacterListState,
+} from '../modal/character-list.state.ts';
 import { CharacterCard } from './character-card';
 import {
   Button,
   EmptyComponent,
   ErrorComponent,
   Pagination,
-} from '../../components';
+} from '../../../components';
 import { CharacterLoading } from './character-loading';
 
 interface CharacterListProps {
@@ -18,43 +23,46 @@ interface CharacterListProps {
   onPageChange: (page: number) => void;
 }
 
+export const initialState: CharacterListState = {
+  characters: null,
+  charactersIsLoading: false,
+  charactersIsError: null,
+  shouldThrowError: false,
+};
+
 export const CharacterList: FC<CharacterListProps> = ({
   className,
   searchName,
   page,
   onPageChange,
 }) => {
-  const [characters, setCharacters] = useState<CharactersResponse | null>(null);
-  const [charactersIsLoading, setCharactersIsLoading] =
-    useState<boolean>(false);
-  const [charactersIsError, setCharactersIsError] = useState<Error | null>(
-    null
-  );
-  const [shouldThrowError, setShouldThrowError] = useState<boolean>(false);
+  const [
+    { characters, charactersIsLoading, charactersIsError, shouldThrowError },
+    dispatch,
+  ] = useReducer(characterListReducer, initialState);
 
   const loadCharacters = useCallback(
     async (name?: string): Promise<void> => {
-      setCharacters(null);
-      setCharactersIsLoading(true);
-      setCharactersIsError(null);
+      dispatch({ type: CharacterListActionTypes.LOAD_START });
 
       try {
         const res = await getCharacters(name, page);
-        setCharacters(res);
-        setCharactersIsLoading(false);
+        dispatch({
+          type: CharacterListActionTypes.LOAD_SUCCESS,
+          payload: res,
+        });
       } catch (error) {
-        setCharacters(null);
-        setCharactersIsLoading(false);
-        setCharactersIsError(
-          error instanceof Error ? error : new Error(String(error))
-        );
+        dispatch({
+          type: CharacterListActionTypes.LOAD_ERROR,
+          payload: error instanceof Error ? error : new Error(String(error)),
+        });
       }
     },
     [page]
   );
 
   const simulateError = useCallback((): void => {
-    setShouldThrowError(true);
+    dispatch({ type: CharacterListActionTypes.SIMULATE_ERROR });
   }, []);
 
   useEffect(() => {
