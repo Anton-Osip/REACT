@@ -5,12 +5,11 @@ import { type CharactersResponse, getCharacters } from '../../api/character';
 import { CharacterCard } from './character-card';
 import {
   Button,
+  EmptyComponent,
   ErrorComponent,
   Pagination,
   Skeleton,
-  Typography,
 } from '../../components';
-import emptyPageImage from '../../assets/image/emptyPageImage.png';
 
 interface CharacterListProps {
   className?: string;
@@ -72,15 +71,6 @@ export const CharacterList: FC<CharacterListProps> = ({
     throw new Error('Test error from Error Button - Check console for details');
   }
 
-  const renderEmpty = () => (
-    <div className={s.empty}>
-      <img className={s.emptyImage} src={emptyPageImage} alt="empty page" />
-      <Typography className={s.emptyText} variant={'h3'}>
-        Nothing found.
-      </Typography>
-    </div>
-  );
-
   const renderLoading = () => (
     <div className={s.characterList}>
       <div className={s.grid}>
@@ -126,9 +116,11 @@ export const CharacterList: FC<CharacterListProps> = ({
         errorText={charactersIsError?.message}
         tryAgain={() => loadCharacters(searchName)}
       />
-      {characters?.results.length === 0 &&
-        !charactersIsLoading &&
-        renderEmpty()}
+
+      <EmptyComponent
+        isEmpty={characters?.results.length === 0 && !charactersIsLoading}
+      />
+
       {!characters && charactersIsLoading && renderLoading()}
       {characters && characters?.results.length !== 0 && renderContent()}
       <Button

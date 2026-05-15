@@ -16,28 +16,6 @@
   gap: 16px;
 }
 
-.empty {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
-  gap: 16px;
-}
-
-.emptyImage {
-  max-height: 50dvh;
-  max-width: 100%;
-}
-
-.emptyText {
-  max-width: 600px;
-
-  text-align: center;
-  color: var(--color-dark-100);
-}
-
 @media (max-width: 800px) {
   .grid {
     grid-template-columns: repeat(1, 1fr);

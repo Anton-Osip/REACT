@@ -6,3 +6,4 @@ export { Container } from './container';
 export { Skeleton } from './skeleton';
 export { Pagination } from './pagination';
 export { ErrorComponent } from './error';
+export { EmptyComponent } from './empty';
