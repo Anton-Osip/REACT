@@ -8,8 +8,8 @@ import {
   EmptyComponent,
   ErrorComponent,
   Pagination,
-  Skeleton,
 } from '../../components';
+import { CharacterLoading } from './character-loading';
 
 interface CharacterListProps {
   className?: string;
@@ -17,8 +17,6 @@ interface CharacterListProps {
   page: number;
   onPageChange: (page: number) => void;
 }
-
-const SKELETON_COUNT = 20;
 
 export const CharacterList: FC<CharacterListProps> = ({
   className,
@@ -71,48 +69,10 @@ export const CharacterList: FC<CharacterListProps> = ({
     throw new Error('Test error from Error Button - Check console for details');
   }
 
-  const renderLoading = () => (
-    <div className={s.characterList}>
-      <div className={s.grid}>
-        {Array.from({ length: SKELETON_COUNT }).map((_, index) => (
-          <Skeleton key={`skeleton-${index}`} />
-        ))}
-      </div>
-    </div>
-  );
-
-  const renderContent = () => (
-    <>
-      <div className={clsx(s.characterList, className)}>
-        {characters && characters.results.length !== 0 && (
-          <div className={s.grid}>
-            {characters.results.map((character) => (
-              <CharacterCard
-                key={character.id}
-                image={character.image}
-                name={character.name}
-                species={character.species}
-                location={character.location.name}
-                status={character.status}
-              />
-            ))}
-          </div>
-        )}
-      </div>
-      <Pagination
-        pages={characters?.info.pages ?? 1}
-        currentPage={page}
-        onPageChange={(page: number) => {
-          onPageChange(page);
-        }}
-      />
-    </>
-  );
-
   return (
     <>
       <ErrorComponent
-        isError={Boolean(charactersIsError)}
+        isError={!!charactersIsError}
         errorText={charactersIsError?.message}
         tryAgain={() => loadCharacters(searchName)}
       />
@@ -121,8 +81,36 @@ export const CharacterList: FC<CharacterListProps> = ({
         isEmpty={characters?.results.length === 0 && !charactersIsLoading}
       />
 
-      {!characters && charactersIsLoading && renderLoading()}
-      {characters && characters?.results.length !== 0 && renderContent()}
+      <CharacterLoading isLoading={!characters && charactersIsLoading} />
+
+      {characters && characters?.results.length !== 0 && (
+        <>
+          <div className={clsx(s.characterList, className)}>
+            {characters && characters.results.length !== 0 && (
+              <div className={s.grid}>
+                {characters.results.map((character) => (
+                  <CharacterCard
+                    key={character.id}
+                    image={character.image}
+                    name={character.name}
+                    species={character.species}
+                    location={character.location.name}
+                    status={character.status}
+                  />
+                ))}
+              </div>
+            )}
+          </div>
+          <Pagination
+            pages={characters?.info.pages ?? 1}
+            currentPage={page}
+            onPageChange={(page: number) => {
+              onPageChange(page);
+            }}
+          />
+        </>
+      )}
+
       <Button
         variant={'secondary'}
         className={s.button}
