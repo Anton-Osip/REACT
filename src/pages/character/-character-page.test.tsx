@@ -1,16 +1,10 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { cleanup, render, screen, waitFor } from '@testing-library/react';
+import { cleanup, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import {
-  createMemoryHistory,
-  createRouter,
-  RouterProvider,
-} from '@tanstack/react-router';
-import { routeTree } from '../../routeTree.gen';
-import { STORAGE_KEY } from './-character-page.tsx';
+import { STORAGE_KEY } from './route.tsx';
 import { loadFromStorage } from '../../utils';
 import { getCharacters } from '../../api/character';
-import { createCharactersResponse } from '../../test-utils';
+import { createCharactersResponse, renderWithRouter } from '../../test-utils';
 
 vi.mock('../../utils', async (importOriginal) => {
   const actual = await importOriginal<typeof import('../../utils')>();
@@ -26,17 +20,6 @@ vi.mock('../../api/character', () => ({
 
 const mockedLoadFromStorage = vi.mocked(loadFromStorage);
 const mockedGetCharacters = vi.mocked(getCharacters);
-
-function renderAppAt(initialLocation = '/') {
-  const router = createRouter({
-    routeTree,
-    history: createMemoryHistory({ initialEntries: [initialLocation] }),
-  } as unknown as Parameters<typeof createRouter>[0]);
-  return {
-    router,
-    ...render(<RouterProvider router={router} />),
-  };
-}
 
 describe('CharacterPage', () => {
   const user = userEvent.setup();
@@ -58,7 +41,7 @@ describe('CharacterPage', () => {
   it('loads saved search term from storage on mount', async () => {
     mockedLoadFromStorage.mockReturnValue('portal gun');
 
-    renderAppAt('/');
+    renderWithRouter('/character');
 
     expect(mockedLoadFromStorage).toHaveBeenCalledWith(STORAGE_KEY, '');
     expect(await screen.findByPlaceholderText('Search')).toHaveValue(
@@ -70,7 +53,7 @@ describe('CharacterPage', () => {
   it('uses search from URL when present, not localStorage', async () => {
     mockedLoadFromStorage.mockReturnValue('portal gun');
 
-    renderAppAt('/?search=summer');
+    renderWithRouter('/character?search=summer');
 
     expect(await screen.findByPlaceholderText('Search')).toHaveValue('summer');
     await waitFor(() =>
@@ -81,7 +64,7 @@ describe('CharacterPage', () => {
   it('uses undefined search in API when storage has no saved value', async () => {
     mockedLoadFromStorage.mockReturnValue('');
 
-    renderAppAt('/');
+    renderWithRouter('/character');
 
     expect(await screen.findByPlaceholderText('Search')).toHaveValue('');
     await waitFor(() =>
@@ -93,7 +76,7 @@ describe('CharacterPage', () => {
     mockedLoadFromStorage.mockReturnValue('');
     mockedGetCharacters.mockResolvedValue(createCharactersResponse());
 
-    renderAppAt('/');
+    renderWithRouter('/character');
 
     await screen.findByText('Rick Sanchez');
 

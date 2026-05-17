@@ -7,28 +7,34 @@ import {
   initialState,
 } from '../modal/character-details.state.ts';
 import { getCharacterDetails } from '../../../api/character';
-import { ErrorComponent, Skeleton, Typography } from '../../../components';
+import {
+  Button,
+  CrossIcon,
+  ErrorComponent,
+  Skeleton,
+  Typography,
+} from '../../../components';
+import { getRouteApi, useNavigate } from '@tanstack/react-router';
 
 interface CharacterDetailsProps {
   className?: string;
-  detailsId?: number;
 }
+const indexRoute = getRouteApi('/character/$id');
+export const CharacterDetails: FC<CharacterDetailsProps> = ({ className }) => {
+  const navigate = useNavigate({ from: '/character' });
 
-export const CharacterDetails: FC<CharacterDetailsProps> = ({
-  className,
-  detailsId,
-}) => {
+  const { id: details } = indexRoute.useParams();
   const [
     { characterDetails, charactersIsLoading, charactersIsError },
     dispatch,
   ] = useReducer(characterDetailsReducer, initialState);
 
   const loadCharacters = useCallback(
-    async (detailsId: number): Promise<void> => {
+    async (detailsId: string): Promise<void> => {
       dispatch({ type: CharacterDetailsActionTypes.LOAD_START });
 
       try {
-        const res = await getCharacterDetails(detailsId);
+        const res = await getCharacterDetails(+detailsId);
         dispatch({
           type: CharacterDetailsActionTypes.LOAD_SUCCESS,
           payload: res,
@@ -44,11 +50,18 @@ export const CharacterDetails: FC<CharacterDetailsProps> = ({
   );
 
   useEffect(() => {
-    if (!detailsId) return;
-    void loadCharacters(detailsId);
-  }, [loadCharacters, detailsId]);
+    if (!details) return;
+    void loadCharacters(details);
+  }, [loadCharacters, details]);
 
-  if (detailsId === undefined) return null;
+  const closeDetails = () => {
+    void navigate({
+      to: '/character',
+      search: (prev) => prev,
+    });
+  };
+
+  if (details === undefined) return null;
   return (
     <>
       {charactersIsLoading && <Skeleton className={s.skeleton} />}
@@ -56,11 +69,18 @@ export const CharacterDetails: FC<CharacterDetailsProps> = ({
       <ErrorComponent
         isError={!!charactersIsError}
         errorText={charactersIsError?.message}
-        tryAgain={() => loadCharacters(detailsId)}
+        tryAgain={() => loadCharacters(details)}
       />
 
       {characterDetails && (
         <div className={clsx(s.characterDetails, className)}>
+          <Button
+            variant={'primary'}
+            className={s.closeBtn}
+            onClick={closeDetails}
+          >
+            <CrossIcon />
+          </Button>
           <div className={s.imageBox}>
             <img
               className={s.image}
@@ -69,33 +89,41 @@ export const CharacterDetails: FC<CharacterDetailsProps> = ({
             />
           </div>
           <div className={s.info}>
-            <Typography variant="h1">{characterDetails.name}</Typography>
+            <Typography variant="h1" className={s.name}>
+              {characterDetails.name}
+            </Typography>
             <div className={s.items}>
               <div className={s.item}>
-                <Typography variant="caption" className={s.title}>
+                <Typography variant="body1" className={s.title}>
                   gender
                 </Typography>
-                <Typography variant="h4">{characterDetails.gender}</Typography>
+                <Typography variant="h3" className={s.value}>
+                  {characterDetails.gender}
+                </Typography>
               </div>
               <div className={s.item}>
-                <Typography variant="caption" className={s.title}>
+                <Typography variant="body1" className={s.title}>
                   location
                 </Typography>
-                <Typography variant="h4">
+                <Typography variant="h3" className={s.value}>
                   {characterDetails.location.name}
                 </Typography>
               </div>
               <div className={s.item}>
-                <Typography variant="caption" className={s.title}>
+                <Typography variant="body1" className={s.title}>
                   species
                 </Typography>
-                <Typography variant="h4">{characterDetails.species}</Typography>
+                <Typography variant="h3" className={s.value}>
+                  {characterDetails.species}
+                </Typography>
               </div>
               <div className={s.item}>
-                <Typography variant="caption" className={s.title}>
+                <Typography variant="body1" className={s.title}>
                   status
                 </Typography>
-                <Typography variant="h4">{characterDetails.status}</Typography>
+                <Typography variant="h3" className={s.value}>
+                  {characterDetails.status}
+                </Typography>
               </div>
             </div>
           </div>

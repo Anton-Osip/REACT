@@ -9,6 +9,10 @@
   min-width: 0;
 }
 
+.selectedCard {
+  border: 1px solid var(--color-accent-700);
+}
+
 .imageWrapper {
   height: 100%;
   max-width: 100px;

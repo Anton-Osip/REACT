@@ -1,21 +1,29 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { cleanup, render, screen, waitFor } from '@testing-library/react';
+import { cleanup, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { CharacterDetails } from './character-details.tsx';
-import { getCharacterDetails } from '../../../api/character';
-import { createCharactersResponse } from '../../../test-utils';
+import { getCharacterDetails, getCharacters } from '../../../api/character';
+import {
+  createCharactersResponse,
+  renderWithRouter,
+} from '../../../test-utils';
 
 vi.mock('../../../api/character', () => ({
   getCharacterDetails: vi.fn(),
+  getCharacters: vi.fn(),
 }));
 
 const mockedGetCharacterDetails = vi.mocked(getCharacterDetails);
+const mockedGetCharacters = vi.mocked(getCharacters);
 
 describe('CharacterDetails', () => {
   const user = userEvent.setup();
 
   beforeEach(() => {
     mockedGetCharacterDetails.mockReset();
+    mockedGetCharacters.mockReset();
+    mockedGetCharacters.mockResolvedValue(
+      createCharactersResponse({ results: [] })
+    );
     vi.spyOn(console, 'log').mockImplementation(() => {});
   });
 
@@ -25,16 +33,16 @@ describe('CharacterDetails', () => {
   });
 
   it('renders nothing when detailsId is undefined', () => {
-    const { container } = render(<CharacterDetails />);
+    renderWithRouter('/character');
 
-    expect(container.firstChild).toBeNull();
     expect(mockedGetCharacterDetails).not.toHaveBeenCalled();
+    expect(screen.queryByRole('img')).not.toBeInTheDocument();
   });
 
   it('shows skeleton while data is fetching', async () => {
     mockedGetCharacterDetails.mockReturnValue(new Promise(() => {}));
 
-    const { container } = render(<CharacterDetails detailsId={1} />);
+    const { container } = renderWithRouter('/character/1');
 
     await waitFor(() =>
       expect(mockedGetCharacterDetails).toHaveBeenCalledWith(1)
@@ -47,7 +55,7 @@ describe('CharacterDetails', () => {
     const character = createCharactersResponse().results[0];
     mockedGetCharacterDetails.mockResolvedValue(character);
 
-    render(<CharacterDetails detailsId={1} />);
+    renderWithRouter('/character/1');
 
     expect(await screen.findByText(character.name)).toBeInTheDocument();
     expect(screen.getByText(character.gender)).toBeInTheDocument();
@@ -65,7 +73,7 @@ describe('CharacterDetails', () => {
       new Error('Service unavailable')
     );
 
-    render(<CharacterDetails detailsId={1} />);
+    renderWithRouter('/character/1');
 
     expect(await screen.findByText('Something went wrong')).toBeInTheDocument();
     expect(screen.getByText('Service unavailable')).toBeInTheDocument();
@@ -77,7 +85,7 @@ describe('CharacterDetails', () => {
       .mockRejectedValueOnce(new Error('first failure'))
       .mockResolvedValueOnce(character);
 
-    render(<CharacterDetails detailsId={1} />);
+    renderWithRouter('/character/1');
 
     expect(await screen.findByText('Something went wrong')).toBeInTheDocument();
 
@@ -90,7 +98,7 @@ describe('CharacterDetails', () => {
   it('wraps non-Error rejections in Error', async () => {
     mockedGetCharacterDetails.mockRejectedValue('boom');
 
-    render(<CharacterDetails detailsId={1} />);
+    renderWithRouter('/character/1');
 
     expect(await screen.findByText('boom')).toBeInTheDocument();
   });
@@ -101,11 +109,15 @@ describe('CharacterDetails', () => {
       .mockResolvedValueOnce(first)
       .mockResolvedValueOnce(second);
 
-    const { rerender } = render(<CharacterDetails detailsId={1} />);
+    const { router } = renderWithRouter('/character/1');
 
     expect(await screen.findByText(first.name)).toBeInTheDocument();
 
-    rerender(<CharacterDetails detailsId={2} />);
+    await router.navigate({
+      to: '/character/$id',
+      params: { id: '2' },
+      search: { search: undefined, page: 1 },
+    });
 
     expect(await screen.findByText(second.name)).toBeInTheDocument();
     expect(mockedGetCharacterDetails).toHaveBeenCalledWith(1);

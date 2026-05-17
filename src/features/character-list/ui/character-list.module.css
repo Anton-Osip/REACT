@@ -5,6 +5,8 @@
 
 .characterList {
   width: 100%;
+  height: 100%;
+  overflow-y: auto;
 }
 
 .grid {
@@ -14,8 +16,13 @@
   gap: 16px;
 }
 
-@media (max-width: 800px) {
+.grid.selectCardId {
+  grid-template-columns: repeat(1, 1fr);
+}
+
+@media (max-width: 624px) {
   .grid {
     grid-template-columns: repeat(1, 1fr);
+    gap: 0;
   }
 }

@@ -21,6 +21,7 @@ interface CharacterListProps {
   searchName?: string;
   page: number;
   onPageChange: (page: number) => void;
+  selectCardId?: string;
 }
 
 export const CharacterList: FC<CharacterListProps> = ({
@@ -28,6 +29,7 @@ export const CharacterList: FC<CharacterListProps> = ({
   searchName,
   page,
   onPageChange,
+  selectCardId,
 }) => {
   const [
     { characters, charactersIsLoading, charactersIsError, shouldThrowError },
@@ -88,7 +90,7 @@ export const CharacterList: FC<CharacterListProps> = ({
         <>
           <div className={clsx(s.characterList, className)}>
             {characters && characters.results.length !== 0 && (
-              <div className={s.grid}>
+              <div className={clsx(s.grid, selectCardId && s.selectCardId)}>
                 {characters.results.map((character) => (
                   <CharacterCard
                     key={character.id}
@@ -98,6 +100,7 @@ export const CharacterList: FC<CharacterListProps> = ({
                     location={character.location.name}
                     status={character.status}
                     id={character.id}
+                    selectCardId={selectCardId}
                   />
                 ))}
               </div>

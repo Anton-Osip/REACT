@@ -5,11 +5,11 @@ import { SearchForm, STORAGE_KEY } from '../../features/search-form';
 import { CharacterList } from '../../features/character-list';
 import { loadFromStorage } from '../../utils';
 
-export const Route = createFileRoute('/character/')({
-  component: CharacterPage,
+export const Index = createFileRoute('/character/')({
+  component: Index,
 });
 
-function CharacterPage(): JSX.Element {
+function Index(): JSX.Element {
   const [searchName, setSearchName] = useState<string>(() => {
     return loadFromStorage<string>(STORAGE_KEY, '');
   });
