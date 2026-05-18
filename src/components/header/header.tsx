@@ -25,7 +25,7 @@ export const Header: FC<HeaderProps> = ({ className }) => {
         <nav className={s.nav}>
           <Button
             as={Link}
-            to="/character"
+            to="/about"
             variant="ghost"
             className={s.resetButton}
             fullWidth
