@@ -1,66 +1,49 @@
-import { type CharactersResponse } from '../../../api/character';
+import { type CharactersResponse, getCharacters } from '../../../api/character';
+import { create } from 'zustand/react';
 
 export interface CharacterListState {
   characters: CharactersResponse | null;
   charactersIsLoading: boolean;
   charactersIsError: Error | null;
   shouldThrowError: boolean;
+  fetchCharacters: (params: { name?: string; page?: number }) => Promise<void>;
+  simulateError: () => void;
+  resetSimulatedError: () => void;
 }
 
-export const initialState: CharacterListState = {
+export const useCharacterListStore = create<CharacterListState>((set) => ({
   characters: null,
   charactersIsLoading: false,
   charactersIsError: null,
   shouldThrowError: false,
-};
 
-export const CharacterListActionTypes = {
-  LOAD_START: 'LOAD_START',
-  LOAD_SUCCESS: 'LOAD_SUCCESS',
-  LOAD_ERROR: 'LOAD_ERROR',
-  SIMULATE_ERROR: 'SIMULATE_ERROR',
-} as const;
+  fetchCharacters: async (params: { name?: string; page?: number }) => {
+    set({
+      characters: null,
+      charactersIsLoading: true,
+      charactersIsError: null,
+    });
 
-export type CharacterListAction =
-  | { type: typeof CharacterListActionTypes.LOAD_START }
-  | {
-      type: typeof CharacterListActionTypes.LOAD_SUCCESS;
-      payload: CharactersResponse;
+    try {
+      const response = await getCharacters(params.name, params.page);
+      set({
+        characters: response,
+        charactersIsLoading: false,
+      });
+    } catch (error) {
+      const errorObj =
+        error instanceof Error ? error : new Error(String(error));
+      set({
+        characters: null,
+        charactersIsLoading: false,
+        charactersIsError: errorObj,
+      });
     }
-  | { type: typeof CharacterListActionTypes.LOAD_ERROR; payload: Error }
-  | { type: typeof CharacterListActionTypes.SIMULATE_ERROR };
-
-export const characterListReducer = (
-  state: CharacterListState,
-  action: CharacterListAction
-): CharacterListState => {
-  switch (action.type) {
-    case CharacterListActionTypes.LOAD_START:
-      return {
-        ...state,
-        characters: null,
-        charactersIsLoading: true,
-        charactersIsError: null,
-      };
-    case CharacterListActionTypes.LOAD_SUCCESS:
-      return {
-        ...state,
-        characters: action.payload,
-        charactersIsLoading: false,
-      };
-    case CharacterListActionTypes.LOAD_ERROR:
-      return {
-        ...state,
-        characters: null,
-        charactersIsLoading: false,
-        charactersIsError: action.payload,
-      };
-    case CharacterListActionTypes.SIMULATE_ERROR:
-      return {
-        ...state,
-        shouldThrowError: true,
-      };
-    default:
-      return state;
-  }
-};
+  },
+  simulateError: () => {
+    set({ shouldThrowError: true });
+  },
+  resetSimulatedError: () => {
+    set({ shouldThrowError: false });
+  },
+}));

@@ -1,11 +1,13 @@
-import { describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import type { CharacterResponse } from '../../../api/character';
-import {
-  CharacterDetailsActionTypes,
-  characterDetailsReducer,
-  initialState,
-  type CharacterDetailsState,
-} from './character-details.state';
+import { getCharacterDetails } from '../../../api/character';
+import { useCharacterDetailsStore } from './character-details.state';
+
+vi.mock('../../../api/character', () => ({
+  getCharacterDetails: vi.fn(),
+}));
+
+const mockedGetCharacterDetails = vi.mocked(getCharacterDetails);
 
 const mockCharacter: CharacterResponse = {
   id: 1,
@@ -22,86 +24,82 @@ const mockCharacter: CharacterResponse = {
   created: '2017-11-04T18:48:46.250Z',
 };
 
-describe('character-details.state', () => {
-  describe('initialState', () => {
-    it('has no details and no loading or error flags', () => {
-      expect(initialState).toEqual({
-        characterDetails: null,
-        charactersIsLoading: false,
-        charactersIsError: null,
-      });
+function resetStore() {
+  useCharacterDetailsStore.setState({
+    characterDetails: null,
+    charactersIsLoading: false,
+    charactersIsError: null,
+  });
+}
+
+describe('useCharacterDetailsStore', () => {
+  beforeEach(() => {
+    resetStore();
+    mockedGetCharacterDetails.mockReset();
+  });
+
+  it('starts with empty data and no loading or error flags', () => {
+    expect(useCharacterDetailsStore.getState()).toMatchObject({
+      characterDetails: null,
+      charactersIsLoading: false,
+      charactersIsError: null,
     });
   });
 
-  describe('characterDetailsReducer', () => {
-    it('clears details, sets loading and clears error on LOAD_START', () => {
-      const prevState: CharacterDetailsState = {
-        ...initialState,
-        characterDetails: mockCharacter,
-        charactersIsError: new Error('previous'),
-      };
+  it('sets loading state when fetch starts', async () => {
+    mockedGetCharacterDetails.mockReturnValue(new Promise(() => {}));
 
-      const nextState = characterDetailsReducer(prevState, {
-        type: CharacterDetailsActionTypes.LOAD_START,
-      });
+    void useCharacterDetailsStore
+      .getState()
+      .fetchCharactersDetails({ characterId: 1 });
 
-      expect(nextState).toEqual({
-        characterDetails: null,
-        charactersIsLoading: true,
-        charactersIsError: null,
-      });
+    expect(useCharacterDetailsStore.getState()).toMatchObject({
+      characterDetails: null,
+      charactersIsLoading: true,
+      charactersIsError: null,
     });
+  });
 
-    it('stores payload and stops loading on LOAD_SUCCESS', () => {
-      const prevState: CharacterDetailsState = {
-        ...initialState,
-        charactersIsLoading: true,
-        charactersIsError: new Error('stale'),
-      };
+  it('stores response and stops loading on successful fetch', async () => {
+    mockedGetCharacterDetails.mockResolvedValue(mockCharacter);
 
-      const nextState = characterDetailsReducer(prevState, {
-        type: CharacterDetailsActionTypes.LOAD_SUCCESS,
-        payload: mockCharacter,
-      });
+    await useCharacterDetailsStore
+      .getState()
+      .fetchCharactersDetails({ characterId: 1 });
 
-      expect(nextState).toEqual({
-        characterDetails: mockCharacter,
-        charactersIsLoading: false,
-        charactersIsError: new Error('stale'),
-      });
+    expect(useCharacterDetailsStore.getState()).toMatchObject({
+      characterDetails: mockCharacter,
+      charactersIsLoading: false,
+      charactersIsError: null,
     });
+    expect(mockedGetCharacterDetails).toHaveBeenCalledWith(1);
+  });
 
-    it('clears details and stores error on LOAD_ERROR', () => {
-      const error = new Error('Network failed');
-      const prevState: CharacterDetailsState = {
-        ...initialState,
-        characterDetails: mockCharacter,
-        charactersIsLoading: true,
-      };
+  it('clears details and stores error on failed fetch', async () => {
+    const error = new Error('Network failed');
+    mockedGetCharacterDetails.mockRejectedValue(error);
 
-      const nextState = characterDetailsReducer(prevState, {
-        type: CharacterDetailsActionTypes.LOAD_ERROR,
-        payload: error,
-      });
+    await useCharacterDetailsStore
+      .getState()
+      .fetchCharactersDetails({ characterId: 42 });
 
-      expect(nextState).toEqual({
-        characterDetails: null,
-        charactersIsLoading: false,
-        charactersIsError: error,
-      });
+    expect(useCharacterDetailsStore.getState()).toMatchObject({
+      characterDetails: null,
+      charactersIsLoading: false,
+      charactersIsError: error,
     });
+    expect(mockedGetCharacterDetails).toHaveBeenCalledWith(42);
+  });
 
-    it('returns current state for unknown action', () => {
-      const prevState: CharacterDetailsState = {
-        ...initialState,
-        characterDetails: mockCharacter,
-      };
+  it('wraps non-Error rejections in Error', async () => {
+    mockedGetCharacterDetails.mockRejectedValue('plain string failure');
 
-      const nextState = characterDetailsReducer(prevState, {
-        type: 'UNKNOWN' as typeof CharacterDetailsActionTypes.LOAD_START,
-      });
+    await useCharacterDetailsStore
+      .getState()
+      .fetchCharactersDetails({ characterId: 1 });
 
-      expect(nextState).toBe(prevState);
-    });
+    expect(useCharacterDetailsStore.getState().charactersIsError).toEqual(
+      new Error('plain string failure')
+    );
   });
 });

@@ -1,11 +1,13 @@
-import { describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import type { CharactersResponse } from '../../../api/character';
-import {
-  CharacterListActionTypes,
-  characterListReducer,
-  initialState,
-  type CharacterListState,
-} from './character-list.state';
+import { getCharacters } from '../../../api/character';
+import { useCharacterListStore } from './character-list.state';
+
+vi.mock('../../../api/character', () => ({
+  getCharacters: vi.fn(),
+}));
+
+const mockedGetCharacters = vi.mocked(getCharacters);
 
 const mockCharactersResponse: CharactersResponse = {
   info: {
@@ -32,113 +34,89 @@ const mockCharactersResponse: CharactersResponse = {
   ],
 };
 
-describe('character-list.state', () => {
-  describe('initialState', () => {
-    it('has empty data and no loading or error flags', () => {
-      expect(initialState).toEqual({
-        characters: null,
-        charactersIsLoading: false,
-        charactersIsError: null,
-        shouldThrowError: false,
-      });
+function resetStore() {
+  useCharacterListStore.setState({
+    characters: null,
+    charactersIsLoading: false,
+    charactersIsError: null,
+    shouldThrowError: false,
+  });
+}
+
+describe('useCharacterListStore', () => {
+  beforeEach(() => {
+    resetStore();
+    mockedGetCharacters.mockReset();
+  });
+
+  it('starts with empty data and no loading or error flags', () => {
+    expect(useCharacterListStore.getState()).toMatchObject({
+      characters: null,
+      charactersIsLoading: false,
+      charactersIsError: null,
+      shouldThrowError: false,
     });
   });
 
-  describe('characterListReducer', () => {
-    it('returns initial state for LOAD_START', () => {
-      const prevState: CharacterListState = {
-        ...initialState,
-        characters: mockCharactersResponse,
-        charactersIsError: new Error('previous'),
-        shouldThrowError: true,
-      };
+  it('sets loading state when fetch starts', async () => {
+    mockedGetCharacters.mockReturnValue(new Promise(() => {}));
 
-      const nextState = characterListReducer(prevState, {
-        type: CharacterListActionTypes.LOAD_START,
-      });
+    void useCharacterListStore.getState().fetchCharacters({ name: 'rick' });
 
-      expect(nextState).toEqual({
-        characters: null,
-        charactersIsLoading: true,
-        charactersIsError: null,
-        shouldThrowError: true,
-      });
+    expect(useCharacterListStore.getState()).toMatchObject({
+      characters: null,
+      charactersIsLoading: true,
+      charactersIsError: null,
     });
+  });
 
-    it('stores payload and stops loading on LOAD_SUCCESS', () => {
-      const prevState: CharacterListState = {
-        ...initialState,
-        charactersIsLoading: true,
-        charactersIsError: new Error('stale'),
-        shouldThrowError: true,
-      };
+  it('stores response and stops loading on successful fetch', async () => {
+    mockedGetCharacters.mockResolvedValue(mockCharactersResponse);
 
-      const nextState = characterListReducer(prevState, {
-        type: CharacterListActionTypes.LOAD_SUCCESS,
-        payload: mockCharactersResponse,
-      });
+    await useCharacterListStore.getState().fetchCharacters({ name: 'rick' });
 
-      expect(nextState).toEqual({
-        characters: mockCharactersResponse,
-        charactersIsLoading: false,
-        charactersIsError: new Error('stale'),
-        shouldThrowError: true,
-      });
+    expect(useCharacterListStore.getState()).toMatchObject({
+      characters: mockCharactersResponse,
+      charactersIsLoading: false,
+      charactersIsError: null,
     });
+    expect(mockedGetCharacters).toHaveBeenCalledWith('rick', undefined);
+  });
 
-    it('clears characters and stores error on LOAD_ERROR', () => {
-      const error = new Error('Network failed');
-      const prevState: CharacterListState = {
-        ...initialState,
-        characters: mockCharactersResponse,
-        charactersIsLoading: true,
-        shouldThrowError: true,
-      };
+  it('clears characters and stores error on failed fetch', async () => {
+    const error = new Error('Network failed');
+    mockedGetCharacters.mockRejectedValue(error);
 
-      const nextState = characterListReducer(prevState, {
-        type: CharacterListActionTypes.LOAD_ERROR,
-        payload: error,
-      });
+    await useCharacterListStore.getState().fetchCharacters({ page: 2 });
 
-      expect(nextState).toEqual({
-        characters: null,
-        charactersIsLoading: false,
-        charactersIsError: error,
-        shouldThrowError: true,
-      });
+    expect(useCharacterListStore.getState()).toMatchObject({
+      characters: null,
+      charactersIsLoading: false,
+      charactersIsError: error,
     });
+    expect(mockedGetCharacters).toHaveBeenCalledWith(undefined, 2);
+  });
 
-    it('sets shouldThrowError on SIMULATE_ERROR', () => {
-      const prevState: CharacterListState = {
-        ...initialState,
-        characters: mockCharactersResponse,
-        charactersIsLoading: true,
-        charactersIsError: new Error('existing'),
-      };
+  it('wraps non-Error rejections in Error', async () => {
+    mockedGetCharacters.mockRejectedValue('plain string failure');
 
-      const nextState = characterListReducer(prevState, {
-        type: CharacterListActionTypes.SIMULATE_ERROR,
-      });
+    await useCharacterListStore.getState().fetchCharacters({});
 
-      expect(nextState).toEqual({
-        characters: mockCharactersResponse,
-        charactersIsLoading: true,
-        charactersIsError: new Error('existing'),
-        shouldThrowError: true,
-      });
-    });
+    expect(useCharacterListStore.getState().charactersIsError).toEqual(
+      new Error('plain string failure')
+    );
+  });
 
-    it('returns current state for unknown action', () => {
-      const prevState: CharacterListState = {
-        ...initialState,
-        characters: mockCharactersResponse,
-      };
+  it('sets shouldThrowError on simulateError', () => {
+    useCharacterListStore.getState().simulateError();
 
-      const nextState = characterListReducer(prevState, {
-        type: 'UNKNOWN' as typeof CharacterListActionTypes.LOAD_START,
-      });
+    expect(useCharacterListStore.getState().shouldThrowError).toBe(true);
+  });
 
-      expect(nextState).toBe(prevState);
-    });
+  it('clears shouldThrowError on resetSimulatedError', () => {
+    useCharacterListStore.getState().simulateError();
+    useCharacterListStore.getState().resetSimulatedError();
+
+    expect(useCharacterListStore.getState().shouldThrowError).toBe(false);
   });
 });

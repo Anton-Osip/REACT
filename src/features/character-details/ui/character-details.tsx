@@ -1,12 +1,7 @@
-import { type FC, useCallback, useEffect, useReducer } from 'react';
+import { type FC, useEffect } from 'react';
 import s from './character-details.module.css';
 import clsx from 'clsx';
-import {
-  CharacterDetailsActionTypes,
-  characterDetailsReducer,
-  initialState,
-} from '../modal/character-details.state.ts';
-import { getCharacterDetails } from '../../../api/character';
+import { useCharacterDetailsStore } from '../modal/character-details.state.ts';
 import {
   Button,
   CrossIcon,
@@ -24,35 +19,17 @@ export const CharacterDetails: FC<CharacterDetailsProps> = ({ className }) => {
   const navigate = useNavigate({ from: '/character' });
 
   const { id: details } = indexRoute.useParams();
-  const [
-    { characterDetails, charactersIsLoading, charactersIsError },
-    dispatch,
-  ] = useReducer(characterDetailsReducer, initialState);
-
-  const loadCharacters = useCallback(
-    async (detailsId: string): Promise<void> => {
-      dispatch({ type: CharacterDetailsActionTypes.LOAD_START });
-
-      try {
-        const res = await getCharacterDetails(+detailsId);
-        dispatch({
-          type: CharacterDetailsActionTypes.LOAD_SUCCESS,
-          payload: res,
-        });
-      } catch (error) {
-        dispatch({
-          type: CharacterDetailsActionTypes.LOAD_ERROR,
-          payload: error instanceof Error ? error : new Error(String(error)),
-        });
-      }
-    },
-    []
-  );
+  const {
+    characterDetails,
+    fetchCharactersDetails,
+    charactersIsLoading,
+    charactersIsError,
+  } = useCharacterDetailsStore();
 
   useEffect(() => {
     if (!details) return;
-    void loadCharacters(details);
-  }, [loadCharacters, details]);
+    void fetchCharactersDetails({ characterId: +details });
+  }, [details, fetchCharactersDetails]);
 
   const closeDetails = () => {
     void navigate({
@@ -69,7 +46,7 @@ export const CharacterDetails: FC<CharacterDetailsProps> = ({ className }) => {
       <ErrorComponent
         isError={!!charactersIsError}
         errorText={charactersIsError?.message}
-        tryAgain={() => loadCharacters(details)}
+        tryAgain={() => fetchCharactersDetails({ characterId: +details })}
       />
 
       {characterDetails && (

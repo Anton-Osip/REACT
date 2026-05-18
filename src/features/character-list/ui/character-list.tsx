@@ -1,12 +1,7 @@
-import { useReducer, useEffect, useCallback, type FC } from 'react';
+import { useEffect, type FC } from 'react';
 import s from './character-list.module.css';
 import clsx from 'clsx';
-import { getCharacters } from '../../../api/character';
-import {
-  CharacterListActionTypes,
-  characterListReducer,
-  initialState,
-} from '../modal/character-list.state.ts';
+import { useCharacterListStore } from '../modal/character-list.state';
 import { CharacterCard } from './character-card';
 import {
   Button,
@@ -31,38 +26,18 @@ export const CharacterList: FC<CharacterListProps> = ({
   onPageChange,
   selectCardId,
 }) => {
-  const [
-    { characters, charactersIsLoading, charactersIsError, shouldThrowError },
-    dispatch,
-  ] = useReducer(characterListReducer, initialState);
-
-  const loadCharacters = useCallback(
-    async (name?: string): Promise<void> => {
-      dispatch({ type: CharacterListActionTypes.LOAD_START });
-
-      try {
-        const res = await getCharacters(name, page);
-        dispatch({
-          type: CharacterListActionTypes.LOAD_SUCCESS,
-          payload: res,
-        });
-      } catch (error) {
-        dispatch({
-          type: CharacterListActionTypes.LOAD_ERROR,
-          payload: error instanceof Error ? error : new Error(String(error)),
-        });
-      }
-    },
-    [page]
-  );
-
-  const simulateError = useCallback((): void => {
-    dispatch({ type: CharacterListActionTypes.SIMULATE_ERROR });
-  }, []);
+  const {
+    characters,
+    charactersIsLoading,
+    charactersIsError,
+    shouldThrowError,
+    fetchCharacters,
+    simulateError,
+  } = useCharacterListStore();
 
   useEffect(() => {
-    void loadCharacters(searchName);
-  }, [loadCharacters, searchName]);
+    void fetchCharacters({ name: searchName, page });
+  }, [fetchCharacters, searchName, page]);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -77,7 +52,7 @@ export const CharacterList: FC<CharacterListProps> = ({
       <ErrorComponent
         isError={!!charactersIsError}
         errorText={charactersIsError?.message}
-        tryAgain={() => loadCharacters(searchName)}
+        tryAgain={() => void fetchCharacters({ name: searchName, page })}
       />
 
       <EmptyComponent

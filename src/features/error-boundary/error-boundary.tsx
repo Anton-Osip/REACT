@@ -5,6 +5,7 @@ import errorPageImage from '../../assets/image/errorPageImage.png';
 
 interface ErrorBoundaryProps {
   children: ReactNode;
+  onReset?: () => void;
 }
 
 interface ErrorBoundaryState {
@@ -36,6 +37,7 @@ export class ErrorBoundary extends Component<
   }
 
   handleReset = (): void => {
+    this.props.onReset?.();
     this.setState({
       hasError: false,
       error: null,

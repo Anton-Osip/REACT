@@ -6,6 +6,7 @@ import { CharacterList } from './character-list.tsx';
 import { ErrorBoundary } from '../../error-boundary';
 import { createCharactersResponse } from '../../../test-utils';
 import { getCharacters } from '../../../api/character';
+import { useCharacterListStore } from '../modal/character-list.state';
 
 vi.mock('../../../api/character', () => ({
   getCharacters: vi.fn(),
@@ -28,6 +29,12 @@ describe('CharacterList', () => {
   beforeEach(() => {
     vi.stubGlobal('scrollTo', vi.fn());
     mockedGetCharacters.mockReset();
+    useCharacterListStore.setState({
+      characters: null,
+      charactersIsLoading: false,
+      charactersIsError: null,
+      shouldThrowError: false,
+    });
     onPageChange = vi.fn();
   });
 
@@ -168,7 +175,9 @@ describe('CharacterList', () => {
     mockedGetCharacters.mockResolvedValue(createCharactersResponse());
 
     render(
-      <ErrorBoundary>
+      <ErrorBoundary
+        onReset={() => useCharacterListStore.getState().resetSimulatedError()}
+      >
         <CharacterList searchName="" page={1} onPageChange={onPageChange} />
       </ErrorBoundary>
     );
@@ -182,6 +191,35 @@ describe('CharacterList', () => {
         'Test error from Error Footer - Check console for details'
       )
     ).toBeInTheDocument();
+
+    consoleSpy.mockRestore();
+  });
+
+  it('recovers after Try Again on error boundary', async () => {
+    const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    mockedGetCharacters.mockResolvedValue(createCharactersResponse());
+
+    render(
+      <ErrorBoundary
+        onReset={() => useCharacterListStore.getState().resetSimulatedError()}
+      >
+        <CharacterList searchName="" page={1} onPageChange={onPageChange} />
+      </ErrorBoundary>
+    );
+
+    await screen.findByText('Rick Sanchez');
+
+    await user.click(screen.getByRole('button', { name: /error button/i }));
+
+    expect(
+      await screen.findByText(
+        'Test error from Error Footer - Check console for details'
+      )
+    ).toBeInTheDocument();
+
+    await user.click(screen.getByRole('button', { name: /try again/i }));
+
+    expect(await screen.findByText('Rick Sanchez')).toBeInTheDocument();
 
     consoleSpy.mockRestore();
   });
