@@ -7,3 +7,4 @@ export { Skeleton } from './skeleton';
 export { Pagination } from './pagination';
 export { ErrorComponent } from './error';
 export { EmptyComponent } from './empty';
+export { Header } from './header';

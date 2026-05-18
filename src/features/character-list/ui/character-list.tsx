@@ -69,7 +69,7 @@ export const CharacterList: FC<CharacterListProps> = ({
   }, [searchName]);
 
   if (shouldThrowError) {
-    throw new Error('Test error from Error Button - Check console for details');
+    throw new Error('Test error from Error Footer - Check console for details');
   }
 
   return (

@@ -179,7 +179,7 @@ describe('CharacterList', () => {
 
     expect(
       await screen.findByText(
-        'Test error from Error Button - Check console for details'
+        'Test error from Error Footer - Check console for details'
       )
     ).toBeInTheDocument();
 
