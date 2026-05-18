@@ -1,0 +1,48 @@
+.characterPage {
+  width: 100%;
+  height: 100%;
+}
+
+.showDetails {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(1, 100%);
+  gap: 24px;
+}
+
+.characterList {
+  width: 100%;
+  height: 100%;
+  padding: 0 0 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.gridContainer {
+  height: 100%;
+}
+
+@media (max-width: 624px) {
+  .showDetails {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    grid-template-rows: repeat(2, auto);
+    gap: 0;
+  }
+
+  .showDetails > section {
+    order: 2;
+  }
+
+  .showDetails > div {
+    order: 1;
+  }
+}

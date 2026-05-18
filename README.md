@@ -275,7 +275,7 @@ coverage: {
   - Catches and handles JavaScript errors in child components
   - Displays fallback UI when error occurs
   - Logs error to console
-- **Error Button Tests**:
+- **Error Footer Tests**:
   - Throws error when test button is clicked
   - Triggers error boundary fallback UI
 

@@ -2,6 +2,8 @@ export interface CharactersResponse {
   info: CharactersResponseInfo;
   results: Character[];
 }
+
+export type CharacterResponse = Character;
 interface CharactersResponseInfo {
   count: number;
   pages: number;
@@ -29,5 +31,6 @@ interface Character {
   url: string;
   created: string;
 }
+
 export type CharacterStatus = 'Alive' | 'Dead' | 'unknown';
 export type CharacterGender = 'Female' | 'Male' | 'Genderless' | 'unknown';
