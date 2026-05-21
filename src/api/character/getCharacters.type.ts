@@ -11,7 +11,7 @@ interface CharactersResponseInfo {
   prev: string | null;
 }
 
-interface Character {
+export interface Character {
   id: number;
   name: string;
   status: CharacterStatus;

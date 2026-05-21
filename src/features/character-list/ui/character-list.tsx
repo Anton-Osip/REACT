@@ -33,6 +33,8 @@ export const CharacterList: FC<CharacterListProps> = ({
     shouldThrowError,
     fetchCharacters,
     simulateError,
+    toggleCharacterSelected,
+    selectedCharacterIds,
   } = useCharacterListStore();
 
   useEffect(() => {
@@ -76,6 +78,12 @@ export const CharacterList: FC<CharacterListProps> = ({
                     status={character.status}
                     id={character.id}
                     selectCardId={selectCardId}
+                    isSelected={
+                      selectedCharacterIds?.has(character.id) || false
+                    }
+                    toggleCharacterSelected={() =>
+                      toggleCharacterSelected(character)
+                    }
                   />
                 ))}
               </div>

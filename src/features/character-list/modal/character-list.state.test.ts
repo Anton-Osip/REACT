@@ -34,12 +34,15 @@ const mockCharactersResponse: CharactersResponse = {
   ],
 };
 
+const mockCharacter = mockCharactersResponse.results[0];
+
 function resetStore() {
   useCharacterListStore.setState({
     characters: null,
     charactersIsLoading: false,
     charactersIsError: null,
     shouldThrowError: false,
+    selectedCharacterIds: null,
   });
 }
 
@@ -55,6 +58,7 @@ describe('useCharacterListStore', () => {
       charactersIsLoading: false,
       charactersIsError: null,
       shouldThrowError: false,
+      selectedCharacterIds: null,
     });
   });
 
@@ -118,5 +122,53 @@ describe('useCharacterListStore', () => {
     useCharacterListStore.getState().resetSimulatedError();
 
     expect(useCharacterListStore.getState().shouldThrowError).toBe(false);
+  });
+
+  it('adds character to selectedCharacterIds on toggle', () => {
+    useCharacterListStore.getState().toggleCharacterSelected(mockCharacter);
+
+    const { selectedCharacterIds } = useCharacterListStore.getState();
+    expect(selectedCharacterIds?.has(mockCharacter.id)).toBe(true);
+    expect(selectedCharacterIds?.get(mockCharacter.id)).toEqual(mockCharacter);
+  });
+
+  it('removes character from selectedCharacterIds when toggled again', () => {
+    const { toggleCharacterSelected } = useCharacterListStore.getState();
+
+    toggleCharacterSelected(mockCharacter);
+    toggleCharacterSelected(mockCharacter);
+
+    const { selectedCharacterIds } = useCharacterListStore.getState();
+    expect(selectedCharacterIds?.has(mockCharacter.id)).toBe(false);
+  });
+
+  it('keeps multiple selected characters independently', () => {
+    const secondCharacter = {
+      ...mockCharacter,
+      id: 2,
+      name: 'Morty Smith',
+    };
+
+    useCharacterListStore.getState().toggleCharacterSelected(mockCharacter);
+    useCharacterListStore.getState().toggleCharacterSelected(secondCharacter);
+
+    const { selectedCharacterIds } = useCharacterListStore.getState();
+    expect(selectedCharacterIds?.size).toBe(2);
+    expect(selectedCharacterIds?.has(1)).toBe(true);
+    expect(selectedCharacterIds?.has(2)).toBe(true);
+  });
+
+  it('does not mutate previous selectedCharacterIds map', () => {
+    useCharacterListStore.getState().toggleCharacterSelected(mockCharacter);
+    const firstMap = useCharacterListStore.getState().selectedCharacterIds;
+
+    useCharacterListStore
+      .getState()
+      .toggleCharacterSelected({ ...mockCharacter, id: 2, name: 'Morty' });
+
+    expect(firstMap?.has(2)).toBe(false);
+    expect(useCharacterListStore.getState().selectedCharacterIds?.has(2)).toBe(
+      true
+    );
   });
 });

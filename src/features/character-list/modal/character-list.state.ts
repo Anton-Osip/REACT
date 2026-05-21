@@ -1,5 +1,6 @@
 import { type CharactersResponse, getCharacters } from '../../../api/character';
 import { create } from 'zustand/react';
+import type { Character } from '../../../api/character/getCharacters.type.ts';
 
 export interface CharacterListState {
   characters: CharactersResponse | null;
@@ -9,6 +10,8 @@ export interface CharacterListState {
   fetchCharacters: (params: { name?: string; page?: number }) => Promise<void>;
   simulateError: () => void;
   resetSimulatedError: () => void;
+  selectedCharacterIds: Map<number, Character> | null;
+  toggleCharacterSelected: (character: Character) => void;
 }
 
 export const useCharacterListStore = create<CharacterListState>((set) => ({
@@ -16,6 +19,7 @@ export const useCharacterListStore = create<CharacterListState>((set) => ({
   charactersIsLoading: false,
   charactersIsError: null,
   shouldThrowError: false,
+  selectedCharacterIds: null,
 
   fetchCharacters: async (params: { name?: string; page?: number }) => {
     set({
@@ -39,6 +43,19 @@ export const useCharacterListStore = create<CharacterListState>((set) => ({
         charactersIsError: errorObj,
       });
     }
+  },
+  toggleCharacterSelected: (character: Character) => {
+    set((state) => {
+      const next = new Map(state.selectedCharacterIds ?? undefined);
+
+      if (next.has(character.id)) {
+        next.delete(character.id);
+      } else {
+        next.set(character.id, character);
+      }
+
+      return { selectedCharacterIds: next };
+    });
   },
   simulateError: () => {
     set({ shouldThrowError: true });

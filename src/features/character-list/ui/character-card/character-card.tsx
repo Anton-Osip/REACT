@@ -1,10 +1,11 @@
-import { memo, useMemo } from 'react';
+import { memo, type MouseEvent, useMemo } from 'react';
 
 import s from './character-card.module.css';
 import type { CharacterStatus } from '../../../../api/character';
-import { Typography } from '../../../../components';
+import { Button, Typography } from '../../../../components';
 import { useNavigate } from '@tanstack/react-router';
 import clsx from 'clsx';
+import { StarIcon } from '../../../../components/icons/components/star-icon';
 
 export type CharacterCardProps = {
   className?: string;
@@ -15,6 +16,8 @@ export type CharacterCardProps = {
   status: CharacterStatus;
   id: number;
   selectCardId?: string;
+  isSelected: boolean;
+  toggleCharacterSelected: () => void;
 };
 
 export const CharacterCard = memo(function CharacterCard({
@@ -24,7 +27,9 @@ export const CharacterCard = memo(function CharacterCard({
   species,
   location,
   id,
+  isSelected,
   selectCardId,
+  toggleCharacterSelected,
 }: CharacterCardProps) {
   const navigate = useNavigate({ from: '/character' });
   const onHandleClick = () => {
@@ -41,11 +46,23 @@ export const CharacterCard = memo(function CharacterCard({
     }
   }, [id, selectCardId]);
 
+  const toggleCharacter = (e: MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    toggleCharacterSelected();
+  };
+
   return (
     <div
       className={clsx(s.card, cardIsSelected && s.selectedCard)}
       onClick={onHandleClick}
     >
+      <Button
+        variant={'ghost'}
+        className={clsx(s.stareBtn, isSelected && s.isSelected)}
+        onClick={toggleCharacter}
+      >
+        <StarIcon />
+      </Button>
       <div className={s.imageWrapper}>
         <img className={s.image} src={image} alt={name} />
       </div>
