@@ -5,6 +5,7 @@ import { useCharacterListStore } from '../../character-list/modal/character-list
 import { Button, Typography } from '../../../components';
 import { CharacterCard } from '../../character-card';
 import { createPortal } from 'react-dom';
+import { generateCSV } from '../../../utils';
 interface SelectedCharactersProps {
   className?: string;
 }
@@ -22,11 +23,33 @@ export const SelectedCharacters: FC<SelectedCharactersProps> = ({
 
   if (!selectedCharacterIds || selectedCharacterIds.size === 0) return null;
 
-  const setIsOpenHandke = () => {
+  const setIsOpenHandle = () => {
     setIsOpen((prevState) => !prevState);
   };
 
   const selectedCharacters = [...selectedCharacterIds.values()];
+
+  const handleDownload = () => {
+    if (selectedCharacterIds.size === 0) return;
+
+    const charactersArray = Array.from(selectedCharacterIds.values());
+
+    const csvData = generateCSV(charactersArray);
+
+    const fileName = `${selectedCharacterIds.size}_characters.csv`;
+
+    const blob = new Blob(['\uFEFF' + csvData], {
+      type: 'text/csv;charset=utf-8;',
+    });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = fileName;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
 
   return (
     <>
@@ -34,7 +57,7 @@ export const SelectedCharacters: FC<SelectedCharactersProps> = ({
         <div
           className={clsx(s.selectedCharacters, isOpen && s.isOpen, className)}
         >
-          <div className={s.header} onClick={setIsOpenHandke}>
+          <div className={s.header} onClick={setIsOpenHandle}>
             <Typography variant={'h2'}>
               Selected characters ( {selectedCharacterIds.size} )
             </Typography>
@@ -42,7 +65,13 @@ export const SelectedCharacters: FC<SelectedCharactersProps> = ({
               <Button variant={'secondary'} onClick={resetCharacterSelected}>
                 Reset
               </Button>
-              <Button variant={'primary'}>Save</Button>
+              <Button
+                variant={'primary'}
+                onClick={handleDownload}
+                disabled={selectedCharacterIds.size === 0}
+              >
+                Download CSV
+              </Button>
             </div>
           </div>
 

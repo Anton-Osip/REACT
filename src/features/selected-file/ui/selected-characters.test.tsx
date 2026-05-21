@@ -95,12 +95,14 @@ describe('SelectedCharacters', () => {
     expect(screen.getByText('Selected characters ( 2 )')).toBeInTheDocument();
   });
 
-  it('shows Reset and Save action buttons', () => {
+  it('shows Reset and Download CSV action buttons', () => {
     selectCharacters(mockCharacter);
     render(<SelectedCharacters />);
 
     expect(screen.getByRole('button', { name: 'Reset' })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Save' })).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: 'Download CSV' })
+    ).toBeInTheDocument();
   });
 
   it('clears selection when Reset is clicked', async () => {
@@ -154,5 +156,63 @@ describe('SelectedCharacters', () => {
     expect(useCharacterListStore.getState().selectedCharacterIds?.size).toBe(1);
     expect(screen.getByText('Selected characters ( 1 )')).toBeInTheDocument();
     expect(within(carousel).queryByText('Morty Smith')).not.toBeInTheDocument();
+  });
+
+  describe('CSV download', () => {
+    let createObjectURLSpy: ReturnType<typeof vi.spyOn>;
+    let revokeObjectURLSpy: ReturnType<typeof vi.spyOn>;
+    let anchorClickSpy: ReturnType<typeof vi.fn<() => void>>;
+    let downloadLink: HTMLAnchorElement | null;
+
+    beforeEach(() => {
+      downloadLink = null;
+      anchorClickSpy = vi.fn<() => void>();
+      createObjectURLSpy = vi
+        .spyOn(URL, 'createObjectURL')
+        .mockReturnValue('blob:mock-url');
+      revokeObjectURLSpy = vi
+        .spyOn(URL, 'revokeObjectURL')
+        .mockImplementation(() => {});
+
+      const originalCreateElement = document.createElement.bind(document);
+      vi.spyOn(document, 'createElement').mockImplementation((tagName) => {
+        const element = originalCreateElement(tagName);
+        if (tagName === 'a') {
+          downloadLink = element as HTMLAnchorElement;
+          vi.spyOn(element, 'click').mockImplementation(anchorClickSpy);
+        }
+        return element;
+      });
+    });
+
+    afterEach(() => {
+      vi.restoreAllMocks();
+    });
+
+    it('downloads CSV with filename based on selection count', async () => {
+      selectCharacters(mockCharacter, mockMorty);
+      render(<SelectedCharacters />);
+
+      await user.click(screen.getByRole('button', { name: 'Download CSV' }));
+
+      expect(downloadLink?.download).toBe('2_characters.csv');
+      expect(anchorClickSpy).toHaveBeenCalledOnce();
+      expect(createObjectURLSpy).toHaveBeenCalledOnce();
+      expect(revokeObjectURLSpy).toHaveBeenCalledWith('blob:mock-url');
+    });
+
+    it('creates a CSV blob containing selected character data', async () => {
+      selectCharacters(mockCharacter);
+      render(<SelectedCharacters />);
+
+      await user.click(screen.getByRole('button', { name: 'Download CSV' }));
+
+      const blob = createObjectURLSpy.mock.calls[0]?.[0] as Blob;
+      const csvText = await blob.text();
+
+      expect(csvText).toContain('Rick Sanchez');
+      expect(csvText).toContain('Character URL');
+      expect(createObjectURLSpy.mock.calls[0]?.[0]).toBeInstanceOf(Blob);
+    });
   });
 });
