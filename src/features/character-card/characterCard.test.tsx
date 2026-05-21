@@ -3,7 +3,7 @@ import { cleanup, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/vitest';
 import { CharacterCard, type CharacterCardProps } from './character-card.tsx';
-import mockImage from '../../../../assets/image/errorPageImage.png';
+import mockImage from '../../assets/image/errorPageImage.png';
 
 const navigateMock = vi.fn();
 

@@ -26,7 +26,7 @@ function CharacterListHarness({ name }: { name: string }) {
 }
 
 function getCharacterSelectButton(characterName: string): HTMLButtonElement {
-  const image = screen.getByRole('img', { name: characterName });
+  const image = screen.getAllByRole('img', { name: characterName })[0];
   const card = image.parentElement?.parentElement;
   const button = card?.querySelector('button');
 

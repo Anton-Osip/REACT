@@ -11,6 +11,7 @@ import clsx from 'clsx';
 import { loadFromStorage, saveToStorage } from '../../utils';
 import { SearchForm } from '../../features/search-form';
 import { CharacterList } from '../../features/character-list';
+import { SelectedCharacters } from '../../features/selected-file/ui/selected-characters.tsx';
 
 export const STORAGE_KEY = 'searchCharacterValue';
 
@@ -84,6 +85,7 @@ function CharacterPage(): JSX.Element {
         />
       </section>
       <Outlet />
+      <SelectedCharacters />
     </div>
   );
 }

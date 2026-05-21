@@ -2,7 +2,7 @@ import { useEffect, type FC } from 'react';
 import s from './character-list.module.css';
 import clsx from 'clsx';
 import { useCharacterListStore } from '../modal/character-list.state';
-import { CharacterCard } from './character-card';
+import { CharacterCard } from '../../character-card';
 import {
   Button,
   EmptyComponent,

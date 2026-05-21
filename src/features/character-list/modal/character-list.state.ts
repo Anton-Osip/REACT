@@ -12,6 +12,7 @@ export interface CharacterListState {
   resetSimulatedError: () => void;
   selectedCharacterIds: Map<number, Character> | null;
   toggleCharacterSelected: (character: Character) => void;
+  resetCharacterSelected: () => void;
 }
 
 export const useCharacterListStore = create<CharacterListState>((set) => ({
@@ -56,6 +57,10 @@ export const useCharacterListStore = create<CharacterListState>((set) => ({
 
       return { selectedCharacterIds: next };
     });
+  },
+
+  resetCharacterSelected: () => {
+    set({ selectedCharacterIds: null });
   },
   simulateError: () => {
     set({ shouldThrowError: true });

@@ -158,6 +158,13 @@ describe('useCharacterListStore', () => {
     expect(selectedCharacterIds?.has(2)).toBe(true);
   });
 
+  it('clears all selected characters on resetCharacterSelected', () => {
+    useCharacterListStore.getState().toggleCharacterSelected(mockCharacter);
+    useCharacterListStore.getState().resetCharacterSelected();
+
+    expect(useCharacterListStore.getState().selectedCharacterIds).toBeNull();
+  });
+
   it('does not mutate previous selectedCharacterIds map', () => {
     useCharacterListStore.getState().toggleCharacterSelected(mockCharacter);
     const firstMap = useCharacterListStore.getState().selectedCharacterIds;

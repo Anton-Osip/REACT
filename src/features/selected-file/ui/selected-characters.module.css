@@ -1,0 +1,52 @@
+.selectedCharacters {
+  position: fixed;
+  width: calc(100% - 32px);
+  max-width: 1200px;
+  bottom: -170px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: var(--color-dark-500);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: bottom 0.2s;
+  height: 227px;
+}
+
+.isOpen {
+  bottom: 24px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.carusel {
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+
+.caruselWrapper {
+  display: flex;
+  align-items: stretch;
+  gap: 8px;
+  width: max-content;
+  min-width: 100%;
+}
+
+.card {
+  min-width: 380px;
+  width: 380px;
+  flex-shrink: 0;
+}
+
+.controlBtn {
+  display: flex;
+  justify-content: end;
+  gap: 16px;
+}

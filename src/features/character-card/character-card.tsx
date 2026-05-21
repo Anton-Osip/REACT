@@ -1,11 +1,11 @@
 import { memo, type MouseEvent, useMemo } from 'react';
 
 import s from './character-card.module.css';
-import type { CharacterStatus } from '../../../../api/character';
-import { Button, Typography } from '../../../../components';
+import type { CharacterStatus } from '../../api/character';
+import { Button, Typography } from '../../components';
 import { useNavigate } from '@tanstack/react-router';
 import clsx from 'clsx';
-import { StarIcon } from '../../../../components/icons/components/star-icon';
+import { StarIcon } from '../../components/icons/components/star-icon';
 
 export type CharacterCardProps = {
   className?: string;
@@ -21,6 +21,7 @@ export type CharacterCardProps = {
 };
 
 export const CharacterCard = memo(function CharacterCard({
+  className,
   image,
   name,
   status,
@@ -53,7 +54,7 @@ export const CharacterCard = memo(function CharacterCard({
 
   return (
     <div
-      className={clsx(s.card, cardIsSelected && s.selectedCard)}
+      className={clsx(s.card, cardIsSelected && s.selectedCard, className)}
       onClick={onHandleClick}
     >
       <Button
