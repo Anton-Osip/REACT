@@ -5,6 +5,7 @@ import { Container } from '../container';
 import logoIcon from '../../assets/icon/logoIcon.svg';
 import { Link } from '@tanstack/react-router';
 import { Button } from '../button';
+import { ThemeToggle } from '../../features/theme';
 
 interface HeaderProps {
   className?: string;
@@ -23,15 +24,14 @@ export const Header: FC<HeaderProps> = ({ className }) => {
         </Link>
 
         <nav className={s.nav}>
-          <Button
-            as={Link}
-            to="/about"
-            variant="ghost"
-            className={s.resetButton}
-            fullWidth
-          >
+          <Button as={Link} to="/" variant="ghost" fullWidth>
+            Home
+          </Button>
+
+          <Button as={Link} to="/about" variant="ghost" fullWidth>
             About
           </Button>
+          <ThemeToggle />
         </nav>
       </Container>
     </header>

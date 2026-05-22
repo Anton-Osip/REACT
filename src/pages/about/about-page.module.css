@@ -9,13 +9,13 @@
   max-width: 640px;
   width: 100%;
   padding: 24px;
-  background: var(--color-dark-700);
+  background: var(--background-color-700);
   border-radius: 12px;
   border: 1px solid #313131;
 }
 
 .title {
-  color: var(--color-light-500);
+  color: var(--text-color-500);
   margin-bottom: 1.5rem;
 }
 
@@ -24,22 +24,21 @@
 }
 
 .sectionTitle {
-  color: var(--color-light-500);
+  color: var(--text-color-500);
   margin-bottom: 0.5rem;
 }
 
 .sectionText {
-  color: var(--color-light-500);
+  color: var(--text-color-500);
   margin-bottom: 0.75rem;
 }
 
 .authorName {
-  color: var(--color-light-500);
+  color: var(--text-color-500);
   margin-bottom: 0.5rem;
 }
 
 .authorLink {
-  color: var(--color-primary-500);
   text-decoration: none;
 }
 
@@ -48,7 +47,6 @@
 }
 
 .courseLink {
-  color: var(--color-primary-500);
   text-decoration: none;
 }
 

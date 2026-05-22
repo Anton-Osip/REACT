@@ -16,9 +16,9 @@
   line-height: var(--line-height-m);
   font-family: var(--font-family-primary), serif;
   letter-spacing: 0;
-  color: var(--color-dark-100);
+  color: var(--text-color-900);
   border: 1px solid var(--color-dark-300);
-  background-color: var(--color-dark-900);
+  background-color: var(--background-color-900);
   border-radius: 2px;
   transition:
     color var(--hover-transform),
@@ -32,21 +32,21 @@
 }
 
 .input:focus-within {
-  color: var(--color-light-100);
+  color: var(--text-color-100);
   border-color: transparent;
   outline: 2px solid var(--color-info-700);
   outline-offset: 0;
 }
 
 .input:hover {
-  color: var(--color-dark-100);
-  border-color: var(--color-dark-100);
-  background-color: var(--color-dark-700);
+  color: var(--background-color-100);
+  border-color: var(--background-color-100);
+  background-color: var(--background-color-700);
 }
 
 .input:focus + .iconStart,
 .inputWrapper:focus-within .iconStart {
-  color: var(--color-light-100);
+  color: var(--text-color-100);
 }
 
 .input::placeholder {
@@ -76,7 +76,7 @@
   border: none;
   outline: none;
   background-color: transparent;
-  color: var(--color-light-100);
+  color: var(--text-color-100);
 }
 
 .iconStart {
@@ -86,7 +86,7 @@
   left: 12px;
   width: 20px;
   height: 20px;
-  color: var(--color-dark-100);
+  color: var(--background-color-100);
   transition: color var(--hover-transform);
 }
 

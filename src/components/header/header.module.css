@@ -12,3 +12,8 @@
 .logoIcon {
   width: 160px;
 }
+
+.nav {
+  display: flex;
+  gap: 8px;
+}

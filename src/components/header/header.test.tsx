@@ -10,6 +10,7 @@ import {
 import { createCharactersResponse, renderWithRouter } from '../../test-utils';
 import { getCharacters } from '../../api/character';
 import { loadFromStorage } from '../../utils';
+import { ThemeProvider } from '../../features/theme';
 import { Header } from './header';
 
 vi.mock('../../utils', async (importOriginal) => {
@@ -29,7 +30,11 @@ const mockedGetCharacters = vi.mocked(getCharacters);
 
 async function renderHeader(className?: string) {
   const rootRoute = createRootRoute({
-    component: () => <Header className={className} />,
+    component: () => (
+      <ThemeProvider>
+        <Header className={className} />
+      </ThemeProvider>
+    ),
   });
 
   const router = createRouter({

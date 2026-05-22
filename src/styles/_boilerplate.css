@@ -1,3 +1,32 @@
+:root,
+:root.light {
+  --text-color-100: var(--color-dark-900);
+  --text-color-300: var(--color-dark-700);
+  --text-color-500: var(--color-dark-500);
+  --text-color-700: var(--color-dark-300);
+  --text-color-900: var(--color-dark-100);
+
+  --background-color-100: var(--color-light-900);
+  --background-color-300: var(--color-light-700);
+  --background-color-500: var(--color-light-500);
+  --background-color-700: var(--color-light-300);
+  --background-color-900: var(--color-light-100);
+}
+
+:root.dark {
+  --text-color-100: var(--color-light-100);
+  --text-color-300: var(--color-light-300);
+  --text-color-500: var(--color-light-500);
+  --text-color-700: var(--color-light-700);
+  --text-color-900: var(--color-light-900);
+
+  --background-color-100: var(--color-dark-100);
+  --background-color-300: var(--color-dark-300);
+  --background-color-500: var(--color-dark-500);
+  --background-color-700: var(--color-dark-700);
+  --background-color-900: var(--color-dark-900);
+}
+
 html {
   box-sizing: border-box;
   font-size: 100%;
@@ -45,9 +74,9 @@ body {
 
   font-family: var(--font-family-primary), sans-serif;
   line-height: var(--line-height-m);
-  color: var(--color-light-100);
+  color: var(--text-color-100);
 
-  background-color: var(--color-dark-900);
+  background-color: var(--background-color-900);
 }
 
 body ::-webkit-scrollbar {
@@ -56,7 +85,7 @@ body ::-webkit-scrollbar {
 }
 
 body ::-webkit-scrollbar-track {
-  background-color: var(--color-dark-900);
+  background-color: var(--background-color-900);
   border-radius: 5px;
 }
 

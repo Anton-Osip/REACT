@@ -2,7 +2,7 @@
 .typography {
   font-family: var(--font-family-primary), serif;
   letter-spacing: 0;
-  color: var(--color-light-100);
+  color: var(--text-color-100);
 }
 
 /* Общие стили для всех вариантов текста */
@@ -21,7 +21,7 @@
   /* Наследуем базовые свойства от .typography */
   font-family: var(--font-family-primary), serif;
   letter-spacing: 0;
-  color: var(--color-light-100);
+  color: var(--text-color-100);
 }
 
 .h1 {

@@ -14,8 +14,8 @@
 }
 
 .btn.active {
-  background: var(--color-light-100);
-  color: var(--color-dark-900);
+  background: var(--text-color-100);
+  color: var(--background-color-900);
 }
 
 .chevronBtn,

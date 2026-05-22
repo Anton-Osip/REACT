@@ -5,7 +5,7 @@
   display: flex;
   flex-direction: column;
   gap: 24px;
-  background-color: var(--color-dark-700);
+  background-color: var(--background-color-700);
   border: 1px solid #313131;
   min-width: 0;
   position: relative;
@@ -59,7 +59,7 @@
   gap: 24px;
   background: linear-gradient(
     90deg,
-    var(--color-light-100) 20%,
+    var(--text-color-100) 20%,
     transparent 20%
   );
   background-size: 10px 2px;
