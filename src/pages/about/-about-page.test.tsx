@@ -1,8 +1,10 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { cleanup, screen } from '@testing-library/react';
-import { createCharactersResponse, renderWithRouter } from '../../test-utils';
-import { getCharacters } from '../../api/character';
-import { loadFromStorage } from '../../utils';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+
+import { getCharacters } from '@/api/character';
+import { createCharactersResponse, renderWithRouter } from '@/test-utils';
+import { loadFromStorage } from '@/utils';
+
 import { RS_SCHOOL_REACT_URL, author } from './-about-page';
 
 vi.mock('../../utils', async (importOriginal) => {

@@ -1,6 +1,8 @@
 import { useContext } from 'react';
-import { afterEach, describe, expect, it } from 'vitest';
+
 import { cleanup, renderHook } from '@testing-library/react';
+import { afterEach, describe, expect, it } from 'vitest';
+
 import { ThemeContext } from './theme.context';
 
 describe('ThemeContext', () => {

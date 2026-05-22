@@ -1,8 +1,12 @@
-import clsx from 'clsx';
 import { type FC } from 'react';
-import s from './empty.module.css';
-import { Typography } from '../typography';
+
+import clsx from 'clsx';
+
+import { Typography } from '@/components';
+
 import emptyPageImage from '../../assets/image/emptyPageImage.png';
+
+import s from './empty.module.css';
 
 interface EmptyProps {
   isEmpty?: boolean | null;

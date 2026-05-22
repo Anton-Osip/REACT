@@ -1,6 +1,7 @@
-import { afterEach, describe, expect, it } from 'vitest';
 import { cleanup, render, screen } from '@testing-library/react';
-import { ChevronRightIcon } from './chevron-right-icon.tsx';
+import { afterEach, describe, expect, it } from 'vitest';
+
+import { ChevronRightIcon } from '@/components';
 
 describe('ChevronRightIcon', () => {
   afterEach(() => {

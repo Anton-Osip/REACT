@@ -1,7 +1,9 @@
 import { Component, type ReactNode } from 'react';
-import { afterEach, describe, expect, it, vi } from 'vitest';
+
 import { cleanup, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { afterEach, describe, expect, it, vi } from 'vitest';
+
 import { ErrorBoundary } from './error-boundary';
 
 class ProblemChild extends Component<

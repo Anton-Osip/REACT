@@ -1,11 +1,14 @@
 import { type FC } from 'react';
-import s from './header.module.css';
-import clsx from 'clsx';
-import { Container } from '../container';
-import logoIcon from '../../assets/icon/logoIcon.svg';
+
 import { Link } from '@tanstack/react-router';
-import { Button } from '../button';
-import { ThemeToggle } from '../../features/theme';
+import clsx from 'clsx';
+
+import { Button, Container } from '@/components';
+import { ThemeToggle } from '@/features/theme';
+
+import logoIcon from '../../assets/icon/logoIcon.svg';
+
+import s from './header.module.css';
 
 interface HeaderProps {
   className?: string;

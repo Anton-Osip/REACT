@@ -1,11 +1,13 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { cleanup, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+
 import '@testing-library/jest-dom/vitest';
-import { SelectedCharacters } from './selected-characters.tsx';
-import { useCharacterListStore } from '../../character-list/modal/character-list.state';
-import { createCharactersResponse } from '../../../test-utils';
 import type { Character } from '../../../api/character/getCharacters.type';
+import { createCharactersResponse } from '../../../test-utils';
+import { useCharacterListStore } from '../../character-list/modal/character-list.state';
+
+import { SelectedCharacters } from './selected-characters.tsx';
 
 const navigateMock = vi.fn();
 

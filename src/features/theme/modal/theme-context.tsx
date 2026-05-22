@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { loadFromStorage, saveToStorage } from '../../../utils';
+
+import { loadFromStorage, saveToStorage } from '@/utils';
+
 import { ThemeContext, type Theme } from './theme.context';
 
 const isTheme = (value: unknown): value is Theme =>

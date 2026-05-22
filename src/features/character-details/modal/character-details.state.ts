@@ -1,8 +1,6 @@
-import {
-  type CharacterResponse,
-  getCharacterDetails,
-} from '../../../api/character';
 import { create } from 'zustand/react';
+
+import { type CharacterResponse, getCharacterDetails } from '@/api/character';
 
 export interface CharacterDetailsState {
   characterDetails: CharacterResponse | null;

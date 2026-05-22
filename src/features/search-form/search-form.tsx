@@ -5,9 +5,12 @@ import {
   useEffect,
   useState,
 } from 'react';
-import s from './search-form.module.css';
+
 import clsx from 'clsx';
-import { Button, SearchIcon, TextField } from '../../components';
+
+import { Button, SearchIcon, TextField } from '@/components';
+
+import s from './search-form.module.css';
 
 interface SearchFormProps {
   className?: string;

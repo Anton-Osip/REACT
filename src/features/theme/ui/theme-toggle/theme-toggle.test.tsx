@@ -1,7 +1,9 @@
-import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { cleanup, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { afterEach, beforeEach, describe, expect, it } from 'vitest';
+
 import { ThemeProvider } from '../../modal/theme-context.tsx';
+
 import { ThemeToggle } from './theme-toggle.tsx';
 
 const MOON_PATH_FRAGMENT = 'M20.354';

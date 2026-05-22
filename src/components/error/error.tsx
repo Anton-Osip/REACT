@@ -1,9 +1,12 @@
-import clsx from 'clsx';
 import { type FC } from 'react';
-import s from './error.module.css';
-import { Typography } from '../typography';
+
+import clsx from 'clsx';
+
+import { Button, Typography } from '@/components';
+
 import errorPageImage from '../../assets/image/errorPageImage.png';
-import { Button } from '../button';
+
+import s from './error.module.css';
 
 interface ErrorProps {
   errorText?: string;

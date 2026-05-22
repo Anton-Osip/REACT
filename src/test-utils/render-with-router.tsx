@@ -1,9 +1,10 @@
-import { render } from '@testing-library/react';
 import {
   createMemoryHistory,
   createRouter,
   RouterProvider,
 } from '@tanstack/react-router';
+import { render } from '@testing-library/react';
+
 import { routeTree } from '../routeTree.gen';
 
 export function renderWithRouter(initialLocation: string) {

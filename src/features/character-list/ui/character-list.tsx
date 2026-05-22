@@ -1,15 +1,20 @@
 import { useEffect, type FC } from 'react';
-import s from './character-list.module.css';
+
 import clsx from 'clsx';
-import { useCharacterListStore } from '../modal/character-list.state';
-import { CharacterCard } from '../../character-card';
+
 import {
   Button,
   EmptyComponent,
   ErrorComponent,
   Pagination,
-} from '../../../components';
+} from '@/components';
+
+import { CharacterCard } from '../../character-card';
+import { useCharacterListStore } from '../modal/character-list.state';
+
 import { CharacterLoading } from './character-loading';
+
+import s from './character-list.module.css';
 
 interface CharacterListProps {
   className?: string;

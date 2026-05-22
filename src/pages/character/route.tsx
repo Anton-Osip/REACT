@@ -1,5 +1,4 @@
 import { type JSX } from 'react';
-import s from './character-page.module.css';
 
 import {
   createFileRoute,
@@ -8,10 +7,14 @@ import {
   useNavigate,
 } from '@tanstack/react-router';
 import clsx from 'clsx';
-import { loadFromStorage, saveToStorage } from '../../utils';
-import { SearchForm } from '../../features/search-form';
-import { CharacterList } from '../../features/character-list';
+
+import { CharacterList } from '@/features/character-list';
+import { SearchForm } from '@/features/search-form';
+import { loadFromStorage, saveToStorage } from '@/utils';
+
 import { SelectedCharacters } from '../../features/selected-file/ui/selected-characters.tsx';
+
+import s from './character-page.module.css';
 
 export const STORAGE_KEY = 'searchCharacterValue';
 

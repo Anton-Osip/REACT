@@ -1,9 +1,12 @@
 import { type FC, useCallback, useMemo } from 'react';
-import styles from './pagination.module.css';
+
 import clsx from 'clsx';
-import { Button } from '../button';
+
+import { Typography, Button } from '@/components';
+
 import { ChevronLeftIcon, ChevronRightIcon } from '../icons';
-import { Typography } from '../typography';
+
+import styles from './pagination.module.css';
 
 interface PaginationProps {
   className?: string;

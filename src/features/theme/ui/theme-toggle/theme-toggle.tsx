@@ -1,7 +1,9 @@
 import React from 'react';
+
+import { Button, MoonIcon, SunIcon } from '@/components';
+
 import { useTheme } from '../../modal';
-import { Button } from '../../../../components';
-import { MoonIcon, SunIcon } from '../../../../components';
+
 import s from './theme-toggle.module.css';
 
 export const ThemeToggle: React.FC = () => {

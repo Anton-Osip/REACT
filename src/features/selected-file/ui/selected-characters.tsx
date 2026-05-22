@@ -1,11 +1,15 @@
-import clsx from 'clsx';
 import { type FC, useState } from 'react';
-import s from './selected-characters.module.css';
-import { useCharacterListStore } from '../../character-list/modal/character-list.state.ts';
-import { Button, Typography } from '../../../components';
-import { CharacterCard } from '../../character-card';
+
+import clsx from 'clsx';
 import { createPortal } from 'react-dom';
-import { generateCSV } from '../../../utils';
+
+import { Button, Typography } from '@/components';
+import { generateCSV } from '@/utils';
+
+import { CharacterCard } from '../../character-card';
+import { useCharacterListStore } from '../../character-list/modal/character-list.state.ts';
+
+import s from './selected-characters.module.css';
 interface SelectedCharactersProps {
   className?: string;
 }

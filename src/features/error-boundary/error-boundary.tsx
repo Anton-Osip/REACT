@@ -1,7 +1,10 @@
 import { Component, type ErrorInfo, type ReactNode } from 'react';
-import { Typography, Button } from '../../components';
-import s from './error-boundary.module.css';
+
+import { Typography, Button } from '@/components';
+
 import errorPageImage from '../../assets/image/errorPageImage.png';
+
+import s from './error-boundary.module.css';
 
 interface ErrorBoundaryProps {
   children: ReactNode;

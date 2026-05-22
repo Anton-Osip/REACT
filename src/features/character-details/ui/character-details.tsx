@@ -1,15 +1,19 @@
 import { type FC, useEffect } from 'react';
-import s from './character-details.module.css';
+
+import { getRouteApi, useNavigate } from '@tanstack/react-router';
 import clsx from 'clsx';
-import { useCharacterDetailsStore } from '../modal/character-details.state.ts';
+
 import {
   Button,
   CrossIcon,
   ErrorComponent,
   Skeleton,
   Typography,
-} from '../../../components';
-import { getRouteApi, useNavigate } from '@tanstack/react-router';
+} from '@/components';
+
+import { useCharacterDetailsStore } from '../modal/character-details.state.ts';
+
+import s from './character-details.module.css';
 
 interface CharacterDetailsProps {
   className?: string;

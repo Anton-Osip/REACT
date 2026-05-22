@@ -1,10 +1,14 @@
 import { Outlet, createRootRoute } from '@tanstack/react-router';
-import s from './root.module.css';
-import { ErrorBoundary } from '../features/error-boundary';
+
+import { Container, Header } from '@/components';
+import { ErrorBoundary } from '@/features/error-boundary';
+import { ThemeProvider } from '@/features/theme';
+
 import { useCharacterListStore } from '../features/character-list/modal/character-list.state';
-import { Container, Header } from '../components';
+
 import { NotFoundPage } from './not-found/not-found-page';
-import { ThemeProvider } from '../features/theme';
+
+import s from './root.module.css';
 
 export const Route = createRootRoute({
   component: RootComponent,

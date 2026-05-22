@@ -1,9 +1,11 @@
-import clsx from 'clsx';
 import {
   type ComponentPropsWithoutRef,
   type ElementType,
   type ReactNode,
 } from 'react';
+
+import clsx from 'clsx';
+
 import s from './typography.module.css';
 
 type TypographyVariant =

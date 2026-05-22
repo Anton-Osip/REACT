@@ -1,16 +1,18 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { cleanup, render, screen, waitFor } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 import {
   createMemoryHistory,
   createRootRoute,
   createRouter,
   RouterProvider,
 } from '@tanstack/react-router';
-import { createCharactersResponse, renderWithRouter } from '../../test-utils';
-import { getCharacters } from '../../api/character';
-import { loadFromStorage } from '../../utils';
-import { ThemeProvider } from '../../features/theme';
+import { cleanup, render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+
+import { getCharacters } from '@/api/character';
+import { ThemeProvider } from '@/features/theme';
+import { createCharactersResponse, renderWithRouter } from '@/test-utils';
+import { loadFromStorage } from '@/utils';
+
 import { Header } from './header';
 
 vi.mock('../../utils', async (importOriginal) => {

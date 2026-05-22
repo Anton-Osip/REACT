@@ -1,8 +1,10 @@
 import { type FC } from 'react';
 
-import s from './character-loading.module.css';
-import { Skeleton } from '../../../../components';
 import clsx from 'clsx';
+
+import { Skeleton } from '@/components';
+
+import s from './character-loading.module.css';
 
 export type CharacterLoadingProps = {
   className?: string;

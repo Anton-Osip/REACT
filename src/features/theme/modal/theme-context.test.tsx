@@ -1,7 +1,9 @@
 import { type ReactNode } from 'react';
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+
 import { cleanup, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+
 import { ThemeProvider } from './theme-context.tsx';
 import { useTheme } from './use-theme.tsx';
 

@@ -1,5 +1,7 @@
-import clsx from 'clsx';
 import { type ComponentPropsWithoutRef, type FC, type ReactNode } from 'react';
+
+import clsx from 'clsx';
+
 import s from './container.module.css';
 
 export type ContainerProps = {

@@ -1,9 +1,11 @@
-import clsx from 'clsx';
 import {
   type ComponentPropsWithoutRef,
   type ElementType,
   type ReactNode,
 } from 'react';
+
+import clsx from 'clsx';
+
 import s from './button.module.css';
 
 export type ButtonProps<T extends ElementType = 'button' | 'a'> = {

@@ -1,7 +1,10 @@
 import { type ComponentPropsWithoutRef, type FC, type ReactNode } from 'react';
-import s from './text-field.module.css';
-import { Typography } from '../typography';
+
 import clsx from 'clsx';
+
+import { Typography } from '@/components';
+
+import s from './text-field.module.css';
 
 export type InputProps = {
   type?: 'text' | 'password';

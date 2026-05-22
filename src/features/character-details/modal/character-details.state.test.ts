@@ -1,6 +1,8 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import type { CharacterResponse } from '../../../api/character';
-import { getCharacterDetails } from '../../../api/character';
+
+import type { CharacterResponse } from '@/api/character';
+import { getCharacterDetails } from '@/api/character';
+
 import { useCharacterDetailsStore } from './character-details.state';
 
 vi.mock('../../../api/character', () => ({

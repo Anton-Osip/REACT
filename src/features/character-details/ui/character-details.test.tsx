@@ -1,11 +1,9 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { cleanup, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { getCharacterDetails, getCharacters } from '../../../api/character';
-import {
-  createCharactersResponse,
-  renderWithRouter,
-} from '../../../test-utils';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+
+import { getCharacterDetails, getCharacters } from '@/api/character';
+import { createCharactersResponse, renderWithRouter } from '@/test-utils';
 
 vi.mock('../../../api/character', () => ({
   getCharacterDetails: vi.fn(),

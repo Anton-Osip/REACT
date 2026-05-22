@@ -1,9 +1,11 @@
-import { describe, it, expect, afterEach, beforeEach, vi } from 'vitest';
 import { cleanup, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { describe, it, expect, afterEach, beforeEach, vi } from 'vitest';
+
 import '@testing-library/jest-dom/vitest';
-import { CharacterCard, type CharacterCardProps } from './character-card.tsx';
 import mockImage from '../../assets/image/errorPageImage.png';
+
+import { CharacterCard, type CharacterCardProps } from './character-card.tsx';
 
 const navigateMock = vi.fn();
 

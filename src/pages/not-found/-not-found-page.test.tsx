@@ -1,10 +1,12 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { cleanup, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+
+import { getCharacters } from '@/api/character';
+import { createCharactersResponse, renderWithRouter } from '@/test-utils';
+import { loadFromStorage } from '@/utils';
+
 import errorPageImage from '../../assets/image/errorPageImage.png';
-import { createCharactersResponse, renderWithRouter } from '../../test-utils';
-import { getCharacters } from '../../api/character';
-import { loadFromStorage } from '../../utils';
 
 vi.mock('../../utils', async (importOriginal) => {
   const actual = await importOriginal<typeof import('../../utils')>();

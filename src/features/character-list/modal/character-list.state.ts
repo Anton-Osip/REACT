@@ -1,6 +1,7 @@
-import { type CharactersResponse, getCharacters } from '../../../api/character';
 import { create } from 'zustand/react';
-import type { Character } from '../../../api/character/getCharacters.type.ts';
+
+import { type CharactersResponse, getCharacters } from '@/api/character';
+import type { Character } from '@/api/character/getCharacters.type.ts';
 
 export interface CharacterListState {
   characters: CharactersResponse | null;

@@ -1,11 +1,13 @@
 import { memo, type MouseEvent, useMemo } from 'react';
 
-import s from './character-card.module.css';
-import type { CharacterStatus } from '../../api/character';
-import { Button, Typography } from '../../components';
 import { useNavigate } from '@tanstack/react-router';
 import clsx from 'clsx';
-import { StarIcon } from '../../components/icons/components/star-icon';
+
+import type { CharacterStatus } from '@/api/character';
+import { Button, Typography } from '@/components';
+import { StarIcon } from '@/components/icons/components/star-icon';
+
+import s from './character-card.module.css';
 
 export type CharacterCardProps = {
   className?: string;

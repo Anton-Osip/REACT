@@ -1,7 +1,10 @@
 import { describe, expect, it } from 'vitest';
-import { generateCSV } from './csvUtils';
-import { createCharactersResponse } from '../test-utils';
+
+import { createCharactersResponse } from '@/test-utils';
+
 import type { Character } from '../api/character/getCharacters.type';
+
+import { generateCSV } from './csvUtils';
 
 describe('generateCSV', () => {
   const [rick, morty] = createCharactersResponse().results;
