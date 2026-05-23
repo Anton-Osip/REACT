@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Button, MoonIcon, SunIcon } from '@/components';
+import { Button, MoonIcon, SunIcon } from '@/shared/ui';
 
 import { useTheme } from '../../modal';
 

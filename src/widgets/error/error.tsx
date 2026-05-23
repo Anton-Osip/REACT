@@ -1,36 +1,50 @@
-import { Link } from '@tanstack/react-router';
+import { type FC } from 'react';
+
+import clsx from 'clsx';
 
 import { Button, Typography } from '@/shared/ui';
 
 import errorPageImage from '../../assets/image/errorPageImage.png';
 
-import s from './not-found-page.module.css';
+import s from './error.module.css';
 
-export function NotFoundPage() {
+type Props = {
+  errorText?: string;
+  isError: boolean | null;
+  className?: string;
+  tryAgain: () => void;
+};
+
+export const ErrorComponent: FC<Props> = ({
+  errorText,
+  isError,
+  className,
+  tryAgain,
+}) => {
+  if (!isError) return null;
   return (
-    <div className={s.error}>
+    <div className={clsx(s.error, className)}>
       <div className={s.errorContent}>
         <Typography variant="h2" className={s.errorTitle}>
-          404 — Page not found
+          Something went wrong
         </Typography>
         <img
           className={s.errorPageImage}
           src={errorPageImage}
-          alt="page not found"
+          alt="error image"
         />
         <Typography variant="body2" className={s.errorMessage}>
-          The page you are looking for does not exist.
+          {errorText ?? 'An unexpected error occurred'}
         </Typography>
         <Button
-          as={Link}
-          to="/character"
           variant="secondary"
+          onClick={tryAgain}
           className={s.resetButton}
           fullWidth
         >
-          Back to characters
+          Try Again
         </Button>
       </div>
     </div>
   );
-}
+};

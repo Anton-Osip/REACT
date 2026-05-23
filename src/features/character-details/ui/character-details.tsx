@@ -3,13 +3,8 @@ import { type FC, useEffect } from 'react';
 import { getRouteApi, useNavigate } from '@tanstack/react-router';
 import clsx from 'clsx';
 
-import {
-  Button,
-  CrossIcon,
-  ErrorComponent,
-  Skeleton,
-  Typography,
-} from '@/components';
+import { Button, CrossIcon, Skeleton, Typography } from '@/shared/ui';
+import { ErrorComponent } from '@/widgets/error';
 
 import { useCharacterDetailsStore } from '../modal/character-details.state.ts';
 

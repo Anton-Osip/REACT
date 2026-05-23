@@ -2,12 +2,9 @@ import { useEffect, type FC } from 'react';
 
 import clsx from 'clsx';
 
-import {
-  Button,
-  EmptyComponent,
-  ErrorComponent,
-  Pagination,
-} from '@/components';
+import { Button, Pagination } from '@/shared/ui';
+import { EmptyComponent } from '@/widgets/empty';
+import { ErrorComponent } from '@/widgets/error';
 
 import { CharacterCard } from '../../character-card';
 import { useCharacterListStore } from '../modal/character-list.state';

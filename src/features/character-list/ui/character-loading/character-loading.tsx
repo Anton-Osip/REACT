@@ -2,7 +2,7 @@ import { type FC } from 'react';
 
 import clsx from 'clsx';
 
-import { Skeleton } from '@/components';
+import { Skeleton } from '@/shared/ui';
 
 import s from './character-loading.module.css';
 

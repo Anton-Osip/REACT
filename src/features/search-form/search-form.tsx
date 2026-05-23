@@ -8,7 +8,7 @@ import {
 
 import clsx from 'clsx';
 
-import { Button, SearchIcon, TextField } from '@/components';
+import { Button, SearchIcon, TextField } from '@/shared/ui';
 
 import s from './search-form.module.css';
 

@@ -4,8 +4,7 @@ import { useNavigate } from '@tanstack/react-router';
 import clsx from 'clsx';
 
 import type { CharacterStatus } from '@/api/character';
-import { Button, Typography } from '@/components';
-import { StarIcon } from '@/components/icons/components/star-icon';
+import { Button, StarIcon, Typography } from '@/shared/ui';
 
 import s from './character-card.module.css';
 

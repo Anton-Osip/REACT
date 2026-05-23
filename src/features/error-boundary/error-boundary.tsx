@@ -1,6 +1,6 @@
 import { Component, type ErrorInfo, type ReactNode } from 'react';
 
-import { Typography, Button } from '@/components';
+import { Button, Typography } from '@/shared/ui';
 
 import errorPageImage from '../../assets/image/errorPageImage.png';
 

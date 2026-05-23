@@ -1,8 +1,9 @@
 import { Outlet, createRootRoute } from '@tanstack/react-router';
 
-import { Container, Header } from '@/components';
 import { ErrorBoundary } from '@/features/error-boundary';
 import { ThemeProvider } from '@/features/theme';
+import { Container } from '@/shared/ui';
+import { Header } from '@/widgets/header';
 
 import { useCharacterListStore } from '../features/character-list/modal/character-list.state';
 

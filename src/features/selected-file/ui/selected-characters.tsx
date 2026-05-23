@@ -3,7 +3,7 @@ import { type FC, useState } from 'react';
 import clsx from 'clsx';
 import { createPortal } from 'react-dom';
 
-import { Button, Typography } from '@/components';
+import { Button, Typography } from '@/shared/ui';
 import { generateCSV } from '@/utils';
 
 import { CharacterCard } from '../../character-card';

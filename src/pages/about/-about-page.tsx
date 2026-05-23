@@ -1,4 +1,4 @@
-import { Typography } from '@/components';
+import { Typography } from '@/shared/ui';
 
 import s from './about-page.module.css';
 
