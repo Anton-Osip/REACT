@@ -71,10 +71,15 @@ describe('ErrorBoundary', () => {
     consoleSpy.mockRestore();
   });
 
-  it('resets to children after Try Again once the child no longer throws', async () => {
+  it('reloads the page when Try Again is clicked', async () => {
     const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    const reloadSpy = vi.fn();
+    Object.defineProperty(window, 'location', {
+      configurable: true,
+      value: { reload: reloadSpy },
+    });
 
-    const { rerender } = render(
+    render(
       <ErrorBoundary>
         <ProblemChild shouldThrow />
       </ErrorBoundary>
@@ -82,15 +87,9 @@ describe('ErrorBoundary', () => {
 
     expect(await screen.findByText('Child exploded')).toBeInTheDocument();
 
-    rerender(
-      <ErrorBoundary>
-        <ProblemChild shouldThrow={false} />
-      </ErrorBoundary>
-    );
-
     await user.click(screen.getByRole('button', { name: /try again/i }));
 
-    expect(screen.getByText('All good')).toBeInTheDocument();
+    expect(reloadSpy).toHaveBeenCalledOnce();
 
     consoleSpy.mockRestore();
   });

@@ -2,7 +2,7 @@ import { useEffect, type FC } from 'react';
 
 import clsx from 'clsx';
 
-import { Button, Pagination } from '@/shared/ui';
+import { Pagination } from '@/shared/ui';
 import { EmptyComponent } from '@/widgets/empty';
 import { ErrorComponent } from '@/widgets/error';
 
@@ -32,9 +32,7 @@ export const CharacterList: FC<CharacterListProps> = ({
     characters,
     charactersIsLoading,
     charactersIsError,
-    shouldThrowError,
     fetchCharacters,
-    simulateError,
     toggleCharacterSelected,
     selectedCharacterIds,
   } = useCharacterListStore();
@@ -46,10 +44,6 @@ export const CharacterList: FC<CharacterListProps> = ({
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [searchName]);
-
-  if (shouldThrowError) {
-    throw new Error('Test error from Error Footer - Check console for details');
-  }
 
   return (
     <>
@@ -100,14 +94,6 @@ export const CharacterList: FC<CharacterListProps> = ({
           />
         </>
       )}
-
-      <Button
-        variant={'secondary'}
-        className={s.button}
-        onClick={simulateError}
-      >
-        Error Button
-      </Button>
     </>
   );
 };

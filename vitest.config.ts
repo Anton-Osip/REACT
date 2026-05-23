@@ -7,7 +7,7 @@ export default mergeConfig(
   defineConfig({
     test: {
       environment: 'jsdom',
-      setupFiles: ['./src/setupTests.ts'],
+      setupFiles: ['./src/app/setupTests.ts'],
       coverage: {
         provider: 'v8',
         reporter: ['text', 'lcov', 'html'],

@@ -7,7 +7,6 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { getCharacters } from '@/api/character';
 import { createCharactersResponse, renderWithRouter } from '@/test-utils';
 
-import { ErrorBoundary } from '../../error-boundary';
 import { useCharacterListStore } from '../modal/character-list.state';
 
 import { CharacterList } from './character-list.tsx';
@@ -49,7 +48,6 @@ describe('CharacterList', () => {
       characters: null,
       charactersIsLoading: false,
       charactersIsError: null,
-      shouldThrowError: false,
       selectedCharacterIds: null,
     });
     onPageChange = vi.fn();
@@ -187,31 +185,6 @@ describe('CharacterList', () => {
     expect(await screen.findByText('plain string failure')).toBeInTheDocument();
   });
 
-  it('error button is caught by error boundary and shows fallback', async () => {
-    const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
-    mockedGetCharacters.mockResolvedValue(createCharactersResponse());
-
-    render(
-      <ErrorBoundary
-        onReset={() => useCharacterListStore.getState().resetSimulatedError()}
-      >
-        <CharacterList searchName="" page={1} onPageChange={onPageChange} />
-      </ErrorBoundary>
-    );
-
-    await screen.findByText('Rick Sanchez');
-
-    await user.click(screen.getByRole('button', { name: /error button/i }));
-
-    expect(
-      await screen.findByText(
-        'Test error from Error Footer - Check console for details'
-      )
-    ).toBeInTheDocument();
-
-    consoleSpy.mockRestore();
-  });
-
   it('stores selected character in zustand when star is clicked', async () => {
     mockedGetCharacters.mockResolvedValue(createCharactersResponse());
 
@@ -305,34 +278,5 @@ describe('CharacterList', () => {
     expect(getCharacterSelectButton('Rick Sanchez').className).toMatch(
       /isSelected/
     );
-  });
-
-  it('recovers after Try Again on error boundary', async () => {
-    const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
-    mockedGetCharacters.mockResolvedValue(createCharactersResponse());
-
-    render(
-      <ErrorBoundary
-        onReset={() => useCharacterListStore.getState().resetSimulatedError()}
-      >
-        <CharacterList searchName="" page={1} onPageChange={onPageChange} />
-      </ErrorBoundary>
-    );
-
-    await screen.findByText('Rick Sanchez');
-
-    await user.click(screen.getByRole('button', { name: /error button/i }));
-
-    expect(
-      await screen.findByText(
-        'Test error from Error Footer - Check console for details'
-      )
-    ).toBeInTheDocument();
-
-    await user.click(screen.getByRole('button', { name: /try again/i }));
-
-    expect(await screen.findByText('Rick Sanchez')).toBeInTheDocument();
-
-    consoleSpy.mockRestore();
   });
 });

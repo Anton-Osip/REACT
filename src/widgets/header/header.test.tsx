@@ -121,4 +121,12 @@ describe('Header', () => {
     const header = container.querySelector('header');
     expect(header).toHaveClass('site-header');
   });
+
+  it('renders the Error Button for simulating errors', async () => {
+    await renderHeader();
+
+    expect(
+      screen.getByRole('button', { name: 'Error Button' })
+    ).toBeInTheDocument();
+  });
 });

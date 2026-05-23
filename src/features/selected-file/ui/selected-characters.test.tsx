@@ -28,7 +28,6 @@ function resetStore() {
     characters: null,
     charactersIsLoading: false,
     charactersIsError: null,
-    shouldThrowError: false,
     selectedCharacterIds: null,
   });
 }

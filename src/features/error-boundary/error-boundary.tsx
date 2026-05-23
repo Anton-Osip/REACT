@@ -6,15 +6,15 @@ import errorPageImage from '../../assets/image/errorPageImage.png';
 
 import s from './error-boundary.module.css';
 
-interface ErrorBoundaryProps {
+type ErrorBoundaryProps = {
   children: ReactNode;
   onReset?: () => void;
-}
+};
 
-interface ErrorBoundaryState {
+type ErrorBoundaryState = {
   hasError: boolean;
   error: Error | null;
-}
+};
 
 export class ErrorBoundary extends Component<
   ErrorBoundaryProps,
@@ -40,11 +40,7 @@ export class ErrorBoundary extends Component<
   }
 
   handleReset = (): void => {
-    this.props.onReset?.();
-    this.setState({
-      hasError: false,
-      error: null,
-    });
+    window.location.reload();
   };
 
   render(): ReactNode {

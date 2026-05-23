@@ -7,10 +7,7 @@ export interface CharacterListState {
   characters: CharactersResponse | null;
   charactersIsLoading: boolean;
   charactersIsError: Error | null;
-  shouldThrowError: boolean;
   fetchCharacters: (params: { name?: string; page?: number }) => Promise<void>;
-  simulateError: () => void;
-  resetSimulatedError: () => void;
   selectedCharacterIds: Map<number, Character> | null;
   toggleCharacterSelected: (character: Character) => void;
   resetCharacterSelected: () => void;
@@ -20,7 +17,6 @@ export const useCharacterListStore = create<CharacterListState>((set) => ({
   characters: null,
   charactersIsLoading: false,
   charactersIsError: null,
-  shouldThrowError: false,
   selectedCharacterIds: null,
 
   fetchCharacters: async (params: { name?: string; page?: number }) => {
@@ -62,11 +58,5 @@ export const useCharacterListStore = create<CharacterListState>((set) => ({
 
   resetCharacterSelected: () => {
     set({ selectedCharacterIds: null });
-  },
-  simulateError: () => {
-    set({ shouldThrowError: true });
-  },
-  resetSimulatedError: () => {
-    set({ shouldThrowError: false });
   },
 }));

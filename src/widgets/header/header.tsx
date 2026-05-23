@@ -3,6 +3,7 @@ import { type FC } from 'react';
 import { Link } from '@tanstack/react-router';
 import clsx from 'clsx';
 
+import { SimulateError } from '@/features/simulate-error';
 import { ThemeToggle } from '@/features/theme';
 import { Button, Container } from '@/shared/ui';
 
@@ -34,8 +35,11 @@ export const Header: FC<Props> = ({ className }) => {
           <Button as={Link} to="/about" variant="ghost" fullWidth>
             About
           </Button>
-          <ThemeToggle />
         </nav>
+        <div className={s.controls}>
+          <SimulateError />
+          <ThemeToggle />
+        </div>
       </Container>
     </header>
   );

@@ -43,7 +43,6 @@ function resetStore() {
     characters: null,
     charactersIsLoading: false,
     charactersIsError: null,
-    shouldThrowError: false,
     selectedCharacterIds: null,
   });
 }
@@ -59,7 +58,6 @@ describe('useCharacterListStore', () => {
       characters: null,
       charactersIsLoading: false,
       charactersIsError: null,
-      shouldThrowError: false,
       selectedCharacterIds: null,
     });
   });
@@ -111,19 +109,6 @@ describe('useCharacterListStore', () => {
     expect(useCharacterListStore.getState().charactersIsError).toEqual(
       new Error('plain string failure')
     );
-  });
-
-  it('sets shouldThrowError on simulateError', () => {
-    useCharacterListStore.getState().simulateError();
-
-    expect(useCharacterListStore.getState().shouldThrowError).toBe(true);
-  });
-
-  it('clears shouldThrowError on resetSimulatedError', () => {
-    useCharacterListStore.getState().simulateError();
-    useCharacterListStore.getState().resetSimulatedError();
-
-    expect(useCharacterListStore.getState().shouldThrowError).toBe(false);
   });
 
   it('adds character to selectedCharacterIds on toggle', () => {
