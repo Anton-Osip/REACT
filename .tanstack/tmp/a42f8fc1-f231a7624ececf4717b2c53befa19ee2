@@ -9,7 +9,7 @@ import {
 } from '@tanstack/react-router';
 import clsx from 'clsx';
 import { loadFromStorage, saveToStorage } from '../utils';
-import { SearchForm } from '../features/search-form';
+import { CharacterContent } from '../features/search-form';
 import { CharacterList } from '../features/character-list';
 
 export const STORAGE_KEY = 'searchCharacterValue';
@@ -72,7 +72,7 @@ function CharacterPage(): JSX.Element {
   return (
     <div className={clsx(s.characterPage, selectCardId && s.showDetails)}>
       <section className={s.characterList}>
-        <SearchForm
+        <CharacterContent
           submitInput={searchCharactersByName}
           defaultValue={search}
         />

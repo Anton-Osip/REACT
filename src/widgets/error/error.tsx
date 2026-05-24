@@ -2,9 +2,8 @@ import { type FC } from 'react';
 
 import clsx from 'clsx';
 
+import errorPageImage from '@/shared/assets/image/errorPageImage.png';
 import { Button, Typography } from '@/shared/ui';
-
-import errorPageImage from '../../assets/image/errorPageImage.png';
 
 import s from './error.module.css';
 

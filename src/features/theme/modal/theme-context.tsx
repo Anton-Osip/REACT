@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import { loadFromStorage, saveToStorage } from '@/utils';
+import { loadFromStorage, saveToStorage } from '@/shared/utils';
 
 import { ThemeContext, type Theme } from './theme.context';
 

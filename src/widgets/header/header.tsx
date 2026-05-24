@@ -5,9 +5,8 @@ import clsx from 'clsx';
 
 import { SimulateError } from '@/features/simulate-error';
 import { ThemeToggle } from '@/features/theme';
+import logoIcon from '@/shared/assets/icon/logoIcon.svg';
 import { Button, Container } from '@/shared/ui';
-
-import logoIcon from '../../assets/icon/logoIcon.svg';
 
 import s from './header.module.css';
 

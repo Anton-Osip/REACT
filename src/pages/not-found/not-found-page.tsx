@@ -1,8 +1,7 @@
 import { Link } from '@tanstack/react-router';
 
+import errorPageImage from '@/shared/assets/image/errorPageImage.png';
 import { Button, Typography } from '@/shared/ui';
-
-import errorPageImage from '../../assets/image/errorPageImage.png';
 
 import s from './not-found-page.module.css';
 

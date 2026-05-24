@@ -1,8 +1,7 @@
 import { Component, type ErrorInfo, type ReactNode } from 'react';
 
+import errorPageImage from '@/shared/assets/image/errorPageImage.png';
 import { Button, Typography } from '@/shared/ui';
-
-import errorPageImage from '../../assets/image/errorPageImage.png';
 
 import s from './error-boundary.module.css';
 

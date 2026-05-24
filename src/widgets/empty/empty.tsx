@@ -2,9 +2,8 @@ import { type FC } from 'react';
 
 import clsx from 'clsx';
 
+import emptyPageImage from '@/shared/assets/image/emptyPageImage.png';
 import { Typography } from '@/shared/ui';
-
-import emptyPageImage from '../../assets/image/emptyPageImage.png';
 
 import s from './empty.module.css';
 

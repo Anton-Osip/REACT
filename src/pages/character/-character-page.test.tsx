@@ -2,21 +2,24 @@ import { cleanup, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { getCharacters } from '@/api/character';
-import { createCharactersResponse, renderWithRouter } from '@/test-utils';
-import { loadFromStorage } from '@/utils';
+import { getCharacters } from '@/features/character/api';
+import {
+  createCharactersResponse,
+  renderWithRouter,
+} from '@/shared/test-utils';
+import { loadFromStorage } from '@/shared/utils';
 
 import { STORAGE_KEY } from './route.tsx';
 
-vi.mock('../../utils', async (importOriginal) => {
-  const actual = await importOriginal<typeof import('../../utils')>();
+vi.mock('@/shared/utils', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('@/shared/utils')>();
   return {
     ...actual,
     loadFromStorage: vi.fn(),
   };
 });
 
-vi.mock('../../api/character', () => ({
+vi.mock('@/features/character/api', () => ({
   getCharacters: vi.fn(),
 }));
 
