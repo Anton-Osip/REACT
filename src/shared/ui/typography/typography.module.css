@@ -1,0 +1,105 @@
+/* Базовые стили для типографики */
+.typography {
+  font-family: var(--font-family-primary), serif;
+  letter-spacing: 0;
+  color: var(--text-color-100);
+}
+
+/* Общие стили для всех вариантов текста */
+.h1,
+.h2,
+.h3,
+.h4,
+.body1,
+.body2,
+.subtitle1,
+.subtitle2,
+.caption,
+.overline,
+.link1,
+.link2 {
+  /* Наследуем базовые свойства от .typography */
+  font-family: var(--font-family-primary), serif;
+  letter-spacing: 0;
+  color: var(--text-color-100);
+}
+
+.h1 {
+  font-size: var(--font-size-xxl);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-l);
+}
+
+.h2 {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-l);
+}
+
+.h3 {
+  font-size: var(--font-size-l);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-m);
+}
+
+.h4 {
+  font-size: var(--font-size-m);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-m);
+}
+
+.body1 {
+  font-size: var(--font-size-m);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-m);
+}
+
+.body2 {
+  font-size: var(--font-size-m);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-m);
+}
+
+.subtitle1 {
+  font-size: var(--font-size-s);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-m);
+}
+
+.subtitle2 {
+  font-size: var(--font-size-s);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-m);
+}
+
+.caption {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-s);
+}
+
+.overline {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-s);
+}
+
+.link1 {
+  font-size: var(--font-size-s);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-m);
+  text-decoration: underline;
+  text-decoration-style: solid;
+  text-decoration-thickness: 0;
+  color: var(--color-info-500);
+}
+
+.link2 {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-s);
+  color: var(--color-info-500);
+  text-decoration: underline;
+  text-decoration-style: solid;
+  text-decoration-thickness: 0;
+}

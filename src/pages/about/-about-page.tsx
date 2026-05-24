@@ -1,4 +1,5 @@
-import { Typography } from '../../components';
+import { Typography } from '@/shared/ui';
+
 import s from './about-page.module.css';
 
 export const RS_SCHOOL_REACT_URL = 'https://rs.school/courses/reactjs';

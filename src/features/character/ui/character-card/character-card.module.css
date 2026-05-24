@@ -1,0 +1,77 @@
+.card {
+  padding: 16px;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  gap: 8px;
+  background-color: var(--background-color-700);
+  border: 1px solid #313131;
+  min-width: 0;
+  position: relative;
+}
+
+.selectedCard {
+  border: 1px solid var(--color-accent-700);
+}
+
+.imageWrapper {
+  height: 100%;
+  max-width: 100px;
+  min-width: 100px;
+}
+
+.image {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+
+  width: 100%;
+}
+
+.stareBtn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  padding: 0;
+  background-color: transparent;
+  color: var(--color-dark-100);
+}
+
+.stareBtn:hover:not(:disabled) {
+  background-color: transparent;
+  color: var(--color-dark-500);
+}
+
+.stareBtn:active:not(:disabled) {
+  background-color: transparent;
+  color: var(--color-dark-500);
+}
+
+.stareBtn.isSelected {
+  color: var(--color-accent-700);
+}
+
+.stareBtn.isSelected:hover:not(:disabled) {
+  color: var(--color-accent-300);
+}
+
+.stareBtn.isSelected:active:not(:disabled) {
+  color: var(--color-accent-300);
+}
+
+.content > div {
+}
+
+.text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}

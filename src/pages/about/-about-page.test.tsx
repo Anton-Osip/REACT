@@ -1,19 +1,24 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { cleanup, screen } from '@testing-library/react';
-import { createCharactersResponse, renderWithRouter } from '../../test-utils';
-import { getCharacters } from '../../api/character';
-import { loadFromStorage } from '../../utils';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+
+import { getCharacters } from '@/features/character/api';
+import {
+  createCharactersResponse,
+  renderWithRouter,
+} from '@/shared/test-utils';
+import { loadFromStorage } from '@/shared/utils';
+
 import { RS_SCHOOL_REACT_URL, author } from './-about-page';
 
-vi.mock('../../utils', async (importOriginal) => {
-  const actual = await importOriginal<typeof import('../../utils')>();
+vi.mock('@/shared/utils', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('@/shared/utils')>();
   return {
     ...actual,
     loadFromStorage: vi.fn(),
   };
 });
 
-vi.mock('../../api/character', () => ({
+vi.mock('@/features/character/api', () => ({
   getCharacters: vi.fn(),
 }));
 

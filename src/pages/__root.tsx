@@ -1,8 +1,12 @@
 import { Outlet, createRootRoute } from '@tanstack/react-router';
-import s from './root.module.css';
-import { ErrorBoundary } from '../features/error-boundary';
-import { Container, Header } from '../components';
+
+import { ErrorBoundary } from '@/features/error-boundary';
+import { ThemeProvider } from '@/features/theme';
+import { Header } from '@/widgets/header';
+
 import { NotFoundPage } from './not-found/not-found-page';
+
+import s from './root.module.css';
 
 export const Route = createRootRoute({
   component: RootComponent,
@@ -11,15 +15,13 @@ export const Route = createRootRoute({
 
 function RootComponent() {
   return (
-    <>
-      <Header />
-      <div className={s.app}>
-        <ErrorBoundary>
-          <Container className={s.container}>
-            <Outlet />
-          </Container>
-        </ErrorBoundary>
-      </div>
-    </>
+    <ErrorBoundary>
+      <ThemeProvider>
+        <Header />
+        <main className={s.main}>
+          <Outlet />
+        </main>
+      </ThemeProvider>
+    </ErrorBoundary>
   );
 }
