@@ -1,4 +1,4 @@
-import { type FC } from 'react';
+import { type FC, useEffect, useMemo } from 'react';
 
 import clsx from 'clsx';
 
@@ -9,6 +9,7 @@ import { useCharacterListStore } from '../../model/character-list-state/characte
 import { CharacterCard } from '../character-card';
 
 import s from './selected-characters.module.css';
+
 interface SelectedCharactersProps {
   className?: string;
 }
@@ -19,27 +20,27 @@ export const SelectedCharacters: FC<SelectedCharactersProps> = ({
   const { selectedCharacters, resetCharacterSelected } =
     useCharacterListStore();
 
-  const handleDownload = () => {
-    if (!selectedCharacters || selectedCharacters.size === 0) return;
+  const downloadMeta = useMemo(() => {
+    if (!selectedCharacters || selectedCharacters.size === 0) return null;
 
-    const charactersArray = Array.from(selectedCharacters.values());
-
-    const csvData = generateCSV(charactersArray);
-
-    const fileName = `${selectedCharacters.size}_characters.csv`;
-
+    const csvData = generateCSV(Array.from(selectedCharacters.values()));
     const blob = new Blob(['\uFEFF' + csvData], {
       type: 'text/csv;charset=utf-8;',
     });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = fileName;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
-  };
+
+    return {
+      url: URL.createObjectURL(blob),
+      fileName: `${selectedCharacters.size}_characters.csv`,
+      blob,
+    };
+  }, [selectedCharacters]);
+
+  useEffect(() => {
+    const url = downloadMeta?.url;
+    if (!url) return;
+
+    return () => URL.revokeObjectURL(url);
+  }, [downloadMeta?.url]);
 
   if (!selectedCharacters || selectedCharacters.size === 0) return null;
 
@@ -56,9 +57,10 @@ export const SelectedCharacters: FC<SelectedCharactersProps> = ({
             Reset
           </Button>
           <Button
+            as="a"
+            download={downloadMeta?.fileName}
+            href={downloadMeta?.url}
             variant={'primary'}
-            onClick={handleDownload}
-            disabled={selectedCharacters.size === 0}
           >
             Download CSV
           </Button>

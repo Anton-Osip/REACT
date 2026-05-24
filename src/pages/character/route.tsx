@@ -1,9 +1,8 @@
 import { createFileRoute } from '@tanstack/react-router';
 
+import { STORAGE_KEY } from '@/features/character/model/constants.ts';
 import { CharacterPage } from '@/pages/character/-character-page.tsx';
 import { loadFromStorage } from '@/shared/utils';
-
-export const STORAGE_KEY = 'searchCharacterValue';
 
 function resolveSearch(
   urlSearch: string | undefined,

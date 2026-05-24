@@ -3,13 +3,12 @@ import userEvent from '@testing-library/user-event';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { getCharacters } from '@/features/character/api';
+import { STORAGE_KEY } from '@/features/character/model/constants.ts';
 import {
   createCharactersResponse,
   renderWithRouter,
 } from '@/shared/test-utils';
 import { loadFromStorage } from '@/shared/utils';
-
-import { STORAGE_KEY } from './route.tsx';
 
 vi.mock('@/shared/utils', async (importOriginal) => {
   const actual = await importOriginal<typeof import('@/shared/utils')>();

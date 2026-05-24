@@ -3,11 +3,11 @@ import userEvent from '@testing-library/user-event';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import '@testing-library/jest-dom/vitest';
-import { createCharactersResponse } from '../../../../shared/test-utils';
-import type { Character } from '../../api/getCharacters.type.ts';
-import { useCharacterListStore } from '../../model/character-list-state/character-list.state.ts';
+import { SelectedCharacters } from '@/features/character';
+import type { Character } from '@/features/character/api';
+import { createCharactersResponse } from '@/shared/test-utils';
 
-import { SelectedCharacters } from './selected-characters.tsx';
+import { useCharacterListStore } from '../../model/character-list-state/character-list.state.ts';
 
 const navigateMock = vi.fn();
 
@@ -102,7 +102,7 @@ describe('SelectedCharacters', () => {
 
     expect(screen.getByRole('button', { name: 'Reset' })).toBeInTheDocument();
     expect(
-      screen.getByRole('button', { name: 'Download CSV' })
+      screen.getByRole('link', { name: 'Download CSV' })
     ).toBeInTheDocument();
   });
 
@@ -150,58 +150,50 @@ describe('SelectedCharacters', () => {
   describe('CSV download', () => {
     let createObjectURLSpy: ReturnType<typeof vi.spyOn>;
     let revokeObjectURLSpy: ReturnType<typeof vi.spyOn>;
-    let anchorClickSpy: ReturnType<typeof vi.fn<() => void>>;
-    let downloadLink: HTMLAnchorElement | null;
 
     beforeEach(() => {
-      downloadLink = null;
-      anchorClickSpy = vi.fn<() => void>();
       createObjectURLSpy = vi
         .spyOn(URL, 'createObjectURL')
         .mockReturnValue('blob:mock-url');
       revokeObjectURLSpy = vi
         .spyOn(URL, 'revokeObjectURL')
         .mockImplementation(() => {});
-
-      const originalCreateElement = document.createElement.bind(document);
-      vi.spyOn(document, 'createElement').mockImplementation((tagName) => {
-        const element = originalCreateElement(tagName);
-        if (tagName === 'a') {
-          downloadLink = element as HTMLAnchorElement;
-          vi.spyOn(element, 'click').mockImplementation(anchorClickSpy);
-        }
-        return element;
-      });
     });
 
     afterEach(() => {
       vi.restoreAllMocks();
     });
 
-    it('downloads CSV with filename based on selection count', async () => {
+    it('downloads CSV with filename based on selection count', () => {
       selectCharacters(mockCharacter, mockMorty);
       render(<SelectedCharacters />);
 
-      await user.click(screen.getByRole('button', { name: 'Download CSV' }));
+      const downloadLink = screen.getByRole('link', { name: 'Download CSV' });
 
-      expect(downloadLink?.download).toBe('2_characters.csv');
-      expect(anchorClickSpy).toHaveBeenCalledOnce();
+      expect(downloadLink).toHaveAttribute('download', '2_characters.csv');
+      expect(downloadLink).toHaveAttribute('href', 'blob:mock-url');
       expect(createObjectURLSpy).toHaveBeenCalledOnce();
-      expect(revokeObjectURLSpy).toHaveBeenCalledWith('blob:mock-url');
     });
 
     it('creates a CSV blob containing selected character data', async () => {
       selectCharacters(mockCharacter);
       render(<SelectedCharacters />);
 
-      await user.click(screen.getByRole('button', { name: 'Download CSV' }));
-
       const blob = createObjectURLSpy.mock.calls[0]?.[0] as Blob;
       const csvText = await blob.text();
 
       expect(csvText).toContain('Rick Sanchez');
       expect(csvText).toContain('Image URL');
-      expect(createObjectURLSpy.mock.calls[0]?.[0]).toBeInstanceOf(Blob);
+      expect(blob).toBeInstanceOf(Blob);
+    });
+
+    it('revokes blob URL on unmount', () => {
+      selectCharacters(mockCharacter);
+      const { unmount } = render(<SelectedCharacters />);
+
+      unmount();
+
+      expect(revokeObjectURLSpy).toHaveBeenCalledWith('blob:mock-url');
     });
   });
 });

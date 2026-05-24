@@ -10,7 +10,7 @@ import {
 import { useNavigate } from '@tanstack/react-router';
 import clsx from 'clsx';
 
-import { STORAGE_KEY } from '@/pages/character/route.tsx';
+import { STORAGE_KEY } from '@/features/character/model/constants.ts';
 import { Button, SearchIcon, TextField } from '@/shared/ui';
 import { saveToStorage } from '@/shared/utils';
 

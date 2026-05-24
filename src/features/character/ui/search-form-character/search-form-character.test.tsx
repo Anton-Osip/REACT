@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { getCharacters } from '@/features/character/api';
-import { STORAGE_KEY } from '@/pages/character/route.tsx';
+import { STORAGE_KEY } from '@/features/character/model/constants.ts';
 import {
   createCharactersResponse,
   renderWithRouter,
