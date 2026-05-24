@@ -41,10 +41,13 @@ export const SearchFormCharacter: FC<Props> = ({
 
   const onSubmitHandler = (e: FormEvent) => {
     e.preventDefault();
-    if (value.trim() === '' && value !== '') {
+
+    const inputText = value.trim();
+
+    if (inputText === '' && value !== '') {
       return;
     }
-    const inputText = value.trim();
+
     searchCharactersByName(inputText);
     setValue(inputText);
   };

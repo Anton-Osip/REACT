@@ -3,12 +3,12 @@ import { fileURLToPath } from 'node:url';
 
 import tanstackRouter from '@tanstack/router-plugin/vite';
 import react from '@vitejs/plugin-react';
-import { defineConfig } from 'vite';
+import { type UserConfig, defineConfig } from 'vite';
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 
-// https://vite.dev/config/
-export default defineConfig({
+export const createAppViteConfig = (mode: string): UserConfig => ({
+  base: mode === 'production' ? '/REACT/' : '/',
   resolve: {
     alias: {
       '@': path.resolve(dirname, 'src'),
@@ -23,3 +23,6 @@ export default defineConfig({
     react(),
   ],
 });
+
+// https://vite.dev/config/
+export default defineConfig(({ mode }) => createAppViteConfig(mode));
