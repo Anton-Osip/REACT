@@ -4,9 +4,8 @@ import { describe, it, expect, afterEach, beforeEach, vi } from 'vitest';
 
 import '@testing-library/jest-dom/vitest';
 import type { CharacterPreview } from '@/features/character/api';
+import { useSelectedCharacterStore } from '@/features/character/model/selected-character-state/selected-character.state.ts';
 import mockImage from '@/shared/assets/image/errorPageImage.png';
-
-import { useCharacterListStore } from '../../model/character-list-state/character-list.state.ts';
 
 import { CharacterCard, type CharacterCardProps } from './character-card.tsx';
 
@@ -32,12 +31,7 @@ const baseCharacter: CharacterPreview = {
 };
 
 function resetStore() {
-  useCharacterListStore.setState({
-    characters: null,
-    charactersIsLoading: false,
-    charactersIsError: null,
-    selectedCharacters: null,
-  });
+  useSelectedCharacterStore.setState({ selectedCharacters: null });
 }
 
 function renderCard(overrides: Partial<CharacterCardProps> = {}) {
@@ -194,7 +188,9 @@ describe('CharacterCard', () => {
     await user.click(selectButton);
 
     expect(
-      useCharacterListStore.getState().selectedCharacters?.has(baseCharacter.id)
+      useSelectedCharacterStore
+        .getState()
+        .selectedCharacters?.has(baseCharacter.id)
     ).toBe(true);
     expect(navigateMock).not.toHaveBeenCalled();
   });
@@ -212,12 +208,12 @@ describe('CharacterCard', () => {
       search: expect.any(Function),
     });
     expect(
-      useCharacterListStore.getState().selectedCharacters?.has(42)
+      useSelectedCharacterStore.getState().selectedCharacters?.has(42)
     ).toBeFalsy();
   });
 
   it('marks star button as selected when character is in store', () => {
-    useCharacterListStore.getState().toggleCharacterSelected(baseCharacter);
+    useSelectedCharacterStore.getState().toggleCharacterSelected(baseCharacter);
     renderCard();
 
     const [selectButton] = screen.getAllByRole('button');

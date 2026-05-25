@@ -2,7 +2,10 @@ import { RouterProvider, createRouter } from '@tanstack/react-router';
 import ReactDOM from 'react-dom/client';
 
 import { routeTree } from '../routeTree.gen.ts';
+
 import '@/shared/styles/index.css';
+
+import { AppProviders } from './providers';
 
 const basepath = import.meta.env.BASE_URL.replace(/\/$/, '') || '/';
 
@@ -24,5 +27,9 @@ const rootElement = document.getElementById('root');
 
 if (rootElement) {
   const root = ReactDOM.createRoot(rootElement);
-  root.render(<RouterProvider router={router} />);
+  root.render(
+    <AppProviders>
+      <RouterProvider router={router} />
+    </AppProviders>
+  );
 }

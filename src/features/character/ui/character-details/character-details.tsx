@@ -1,10 +1,11 @@
-import { type FC, useEffect } from 'react';
+import { type FC } from 'react';
 
 import { getRouteApi, useNavigate } from '@tanstack/react-router';
 import clsx from 'clsx';
 
-import { useCharacterDetailsStore } from '@/features/character/model/character-details-state/character-details.state.ts';
+import { useGetCharactersDetails } from '@/features/character/api';
 import { Button, CrossIcon, Skeleton, Typography } from '@/shared/ui';
+import { getQueryErrorMessage } from '@/shared/utils/get-query-error-message.ts';
 import { ErrorComponent } from '@/widgets/error';
 
 import s from './character-details.module.css';
@@ -19,17 +20,19 @@ export const CharacterDetails: FC<CharacterDetailsProps> = ({ className }) => {
   const navigate = useNavigate({ from: '/character' });
 
   const { id: details } = indexRoute.useParams();
-  const {
-    characterDetails,
-    fetchCharactersDetails,
-    charactersIsLoading,
-    charactersIsError,
-  } = useCharacterDetailsStore();
 
-  useEffect(() => {
-    if (!details) return;
-    void fetchCharactersDetails({ characterId: +details });
-  }, [details, fetchCharactersDetails]);
+  const {
+    data: characterDetails,
+    error,
+    isLoading,
+    isFetching,
+    isError,
+    refetch,
+  } = useGetCharactersDetails({
+    characterId: Number(details),
+  });
+
+  const charactersIsLoading = isLoading || isFetching;
 
   const closeDetails = () => {
     void navigate({
@@ -44,9 +47,9 @@ export const CharacterDetails: FC<CharacterDetailsProps> = ({ className }) => {
       {charactersIsLoading && <Skeleton className={s.skeleton} />}
 
       <ErrorComponent
-        isError={!!charactersIsError}
-        errorText={charactersIsError?.message}
-        tryAgain={() => fetchCharactersDetails({ characterId: +details })}
+        isError={isError}
+        errorText={error ? getQueryErrorMessage(error) : undefined}
+        tryAgain={refetch}
       />
 
       {characterDetails && (

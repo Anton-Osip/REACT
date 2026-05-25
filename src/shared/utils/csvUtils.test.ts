@@ -65,6 +65,19 @@ describe('generateCSV', () => {
     expect(csv).toContain('Morty Smith');
   });
 
+  it('renders empty cells for null and undefined escaped values', () => {
+    const character: CharacterPreview = {
+      ...toPreview(rick),
+      species: 'Human',
+      location: { name: 'Earth', url: '' },
+    };
+
+    const csv = generateCSV([character]);
+    const [, row] = csv.split('\n');
+
+    expect(row).toMatch(/^1,Rick Sanchez,Alive,Human,Earth,,/);
+  });
+
   it('escapes values containing commas, quotes, or newlines', () => {
     const character: CharacterPreview = {
       ...toPreview(rick),
@@ -77,5 +90,16 @@ describe('generateCSV', () => {
 
     expect(row).toContain('"Rick ""Pickle"", Sanchez"');
     expect(row).toContain('"Human, Alien"');
+  });
+
+  it('escapes values containing newline characters', () => {
+    const character: CharacterPreview = {
+      ...toPreview(rick),
+      name: 'Rick\nSanchez',
+    };
+
+    const csv = generateCSV([character]);
+
+    expect(csv).toMatch(/1,"Rick\nSanchez",Alive/);
   });
 });

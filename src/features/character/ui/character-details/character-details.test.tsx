@@ -1,30 +1,74 @@
-import { cleanup, screen, waitFor } from '@testing-library/react';
+import {
+  createMemoryHistory,
+  createRootRoute,
+  createRoute,
+  createRouter,
+  RouterProvider,
+} from '@tanstack/react-router';
+import {
+  cleanup,
+  screen,
+  waitFor,
+  within,
+  render,
+} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { getCharacterDetails, getCharacters } from '@/features/character/api';
+import { AppProviders } from '@/app/providers';
 import {
   createCharactersResponse,
+  createErrorDetailsQuery,
+  createLoadingDetailsQuery,
+  createSuccessDetailsQuery,
   renderWithRouter,
+  useGetCharactersDetailsMock,
 } from '@/shared/test-utils';
 
-vi.mock('@/features/character/api', () => ({
-  getCharacterDetails: vi.fn(),
-  getCharacters: vi.fn(),
-}));
+import { CharacterDetails } from './character-details.tsx';
 
-const mockedGetCharacterDetails = vi.mocked(getCharacterDetails);
-const mockedGetCharacters = vi.mocked(getCharacters);
+const rootRoute = createRootRoute();
+const characterDetailsRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/character/$id',
+  component: CharacterDetails,
+});
+const routeTree = rootRoute.addChildren([characterDetailsRoute]);
+
+function renderCharacterDetailsRoute(characterId = '1') {
+  const router = createRouter({
+    routeTree,
+    history: createMemoryHistory({
+      initialEntries: [`/character/${characterId}`],
+    }),
+  });
+
+  return {
+    router,
+    ...render(
+      <AppProviders>
+        <RouterProvider router={router} />
+      </AppProviders>
+    ),
+  };
+}
+
+async function findDetailsPanel() {
+  return waitFor(() => {
+    const panel = document.querySelector('[class*="characterDetails"]');
+    if (!panel) {
+      throw new Error('Character details panel not found');
+    }
+    return panel as HTMLElement;
+  });
+}
 
 describe('CharacterDetails', () => {
   const user = userEvent.setup();
 
   beforeEach(() => {
-    mockedGetCharacterDetails.mockReset();
-    mockedGetCharacters.mockReset();
-    mockedGetCharacters.mockResolvedValue(
-      createCharactersResponse({ results: [] })
-    );
+    useGetCharactersDetailsMock.mockReset();
+    useGetCharactersDetailsMock.mockReturnValue(createLoadingDetailsQuery());
     vi.spyOn(console, 'log').mockImplementation(() => {});
   });
 
@@ -33,20 +77,24 @@ describe('CharacterDetails', () => {
     vi.restoreAllMocks();
   });
 
-  it('renders nothing when detailsId is undefined', () => {
-    renderWithRouter('/character');
+  it('renders nothing when detailsId is undefined', async () => {
+    await renderWithRouter('/character');
 
-    expect(mockedGetCharacterDetails).not.toHaveBeenCalled();
-    expect(screen.queryByRole('img')).not.toBeInTheDocument();
+    expect(useGetCharactersDetailsMock).not.toHaveBeenCalled();
+    expect(
+      document.querySelector('[class*="characterDetails"]')
+    ).not.toBeInTheDocument();
   });
 
   it('shows skeleton while data is fetching', async () => {
-    mockedGetCharacterDetails.mockReturnValue(new Promise(() => {}));
+    useGetCharactersDetailsMock.mockReturnValue(createLoadingDetailsQuery());
 
-    const { container } = renderWithRouter('/character/1');
+    const { container } = renderCharacterDetailsRoute('1');
 
     await waitFor(() =>
-      expect(mockedGetCharacterDetails).toHaveBeenCalledWith(1)
+      expect(useGetCharactersDetailsMock).toHaveBeenCalledWith({
+        characterId: 1,
+      })
     );
 
     expect(container.querySelector('[class*="skeleton"]')).toBeInTheDocument();
@@ -54,65 +102,94 @@ describe('CharacterDetails', () => {
 
   it('renders character fields when data loads successfully', async () => {
     const character = createCharactersResponse().results[0];
-    mockedGetCharacterDetails.mockResolvedValue(character);
-
-    renderWithRouter('/character/1');
-
-    expect(await screen.findByText(character.name)).toBeInTheDocument();
-    expect(screen.getByText(character.gender)).toBeInTheDocument();
-    expect(screen.getByText(character.location.name)).toBeInTheDocument();
-    expect(screen.getByText(character.species)).toBeInTheDocument();
-    expect(screen.getByText(character.status)).toBeInTheDocument();
-    expect(screen.getByRole('img', { name: character.name })).toHaveAttribute(
-      'src',
-      character.image
+    useGetCharactersDetailsMock.mockReturnValue(
+      createSuccessDetailsQuery(character)
     );
+
+    renderCharacterDetailsRoute('1');
+
+    const details = await findDetailsPanel();
+
+    expect(within(details).getByText(character.name)).toBeInTheDocument();
+    expect(within(details).getByText(character.gender)).toBeInTheDocument();
+    expect(
+      within(details).getByText(character.location.name)
+    ).toBeInTheDocument();
+    expect(within(details).getByText(character.species)).toBeInTheDocument();
+    expect(within(details).getByText(character.status)).toBeInTheDocument();
+    expect(
+      within(details).getByRole('img', { name: character.name })
+    ).toHaveAttribute('src', character.image);
   });
 
   it('shows error UI when API call fails', async () => {
-    mockedGetCharacterDetails.mockRejectedValue(
-      new Error('Service unavailable')
+    useGetCharactersDetailsMock.mockReturnValue(
+      createErrorDetailsQuery(new Error('Service unavailable'))
     );
 
-    renderWithRouter('/character/1');
+    renderCharacterDetailsRoute('1');
 
     expect(await screen.findByText('Something went wrong')).toBeInTheDocument();
     expect(screen.getByText('Service unavailable')).toBeInTheDocument();
   });
 
-  it('retries loading when Try Again is clicked', async () => {
-    const character = createCharactersResponse().results[0];
-    mockedGetCharacterDetails
-      .mockRejectedValueOnce(new Error('first failure'))
-      .mockResolvedValueOnce(character);
+  it('calls refetch when Try Again is clicked after an error', async () => {
+    const refetch = vi.fn();
 
-    renderWithRouter('/character/1');
+    useGetCharactersDetailsMock.mockReturnValue(
+      createErrorDetailsQuery(new Error('first failure'), refetch)
+    );
+
+    renderCharacterDetailsRoute('1');
 
     expect(await screen.findByText('Something went wrong')).toBeInTheDocument();
 
     await user.click(screen.getByRole('button', { name: 'Try Again' }));
 
-    expect(await screen.findByText(character.name)).toBeInTheDocument();
-    expect(mockedGetCharacterDetails).toHaveBeenCalledTimes(2);
+    expect(refetch).toHaveBeenCalled();
   });
 
   it('wraps non-Error rejections in Error', async () => {
-    mockedGetCharacterDetails.mockRejectedValue('boom');
+    useGetCharactersDetailsMock.mockReturnValue(
+      createErrorDetailsQuery('boom')
+    );
 
-    renderWithRouter('/character/1');
+    renderCharacterDetailsRoute('1');
 
     expect(await screen.findByText('boom')).toBeInTheDocument();
   });
 
+  it('navigates to character list when close button is clicked', async () => {
+    const character = createCharactersResponse().results[0];
+    useGetCharactersDetailsMock.mockReturnValue(
+      createSuccessDetailsQuery(character)
+    );
+
+    const { router } = renderCharacterDetailsRoute('1');
+    const details = await findDetailsPanel();
+    const closeButton = details.querySelector('[class*="closeBtn"]');
+
+    expect(closeButton).toBeInstanceOf(HTMLButtonElement);
+    await user.click(closeButton as HTMLButtonElement);
+
+    await waitFor(() => {
+      expect(router.state.location.pathname).toBe('/character');
+    });
+  });
+
   it('refetches when detailsId changes', async () => {
     const [first, second] = createCharactersResponse().results;
-    mockedGetCharacterDetails
-      .mockResolvedValueOnce(first)
-      .mockResolvedValueOnce(second);
+    useGetCharactersDetailsMock.mockImplementation(
+      ({ characterId }: { characterId: number }) =>
+        characterId === 1
+          ? createSuccessDetailsQuery(first)
+          : createSuccessDetailsQuery(second)
+    );
 
-    const { router } = renderWithRouter('/character/1');
+    const { router } = renderCharacterDetailsRoute('1');
 
-    expect(await screen.findByText(first.name)).toBeInTheDocument();
+    const firstDetails = await findDetailsPanel();
+    expect(within(firstDetails).getByText(first.name)).toBeInTheDocument();
 
     await router.navigate({
       to: '/character/$id',
@@ -120,8 +197,13 @@ describe('CharacterDetails', () => {
       search: { search: undefined, page: 1 },
     });
 
-    expect(await screen.findByText(second.name)).toBeInTheDocument();
-    expect(mockedGetCharacterDetails).toHaveBeenCalledWith(1);
-    expect(mockedGetCharacterDetails).toHaveBeenCalledWith(2);
+    const secondDetails = await findDetailsPanel();
+    expect(within(secondDetails).getByText(second.name)).toBeInTheDocument();
+    expect(useGetCharactersDetailsMock).toHaveBeenCalledWith({
+      characterId: 1,
+    });
+    expect(useGetCharactersDetailsMock).toHaveBeenCalledWith({
+      characterId: 2,
+    });
   });
 });

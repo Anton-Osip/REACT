@@ -3,11 +3,13 @@ import { useEffect, type FC } from 'react';
 import { useNavigate } from '@tanstack/react-router';
 import clsx from 'clsx';
 
+import { useGetCharacters } from '@/features/character/api';
+import { toCharacterPreview } from '@/features/character/model/toCharacterPreview.ts';
 import { Pagination } from '@/shared/ui';
+import { getQueryErrorMessage } from '@/shared/utils/get-query-error-message.ts';
 import { EmptyComponent } from '@/widgets/empty';
 import { ErrorComponent } from '@/widgets/error';
 
-import { useCharacterListStore } from '../../model/character-list-state/character-list.state';
 import { CharacterListGrid } from '../character-list-grid';
 import { CharacterLoading } from '../character-loading';
 
@@ -21,16 +23,22 @@ type Props = {
 
 export const CharacterList: FC<Props> = ({ className, searchName, page }) => {
   const navigate = useNavigate({ from: '/character' });
-  const {
-    characters,
-    charactersIsLoading,
-    charactersIsError,
-    fetchCharacters,
-  } = useCharacterListStore();
 
-  useEffect(() => {
-    void fetchCharacters({ name: searchName, page });
-  }, [fetchCharacters, searchName, page]);
+  const {
+    error,
+    isError,
+    isLoading,
+    isFetching,
+    data,
+    refetch: fetchCharacters,
+  } = useGetCharacters({
+    name: searchName,
+    page,
+  });
+
+  const characters = data?.results.map((c) => toCharacterPreview(c));
+
+  const charactersIsLoading = isFetching || isLoading;
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -39,23 +47,23 @@ export const CharacterList: FC<Props> = ({ className, searchName, page }) => {
   return (
     <>
       <ErrorComponent
-        isError={!!charactersIsError}
-        errorText={charactersIsError?.message}
-        tryAgain={() => void fetchCharacters({ name: searchName, page })}
+        isError={isError}
+        errorText={error ? getQueryErrorMessage(error) : undefined}
+        tryAgain={() => void fetchCharacters()}
       />
 
       <EmptyComponent
-        isEmpty={characters?.results.length === 0 && !charactersIsLoading}
+        isEmpty={characters?.length === 0 && !charactersIsLoading}
       />
 
       <CharacterLoading isLoading={!characters && charactersIsLoading} />
 
-      {characters && characters.results.length !== 0 && (
+      {characters && characters.length !== 0 && (
         <div className={clsx(s.characterList, className)}>
-          <CharacterListGrid characters={characters.results} />
+          <CharacterListGrid characters={characters} />
           <Pagination
             className={s.pagination}
-            pages={characters.info.pages ?? 1}
+            pages={data?.info.pages ?? 1}
             currentPage={page}
             onPageChange={(nextPage: number) => {
               void navigate({

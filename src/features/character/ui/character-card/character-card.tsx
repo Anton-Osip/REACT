@@ -4,7 +4,7 @@ import { useNavigate } from '@tanstack/react-router';
 import clsx from 'clsx';
 
 import type { CharacterPreview } from '@/features/character/api';
-import { useCharacterListStore } from '@/features/character/model/character-list-state/character-list.state.ts';
+import { useSelectedCharacterStore } from '@/features/character/model/selected-character-state/selected-character.state.ts';
 import { Button, StarIcon, Typography } from '@/shared/ui';
 
 import s from './character-card.module.css';
@@ -29,7 +29,7 @@ export const CharacterCard = memo(function CharacterCard({
   };
 
   const { selectedCharacters, toggleCharacterSelected } =
-    useCharacterListStore();
+    useSelectedCharacterStore();
 
   const onStarClick = (event: MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();

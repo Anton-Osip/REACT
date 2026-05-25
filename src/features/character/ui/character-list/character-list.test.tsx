@@ -4,21 +4,17 @@ import { cleanup, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { getCharacters } from '@/features/character/api';
+import { useSelectedCharacterStore } from '@/features/character/model/selected-character-state/selected-character.state.ts';
 import {
   createCharactersResponse,
+  createErrorCharactersQuery,
+  createLoadingCharactersQuery,
+  createSuccessCharactersQuery,
   renderWithRouter,
+  useGetCharactersMock,
 } from '@/shared/test-utils';
 
-import { useCharacterListStore } from '../../model/character-list-state/character-list.state.ts';
-
 import { CharacterList } from './character-list.tsx';
-
-vi.mock('@/features/character/api', () => ({
-  getCharacters: vi.fn(),
-}));
-
-const mockedGetCharacters = vi.mocked(getCharacters);
 
 function CharacterListHarness({ name }: { name: string }) {
   const [page, setPage] = useState(1);
@@ -40,18 +36,18 @@ function getCharacterSelectButton(characterName: string): HTMLButtonElement {
   return button;
 }
 
+function resetSelectedStore() {
+  useSelectedCharacterStore.setState({ selectedCharacters: null });
+}
+
 describe('CharacterList', () => {
   const user = userEvent.setup();
 
   beforeEach(() => {
     vi.stubGlobal('scrollTo', vi.fn());
-    mockedGetCharacters.mockReset();
-    useCharacterListStore.setState({
-      characters: null,
-      charactersIsLoading: false,
-      charactersIsError: null,
-      selectedCharacters: null,
-    });
+    resetSelectedStore();
+    useGetCharactersMock.mockReset();
+    useGetCharactersMock.mockReturnValue(createSuccessCharactersQuery());
   });
 
   afterEach(() => {
@@ -60,18 +56,18 @@ describe('CharacterList', () => {
   });
 
   it('shows loading grid while data is fetching', async () => {
-    mockedGetCharacters.mockReturnValue(new Promise(() => {}));
+    useGetCharactersMock.mockReturnValue(createLoadingCharactersQuery());
 
     const { container } = render(<CharacterList searchName="" page={1} />);
-
-    await waitFor(() => expect(mockedGetCharacters).toHaveBeenCalled());
 
     const grid = container.querySelector('[class*="grid"]');
     expect(grid?.childElementCount).toBe(20);
   });
 
   it('renders character cards when data loads successfully', async () => {
-    mockedGetCharacters.mockResolvedValue(createCharactersResponse());
+    useGetCharactersMock.mockReturnValue(
+      createSuccessCharactersQuery(createCharactersResponse())
+    );
 
     render(<CharacterList searchName="" page={1} />);
 
@@ -80,8 +76,8 @@ describe('CharacterList', () => {
   });
 
   it('shows empty state when API returns no results', async () => {
-    mockedGetCharacters.mockResolvedValue(
-      createCharactersResponse({ results: [] })
+    useGetCharactersMock.mockReturnValue(
+      createSuccessCharactersQuery(createCharactersResponse({ results: [] }))
     );
 
     render(<CharacterList searchName="zzz-unknown" page={1} />);
@@ -90,7 +86,9 @@ describe('CharacterList', () => {
   });
 
   it('shows error UI and message when API call fails', async () => {
-    mockedGetCharacters.mockRejectedValue(new Error('Service unavailable'));
+    useGetCharactersMock.mockReturnValue(
+      createErrorCharactersQuery(new Error('Service unavailable'))
+    );
 
     render(<CharacterList searchName="rick" page={1} />);
 
@@ -99,33 +97,58 @@ describe('CharacterList', () => {
   });
 
   it('retries fetch when Try Again is clicked after an error', async () => {
-    mockedGetCharacters
-      .mockRejectedValueOnce(new Error('temporary'))
-      .mockResolvedValueOnce(createCharactersResponse());
+    let attempt = 0;
+    const view: { rerender: ReturnType<typeof render>['rerender'] } = {
+      rerender: () => {},
+    };
 
-    render(<CharacterList searchName="beth" page={1} />);
+    useGetCharactersMock.mockImplementation(() => {
+      if (attempt === 0) {
+        return createErrorCharactersQuery(
+          new Error('temporary'),
+          vi.fn(() => {
+            attempt = 1;
+            view.rerender(<CharacterList searchName="beth" page={1} />);
+            return Promise.resolve();
+          }) as unknown as Parameters<typeof createErrorCharactersQuery>[1]
+        );
+      }
+
+      return createSuccessCharactersQuery(createCharactersResponse());
+    });
+
+    ({ rerender: view.rerender } = render(
+      <CharacterList searchName="beth" page={1} />
+    ));
 
     expect(await screen.findByText('temporary')).toBeInTheDocument();
 
     await user.click(screen.getByRole('button', { name: /try again/i }));
 
     expect(await screen.findByText('Rick Sanchez')).toBeInTheDocument();
-    expect(mockedGetCharacters).toHaveBeenCalledTimes(2);
   });
 
   it('fetches again when searchName prop changes and scrolls to top', async () => {
-    mockedGetCharacters.mockResolvedValue(createCharactersResponse());
+    useGetCharactersMock.mockReturnValue(
+      createSuccessCharactersQuery(createCharactersResponse())
+    );
 
     const { rerender } = render(<CharacterListHarness name="a" />);
 
     await waitFor(() =>
-      expect(mockedGetCharacters).toHaveBeenLastCalledWith('a', 1)
+      expect(useGetCharactersMock).toHaveBeenLastCalledWith({
+        name: 'a',
+        page: 1,
+      })
     );
 
     rerender(<CharacterListHarness name="b" />);
 
     await waitFor(() =>
-      expect(mockedGetCharacters).toHaveBeenLastCalledWith('b', 1)
+      expect(useGetCharactersMock).toHaveBeenLastCalledWith({
+        name: 'b',
+        page: 1,
+      })
     );
 
     expect(window.scrollTo).toHaveBeenCalledWith({
@@ -135,24 +158,29 @@ describe('CharacterList', () => {
   });
 
   it('uses page 1 when searchName changes after navigating to another page', async () => {
-    mockedGetCharacters.mockResolvedValue(
-      createCharactersResponse({
-        info: {
-          count: 40,
-          pages: 2,
-          next: null,
-          prev: null,
-        },
-      })
+    useGetCharactersMock.mockReturnValue(
+      createSuccessCharactersQuery(
+        createCharactersResponse({
+          info: {
+            count: 40,
+            pages: 2,
+            next: null,
+            prev: null,
+          },
+        })
+      )
     );
 
-    const { router } = renderWithRouter('/character?search=a&page=1');
+    const { router } = await renderWithRouter('/character?search=a&page=1');
     await screen.findByText('Rick Sanchez');
 
     await user.click(screen.getByRole('button', { name: '2' }));
 
     await waitFor(() =>
-      expect(mockedGetCharacters).toHaveBeenLastCalledWith('a', 2)
+      expect(useGetCharactersMock).toHaveBeenLastCalledWith({
+        name: 'a',
+        page: 2,
+      })
     );
 
     await router.navigate({
@@ -161,12 +189,17 @@ describe('CharacterList', () => {
     });
 
     await waitFor(() =>
-      expect(mockedGetCharacters).toHaveBeenLastCalledWith('b', 1)
+      expect(useGetCharactersMock).toHaveBeenLastCalledWith({
+        name: 'b',
+        page: 1,
+      })
     );
   });
 
   it('surfaces non-Error rejections as error messages', async () => {
-    mockedGetCharacters.mockRejectedValue('plain string failure');
+    useGetCharactersMock.mockReturnValue(
+      createErrorCharactersQuery('plain string failure')
+    );
 
     render(<CharacterList searchName="" page={1} />);
 
@@ -174,24 +207,20 @@ describe('CharacterList', () => {
   });
 
   it('stores selected character in zustand when star is clicked', async () => {
-    mockedGetCharacters.mockResolvedValue(createCharactersResponse());
-
-    renderWithRouter('/character');
+    await renderWithRouter('/character');
     await screen.findByText('Rick Sanchez');
     await user.click(getCharacterSelectButton('Rick Sanchez'));
 
-    expect(useCharacterListStore.getState().selectedCharacters?.has(1)).toBe(
-      true
-    );
+    expect(
+      useSelectedCharacterStore.getState().selectedCharacters?.has(1)
+    ).toBe(true);
     expect(getCharacterSelectButton('Rick Sanchez').className).toMatch(
       /isSelected/
     );
   });
 
   it('removes character from store when star is clicked again', async () => {
-    mockedGetCharacters.mockResolvedValue(createCharactersResponse());
-
-    renderWithRouter('/character');
+    await renderWithRouter('/character');
 
     await screen.findByText('Rick Sanchez');
 
@@ -199,56 +228,62 @@ describe('CharacterList', () => {
     await user.click(selectButton);
     await user.click(selectButton);
 
-    expect(useCharacterListStore.getState().selectedCharacters?.has(1)).toBe(
-      false
-    );
+    expect(
+      useSelectedCharacterStore.getState().selectedCharacters?.has(1)
+    ).toBe(false);
   });
 
   it('keeps selected characters when navigating to another route', async () => {
-    mockedGetCharacters.mockResolvedValue(createCharactersResponse());
-
-    renderWithRouter('/character');
+    const { router } = await renderWithRouter('/character');
     await screen.findByText('Rick Sanchez');
     await user.click(getCharacterSelectButton('Rick Sanchez'));
 
-    expect(useCharacterListStore.getState().selectedCharacters?.has(1)).toBe(
-      true
-    );
+    expect(
+      useSelectedCharacterStore.getState().selectedCharacters?.has(1)
+    ).toBe(true);
 
-    cleanup();
-    renderWithRouter('/about');
-    renderWithRouter('/character');
+    await router.navigate({ to: '/about' });
+    await router.navigate({
+      to: '/character',
+      search: { search: undefined, page: 1 },
+    });
 
-    await screen.findByText('Rick Sanchez');
-    expect(getCharacterSelectButton('Rick Sanchez').className).toMatch(
-      /isSelected/
-    );
+    await waitFor(() => {
+      expect(getCharacterSelectButton('Rick Sanchez').className).toMatch(
+        /isSelected/
+      );
+    });
   });
 
   it('keeps selected characters when pagination page changes', async () => {
-    mockedGetCharacters.mockResolvedValue(
-      createCharactersResponse({
-        info: {
-          count: 40,
-          pages: 2,
-          next: null,
-          prev: null,
-        },
-      })
+    useGetCharactersMock.mockReturnValue(
+      createSuccessCharactersQuery(
+        createCharactersResponse({
+          info: {
+            count: 40,
+            pages: 2,
+            next: null,
+            prev: null,
+          },
+        })
+      )
     );
 
-    renderWithRouter('/character?page=1');
+    await renderWithRouter('/character?page=1');
     await screen.findByText('Rick Sanchez');
 
     await user.click(getCharacterSelectButton('Rick Sanchez'));
     await user.click(screen.getByRole('button', { name: '2' }));
 
     await waitFor(() =>
-      expect(mockedGetCharacters).toHaveBeenLastCalledWith(undefined, 2)
+      expect(useGetCharactersMock).toHaveBeenLastCalledWith({
+        name: undefined,
+        page: 2,
+      })
     );
-    expect(useCharacterListStore.getState().selectedCharacters?.has(1)).toBe(
-      true
-    );
+    expect(
+      useSelectedCharacterStore.getState().selectedCharacters?.has(1)
+    ).toBe(true);
 
     await user.click(screen.getByRole('button', { name: '1' }));
 

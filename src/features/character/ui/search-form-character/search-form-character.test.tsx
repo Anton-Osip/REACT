@@ -2,17 +2,9 @@ import { cleanup, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { getCharacters } from '@/features/character/api';
 import { STORAGE_KEY } from '@/features/character/model/constants.ts';
-import {
-  createCharactersResponse,
-  renderWithRouter,
-} from '@/shared/test-utils';
+import { renderWithRouter } from '@/shared/test-utils';
 import { saveToStorage } from '@/shared/utils';
-
-vi.mock('@/features/character/api', () => ({
-  getCharacters: vi.fn(),
-}));
 
 vi.mock('@/shared/utils', async (importOriginal) => {
   const actual = await importOriginal<typeof import('@/shared/utils')>();
@@ -23,34 +15,28 @@ vi.mock('@/shared/utils', async (importOriginal) => {
 });
 
 const mockedSaveToStorage = vi.mocked(saveToStorage);
-const mockedGetCharacters = vi.mocked(getCharacters);
 
 describe('SearchFormCharacter', () => {
   const user = userEvent.setup();
 
   beforeEach(() => {
-    vi.stubGlobal('scrollTo', vi.fn());
     localStorage.clear();
     mockedSaveToStorage.mockReset();
-    mockedGetCharacters.mockReset();
-    mockedGetCharacters.mockResolvedValue(createCharactersResponse());
   });
 
   afterEach(() => {
     cleanup();
-    vi.unstubAllGlobals();
-    vi.restoreAllMocks();
   });
 
   it('renders search input and submit button', async () => {
-    renderWithRouter('/character');
+    await renderWithRouter('/character');
 
     expect(await screen.findByPlaceholderText('Search')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /search/i })).toBeInTheDocument();
   });
 
   it('shows default value from props when provided', async () => {
-    renderWithRouter('/character?search=pickle%20rick');
+    await renderWithRouter('/character?search=pickle%20rick');
 
     expect(await screen.findByPlaceholderText('Search')).toHaveValue(
       'pickle rick'
@@ -58,13 +44,13 @@ describe('SearchFormCharacter', () => {
   });
 
   it('shows empty input when default value is not provided', async () => {
-    renderWithRouter('/character');
+    await renderWithRouter('/character');
 
     expect(await screen.findByPlaceholderText('Search')).toHaveValue('');
   });
 
   it('syncs input when defaultValue prop changes', async () => {
-    const { router } = renderWithRouter('/character?search=alpha');
+    const { router } = await renderWithRouter('/character?search=alpha');
 
     expect(await screen.findByPlaceholderText('Search')).toHaveValue('alpha');
 
@@ -79,7 +65,7 @@ describe('SearchFormCharacter', () => {
   });
 
   it('updates input value when user types', async () => {
-    renderWithRouter('/character');
+    await renderWithRouter('/character');
     const input = await screen.findByPlaceholderText('Search');
 
     await user.type(input, 'summer');
@@ -88,7 +74,7 @@ describe('SearchFormCharacter', () => {
   });
 
   it('saves trimmed value and updates URL search on submit', async () => {
-    const { router } = renderWithRouter('/character');
+    const { router } = await renderWithRouter('/character');
     const input = await screen.findByPlaceholderText('Search');
 
     await user.type(input, '  beth  ');
@@ -105,7 +91,7 @@ describe('SearchFormCharacter', () => {
   });
 
   it('saves empty string and clears URL search when submitting empty input', async () => {
-    const { router } = renderWithRouter('/character?search=old');
+    const { router } = await renderWithRouter('/character?search=old');
     const input = await screen.findByPlaceholderText('Search');
 
     await user.clear(input);
@@ -119,7 +105,7 @@ describe('SearchFormCharacter', () => {
   });
 
   it('does not save or navigate when input is only whitespace', async () => {
-    const { router } = renderWithRouter('/character');
+    const { router } = await renderWithRouter('/character');
     const input = await screen.findByPlaceholderText('Search');
 
     await user.type(input, '   ');
@@ -133,7 +119,7 @@ describe('SearchFormCharacter', () => {
   });
 
   it('updates URL search with new term on submit', async () => {
-    const { router } = renderWithRouter('/character?search=first');
+    const { router } = await renderWithRouter('/character?search=first');
     const input = await screen.findByPlaceholderText('Search');
 
     await user.clear(input);

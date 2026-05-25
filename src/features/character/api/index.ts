@@ -8,4 +8,4 @@ export type {
   CharacterGender,
 } from './getCharacters.type.ts';
 
-export { getCharacters, getCharacterDetails } from './getCharacters.ts';
+export { useGetCharacters, useGetCharactersDetails } from './queries.ts';

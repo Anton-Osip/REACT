@@ -2,10 +2,10 @@ import { type FC, useEffect, useMemo } from 'react';
 
 import clsx from 'clsx';
 
+import { useSelectedCharacterStore } from '@/features/character/model/selected-character-state/selected-character.state.ts';
 import { Button, Typography } from '@/shared/ui';
 import { generateCSV } from '@/shared/utils';
 
-import { useCharacterListStore } from '../../model/character-list-state/character-list.state.ts';
 import { CharacterCard } from '../character-card';
 
 import s from './selected-characters.module.css';
@@ -18,7 +18,7 @@ export const SelectedCharacters: FC<SelectedCharactersProps> = ({
   className,
 }) => {
   const { selectedCharacters, resetCharacterSelected } =
-    useCharacterListStore();
+    useSelectedCharacterStore();
 
   const downloadMeta = useMemo(() => {
     if (!selectedCharacters || selectedCharacters.size === 0) return null;
