@@ -1,10 +1,19 @@
 import { type FC } from 'react';
 
+import { useQueryClient } from '@tanstack/react-query';
 import { getRouteApi, useNavigate } from '@tanstack/react-router';
 import clsx from 'clsx';
 
 import { useGetCharactersDetails } from '@/features/character/api';
-import { Button, CrossIcon, Skeleton, Typography } from '@/shared/ui';
+import { characterQueryKeys } from '@/features/character/api/queries.ts';
+import { toCharacterPreview } from '@/features/character/model/toCharacterPreview.ts';
+import {
+  Button,
+  CrossIcon,
+  RefreshIcon,
+  Skeleton,
+  Typography,
+} from '@/shared/ui';
 import { getQueryErrorMessage } from '@/shared/utils/get-query-error-message.ts';
 import { ErrorComponent } from '@/widgets/error';
 
@@ -18,26 +27,29 @@ const indexRoute = getRouteApi('/character/$id');
 
 export const CharacterDetails: FC<CharacterDetailsProps> = ({ className }) => {
   const navigate = useNavigate({ from: '/character' });
+  const queryClient = useQueryClient();
 
   const { id: details } = indexRoute.useParams();
 
-  const {
-    data: characterDetails,
-    error,
-    isLoading,
-    isFetching,
-    isError,
-    refetch,
-  } = useGetCharactersDetails({
-    characterId: Number(details),
-  });
+  const { data, error, isLoading, isFetching, isError, refetch, isRefetching } =
+    useGetCharactersDetails({
+      characterId: Number(details),
+    });
 
-  const charactersIsLoading = isLoading || isFetching;
+  const charactersIsLoading = isFetching || isLoading || isRefetching;
+
+  const characterDetails = data ? toCharacterPreview(data) : undefined;
 
   const closeDetails = () => {
     void navigate({
       to: '/character',
       search: (prev) => prev,
+    });
+  };
+
+  const handleRefresh = () => {
+    void queryClient.invalidateQueries({
+      queryKey: characterQueryKeys.details({ characterId: Number(details) }),
     });
   };
 
@@ -52,7 +64,7 @@ export const CharacterDetails: FC<CharacterDetailsProps> = ({ className }) => {
         tryAgain={refetch}
       />
 
-      {characterDetails && (
+      {characterDetails && !charactersIsLoading && (
         <div className={clsx(s.characterDetails, className)}>
           <Button
             variant={'primary'}
@@ -60,6 +72,13 @@ export const CharacterDetails: FC<CharacterDetailsProps> = ({ className }) => {
             onClick={closeDetails}
           >
             <CrossIcon />
+          </Button>
+          <Button
+            variant={'primary'}
+            className={s.refreshDetails}
+            onClick={handleRefresh}
+          >
+            <RefreshIcon size={18} />
           </Button>
           <div className={s.imageBox}>
             <img

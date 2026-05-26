@@ -5,3 +5,4 @@ export { CrossIcon } from './cross-icon';
 export { MoonIcon } from './moon-icon';
 export { SunIcon } from './sun-icon';
 export { StarIcon } from './star-icon';
+export { RefreshIcon } from './refresh-icon';

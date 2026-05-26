@@ -1,15 +1,17 @@
 import { useEffect, useState } from 'react';
 
-import { cleanup, render, screen, waitFor } from '@testing-library/react';
+import { cleanup, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
+import { characterQueryKeys } from '@/features/character/api/queries.ts';
 import { useSelectedCharacterStore } from '@/features/character/model/selected-character-state/selected-character.state.ts';
 import {
   createCharactersResponse,
   createErrorCharactersQuery,
   createLoadingCharactersQuery,
   createSuccessCharactersQuery,
+  renderWithQueryClient,
   renderWithRouter,
   useGetCharactersMock,
 } from '@/shared/test-utils';
@@ -58,7 +60,9 @@ describe('CharacterList', () => {
   it('shows loading grid while data is fetching', async () => {
     useGetCharactersMock.mockReturnValue(createLoadingCharactersQuery());
 
-    const { container } = render(<CharacterList searchName="" page={1} />);
+    const { container } = renderWithQueryClient(
+      <CharacterList searchName="" page={1} />
+    );
 
     const grid = container.querySelector('[class*="grid"]');
     expect(grid?.childElementCount).toBe(20);
@@ -69,7 +73,7 @@ describe('CharacterList', () => {
       createSuccessCharactersQuery(createCharactersResponse())
     );
 
-    render(<CharacterList searchName="" page={1} />);
+    renderWithQueryClient(<CharacterList searchName="" page={1} />);
 
     expect(await screen.findByText('Rick Sanchez')).toBeInTheDocument();
     expect(screen.getByText('Morty Smith')).toBeInTheDocument();
@@ -80,7 +84,7 @@ describe('CharacterList', () => {
       createSuccessCharactersQuery(createCharactersResponse({ results: [] }))
     );
 
-    render(<CharacterList searchName="zzz-unknown" page={1} />);
+    renderWithQueryClient(<CharacterList searchName="zzz-unknown" page={1} />);
 
     expect(await screen.findByText('Nothing found.')).toBeInTheDocument();
   });
@@ -90,7 +94,7 @@ describe('CharacterList', () => {
       createErrorCharactersQuery(new Error('Service unavailable'))
     );
 
-    render(<CharacterList searchName="rick" page={1} />);
+    renderWithQueryClient(<CharacterList searchName="rick" page={1} />);
 
     expect(await screen.findByText('Service unavailable')).toBeInTheDocument();
     expect(screen.getByText('Something went wrong')).toBeInTheDocument();
@@ -98,7 +102,9 @@ describe('CharacterList', () => {
 
   it('retries fetch when Try Again is clicked after an error', async () => {
     let attempt = 0;
-    const view: { rerender: ReturnType<typeof render>['rerender'] } = {
+    const view: {
+      rerender: ReturnType<typeof renderWithQueryClient>['rerender'];
+    } = {
       rerender: () => {},
     };
 
@@ -117,7 +123,7 @@ describe('CharacterList', () => {
       return createSuccessCharactersQuery(createCharactersResponse());
     });
 
-    ({ rerender: view.rerender } = render(
+    ({ rerender: view.rerender } = renderWithQueryClient(
       <CharacterList searchName="beth" page={1} />
     ));
 
@@ -133,7 +139,9 @@ describe('CharacterList', () => {
       createSuccessCharactersQuery(createCharactersResponse())
     );
 
-    const { rerender } = render(<CharacterListHarness name="a" />);
+    const { rerender } = renderWithQueryClient(
+      <CharacterListHarness name="a" />
+    );
 
     await waitFor(() =>
       expect(useGetCharactersMock).toHaveBeenLastCalledWith({
@@ -201,9 +209,38 @@ describe('CharacterList', () => {
       createErrorCharactersQuery('plain string failure')
     );
 
-    render(<CharacterList searchName="" page={1} />);
+    renderWithQueryClient(<CharacterList searchName="" page={1} />);
 
     expect(await screen.findByText('plain string failure')).toBeInTheDocument();
+  });
+
+  it('invalidates list cache when Refresh characters is clicked', async () => {
+    useGetCharactersMock.mockReturnValue(
+      createSuccessCharactersQuery(
+        createCharactersResponse({
+          info: {
+            count: 40,
+            pages: 2,
+            next: null,
+            prev: null,
+          },
+        })
+      )
+    );
+
+    const { queryClient } = renderWithQueryClient(
+      <CharacterList searchName="rick" page={1} />
+    );
+    const invalidateSpy = vi.spyOn(queryClient, 'invalidateQueries');
+
+    await screen.findByText('Rick Sanchez');
+    await user.click(
+      screen.getByRole('button', { name: /refresh characters/i })
+    );
+
+    expect(invalidateSpy).toHaveBeenCalledWith({
+      queryKey: characterQueryKeys.list({ name: 'rick', page: 1 }),
+    });
   });
 
   it('stores selected character in zustand when star is clicked', async () => {

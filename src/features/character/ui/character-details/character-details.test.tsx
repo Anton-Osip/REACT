@@ -1,3 +1,4 @@
+import { QueryClientProvider } from '@tanstack/react-query';
 import {
   createMemoryHistory,
   createRootRoute,
@@ -15,12 +16,13 @@ import {
 import userEvent from '@testing-library/user-event';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { AppProviders } from '@/app/providers';
+import { characterQueryKeys } from '@/features/character/api/queries.ts';
 import {
   createCharactersResponse,
   createErrorDetailsQuery,
   createLoadingDetailsQuery,
   createSuccessDetailsQuery,
+  createTestQueryClient,
   renderWithRouter,
   useGetCharactersDetailsMock,
 } from '@/shared/test-utils';
@@ -36,6 +38,7 @@ const characterDetailsRoute = createRoute({
 const routeTree = rootRoute.addChildren([characterDetailsRoute]);
 
 function renderCharacterDetailsRoute(characterId = '1') {
+  const queryClient = createTestQueryClient();
   const router = createRouter({
     routeTree,
     history: createMemoryHistory({
@@ -45,10 +48,11 @@ function renderCharacterDetailsRoute(characterId = '1') {
 
   return {
     router,
+    queryClient,
     ...render(
-      <AppProviders>
+      <QueryClientProvider client={queryClient}>
         <RouterProvider router={router} />
-      </AppProviders>
+      </QueryClientProvider>
     ),
   };
 }
@@ -174,6 +178,26 @@ describe('CharacterDetails', () => {
 
     await waitFor(() => {
       expect(router.state.location.pathname).toBe('/character');
+    });
+  });
+
+  it('invalidates details cache when refresh button is clicked', async () => {
+    const character = createCharactersResponse().results[0];
+    useGetCharactersDetailsMock.mockReturnValue(
+      createSuccessDetailsQuery(character)
+    );
+
+    const { queryClient } = renderCharacterDetailsRoute('1');
+    const invalidateSpy = vi.spyOn(queryClient, 'invalidateQueries');
+
+    const details = await findDetailsPanel();
+    const refreshButton = details.querySelector('[class*="refreshDetails"]');
+
+    expect(refreshButton).toBeInstanceOf(HTMLButtonElement);
+    await user.click(refreshButton as HTMLButtonElement);
+
+    expect(invalidateSpy).toHaveBeenCalledWith({
+      queryKey: characterQueryKeys.details({ characterId: 1 }),
     });
   });
 

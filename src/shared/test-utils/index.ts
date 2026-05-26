@@ -10,4 +10,8 @@ export {
   useGetCharactersDetailsMock,
   useGetCharactersMock,
 } from './mock-character-api.ts';
+export {
+  createTestQueryClient,
+  renderWithQueryClient,
+} from './render-with-query-client.tsx';
 export { renderWithRouter } from './render-with-router.tsx';

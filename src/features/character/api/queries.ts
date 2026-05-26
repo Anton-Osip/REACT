@@ -17,6 +17,13 @@ const EMPTY_CHARACTERS_RESPONSE: CharactersResponse = {
   results: [],
 };
 
+export const characterQueryKeys = {
+  list: (params?: { name?: string; page?: number }) =>
+    ['characters', params?.name ?? '', params?.page ?? 1] as const,
+  details: (params: { characterId: number }) =>
+    ['characterDetails', params.characterId] as const,
+};
+
 export const characterApi = {
   fetchAllCharacters: async (params?: { name?: string; page?: number }) => {
     const searchParams = new URLSearchParams();
@@ -44,20 +51,18 @@ export const characterApi = {
 
 export const useGetCharacters = (params?: { name?: string; page?: number }) => {
   return useQuery<CharactersResponse>({
-    queryKey: ['characters', params?.name ?? '', params?.page ?? 1],
+    queryKey: characterQueryKeys.list(params),
     queryFn: () => characterApi.fetchAllCharacters(params),
     retry: false,
-    staleTime: 1000 * 60 * 10,
-    placeholderData: (previousData) => previousData,
+    staleTime: Number(import.meta.env.VITE_QUERY_STALE_TIME_MS) || 30000,
   });
 };
 
 export const useGetCharactersDetails = (params: { characterId: number }) => {
   return useQuery<CharacterResponse>({
-    queryKey: ['characterDetails', params?.characterId ?? ''],
+    queryKey: characterQueryKeys.details(params),
     queryFn: () => characterApi.getCharacterDetails(params),
     retry: false,
-    staleTime: 1000 * 60 * 10,
-    placeholderData: (previousData) => previousData,
+    staleTime: Number(import.meta.env.VITE_QUERY_STALE_TIME_MS) || 30000,
   });
 };
