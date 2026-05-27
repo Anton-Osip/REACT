@@ -4,7 +4,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { renderWithRouter } from '@/shared/test-utils';
 import { loadFromStorage } from '@/shared/utils';
 
-import { RS_SCHOOL_REACT_URL, author } from './-about-page';
+import { ABOUT_AUTHOR, RS_SCHOOL_REACT_URL } from './-constants.ts';
 
 vi.mock('@/shared/utils', async (importOriginal) => {
   const actual = await importOriginal<typeof import('@/shared/utils')>();
@@ -39,7 +39,7 @@ describe('AboutPage', () => {
   it('renders the author name', async () => {
     await renderWithRouter('/about');
 
-    expect(await screen.findByText(author.name)).toBeInTheDocument();
+    expect(await screen.findByText(ABOUT_AUTHOR.name)).toBeInTheDocument();
   });
 
   it('renders the RS School React course link with safe external attributes', async () => {

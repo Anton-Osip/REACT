@@ -4,15 +4,15 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { ErrorBoundary } from '@/features/error-boundary';
 
-import { useSimulateErrorStore } from '../model';
+import { useErrorButtonStore } from '../model';
 
-import { SimulateError } from './simulate-error';
+import { ErrorButton } from './error-button.tsx';
 
 function resetStore() {
-  useSimulateErrorStore.setState({ shouldThrowError: false });
+  useErrorButtonStore.setState({ shouldThrowError: false });
 }
 
-describe('SimulateError', () => {
+describe('ErrorButton', () => {
   const user = userEvent.setup();
 
   beforeEach(() => {
@@ -25,7 +25,7 @@ describe('SimulateError', () => {
   });
 
   it('renders Error Button', () => {
-    render(<SimulateError />);
+    render(<ErrorButton />);
 
     expect(
       screen.getByRole('button', { name: 'Error Button' })
@@ -33,7 +33,7 @@ describe('SimulateError', () => {
   });
 
   it('applies custom className to the button', () => {
-    render(<SimulateError className="custom-trigger" />);
+    render(<ErrorButton className="custom-trigger" />);
 
     expect(screen.getByRole('button', { name: 'Error Button' })).toHaveClass(
       'custom-trigger'
@@ -45,13 +45,13 @@ describe('SimulateError', () => {
 
     render(
       <ErrorBoundary>
-        <SimulateError />
+        <ErrorButton />
       </ErrorBoundary>
     );
 
     await user.click(screen.getByRole('button', { name: 'Error Button' }));
 
-    expect(useSimulateErrorStore.getState().shouldThrowError).toBe(true);
+    expect(useErrorButtonStore.getState().shouldThrowError).toBe(true);
 
     consoleSpy.mockRestore();
   });
@@ -61,7 +61,7 @@ describe('SimulateError', () => {
 
     render(
       <ErrorBoundary>
-        <SimulateError />
+        <ErrorButton />
       </ErrorBoundary>
     );
 
@@ -87,7 +87,7 @@ describe('SimulateError', () => {
 
     render(
       <ErrorBoundary>
-        <SimulateError />
+        <ErrorButton />
       </ErrorBoundary>
     );
 

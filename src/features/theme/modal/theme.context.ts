@@ -1,6 +1,11 @@
 import { createContext } from 'react';
 
-export type Theme = 'light' | 'dark';
+export const ThemeMode = {
+  dark: 'dark',
+  light: 'light',
+} as const;
+
+export type Theme = keyof typeof ThemeMode;
 
 export type ThemeContextType = {
   theme: Theme;

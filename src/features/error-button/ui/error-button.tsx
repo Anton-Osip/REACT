@@ -2,14 +2,14 @@ import type { FC } from 'react';
 
 import { Button } from '@/shared/ui';
 
-import { useSimulateErrorStore } from '../model';
+import { useErrorButtonStore } from '../model';
 
 type Props = {
   className?: string;
 };
 
-export const SimulateError: FC<Props> = ({ className }) => {
-  const { simulateError, shouldThrowError } = useSimulateErrorStore();
+export const ErrorButton: FC<Props> = ({ className }) => {
+  const { simulateError, shouldThrowError } = useErrorButtonStore();
 
   if (shouldThrowError) {
     throw new Error('Test error from Error Footer - Check console for details');

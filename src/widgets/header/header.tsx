@@ -3,7 +3,7 @@ import { type FC } from 'react';
 import { Link } from '@tanstack/react-router';
 import clsx from 'clsx';
 
-import { SimulateError } from '@/features/simulate-error';
+import { ErrorButton } from '@/features/error-button';
 import { ThemeToggle } from '@/features/theme';
 import logoIcon from '@/shared/assets/icon/logoIcon.svg';
 import { Button, Container } from '@/shared/ui';
@@ -36,7 +36,7 @@ export const Header: FC<Props> = ({ className }) => {
           </Button>
         </nav>
         <div className={s.controls}>
-          <SimulateError />
+          <ErrorButton />
           <ThemeToggle />
         </div>
       </Container>

@@ -1,11 +1,11 @@
 import { create } from 'zustand/react';
 
-type SimulateErrorState = {
+type ErrorButtonState = {
   shouldThrowError: boolean;
   simulateError: () => void;
 };
 
-export const useSimulateErrorStore = create<SimulateErrorState>((set) => ({
+export const useErrorButtonStore = create<ErrorButtonState>((set) => ({
   shouldThrowError: false,
 
   simulateError: () => {
