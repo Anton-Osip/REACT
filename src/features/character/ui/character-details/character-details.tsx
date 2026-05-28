@@ -36,8 +36,6 @@ export const CharacterDetails: FC<CharacterDetailsProps> = ({ className }) => {
       characterId: Number(details),
     });
 
-  const charactersIsLoading = isFetching || isLoading || isRefetching;
-
   const characterDetails = data ? toCharacterPreview(data) : undefined;
 
   const closeDetails = () => {
@@ -53,81 +51,81 @@ export const CharacterDetails: FC<CharacterDetailsProps> = ({ className }) => {
     });
   };
 
-  if (details === undefined) return null;
-  return (
-    <>
-      {charactersIsLoading && <Skeleton className={s.skeleton} />}
+  const charactersIsLoading = isFetching || isLoading || isRefetching;
 
+  if (isError) {
+    return (
       <ErrorComponent
-        isError={isError}
         errorText={error ? getQueryErrorMessage(error) : undefined}
         tryAgain={refetch}
       />
+    );
+  }
 
-      {characterDetails && !charactersIsLoading && (
-        <div className={clsx(s.characterDetails, className)}>
-          <Button
-            variant={'primary'}
-            className={s.closeBtn}
-            onClick={closeDetails}
-          >
-            <CrossIcon />
-          </Button>
-          <Button
-            variant={'primary'}
-            className={s.refreshDetails}
-            onClick={handleRefresh}
-          >
-            <RefreshIcon size={18} />
-          </Button>
-          <div className={s.imageBox}>
-            <img
-              className={s.image}
-              src={characterDetails.image}
-              alt={characterDetails.name}
-            />
-          </div>
-          <div className={s.info}>
-            <Typography variant="h1" className={s.name}>
-              {characterDetails.name}
+  if (charactersIsLoading) {
+    return <Skeleton className={s.skeleton} />;
+  }
+
+  if (details === undefined || !characterDetails) return null;
+
+  return (
+    <div className={clsx(s.characterDetails, className)}>
+      <Button variant={'primary'} className={s.closeBtn} onClick={closeDetails}>
+        <CrossIcon />
+      </Button>
+      <Button
+        variant={'primary'}
+        className={s.refreshDetails}
+        onClick={handleRefresh}
+      >
+        <RefreshIcon size={18} />
+      </Button>
+      <div className={s.imageBox}>
+        <img
+          className={s.image}
+          src={characterDetails.image}
+          alt={characterDetails.name}
+        />
+      </div>
+      <div className={s.info}>
+        <Typography variant="h1" className={s.name}>
+          {characterDetails.name}
+        </Typography>
+        <div className={s.items}>
+          <div className={s.item}>
+            <Typography variant="body1" className={s.title}>
+              gender
             </Typography>
-            <div className={s.items}>
-              <div className={s.item}>
-                <Typography variant="body1" className={s.title}>
-                  gender
-                </Typography>
-                <Typography variant="h3" className={s.value}>
-                  {characterDetails.gender}
-                </Typography>
-              </div>
-              <div className={s.item}>
-                <Typography variant="body1" className={s.title}>
-                  location
-                </Typography>
-                <Typography variant="h3" className={s.value}>
-                  {characterDetails.location.name}
-                </Typography>
-              </div>
-              <div className={s.item}>
-                <Typography variant="body1" className={s.title}>
-                  species
-                </Typography>
-                <Typography variant="h3" className={s.value}>
-                  {characterDetails.species}
-                </Typography>
-              </div>
-              <div className={s.item}>
-                <Typography variant="body1" className={s.title}>
-                  status
-                </Typography>
-                <Typography variant="h3" className={s.value}>
-                  {characterDetails.status}
-                </Typography>
-              </div>
-            </div>
+            <Typography variant="h3" className={s.value}>
+              {characterDetails.gender}
+            </Typography>
+          </div>
+          <div className={s.item}>
+            <Typography variant="body1" className={s.title}>
+              location
+            </Typography>
+            <Typography variant="h3" className={s.value}>
+              {characterDetails.location.name}
+            </Typography>
+          </div>
+          <div className={s.item}>
+            <Typography variant="body1" className={s.title}>
+              species
+            </Typography>
+            <Typography variant="h3" className={s.value}>
+              {characterDetails.species}
+            </Typography>
+          </div>
+          <div className={s.item}>
+            <Typography variant="body1" className={s.title}>
+              status
+            </Typography>
+            <Typography variant="h3" className={s.value}>
+              {characterDetails.status}
+            </Typography>
           </div>
         </div>
-      )}
-    </>
+      </div>
+    </div>
   );
 };
