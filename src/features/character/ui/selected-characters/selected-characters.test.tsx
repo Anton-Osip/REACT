@@ -130,20 +130,29 @@ describe('SelectedCharacters', () => {
     expect(getPanelElement().className).toMatch(/selectedCharacters/);
   });
 
-  it('removes character from selection when star is toggled in carousel', async () => {
+  it('renders favorite buttons inside carousel cards', () => {
     selectCharacters(mockCharacter, mockMorty);
     render(<SelectedCharacters />);
 
     const carousel = getCarouselElement();
-    const [, mortySelectButton] = within(carousel).getAllByRole('button');
 
-    await user.click(mortySelectButton);
-
+    expect(within(carousel).getAllByRole('button')).toHaveLength(2);
     expect(
       useSelectedCharacterStore.getState().selectedCharactersMap?.size
-    ).toBe(1);
-    expect(screen.getByText('Selected characters ( 1 )')).toBeInTheDocument();
-    expect(within(carousel).queryByText('Morty Smith')).not.toBeInTheDocument();
+    ).toBe(2);
+  });
+
+  it('navigates to character details when selected card is clicked', async () => {
+    selectCharacters(mockCharacter);
+    render(<SelectedCharacters />);
+
+    await user.click(screen.getByRole('img', { name: 'Rick Sanchez' }));
+
+    expect(navigateMock).toHaveBeenCalledWith({
+      to: '/character/$id',
+      params: { id: String(mockCharacter.id) },
+      search: expect.any(Function),
+    });
   });
 
   describe('CSV download', () => {

@@ -2,6 +2,7 @@ import { type FC, useEffect, useMemo } from 'react';
 
 import clsx from 'clsx';
 
+import { useCharacterGridClick } from '@/features/character/model/character-grid-click/use-character-grid-click.ts';
 import { useSelectedCharacterStore } from '@/features/character/model/selected-character-state/selected-character.state.ts';
 import { Button, Typography } from '@/shared/ui';
 import { createCsvDownloadMeta } from '@/shared/utils';
@@ -20,6 +21,14 @@ export const SelectedCharacters: FC<SelectedCharactersProps> = ({
   const { selectedCharactersMap, resetCharacterSelected } =
     useSelectedCharacterStore();
 
+  const selectedCharacters = selectedCharactersMap
+    ? [...selectedCharactersMap.values()]
+    : [];
+
+  const { onCharacterGridClick } = useCharacterGridClick({
+    characters: selectedCharacters,
+  });
+
   const downloadMeta = useMemo(
     () =>
       selectedCharactersMap
@@ -36,8 +45,6 @@ export const SelectedCharacters: FC<SelectedCharactersProps> = ({
   }, [downloadMeta?.url]);
 
   if (!selectedCharactersMap || selectedCharactersMap.size === 0) return null;
-
-  const selectedCharacters = [...selectedCharactersMap.values()];
 
   return (
     <div className={clsx(s.selectedCharacters, className)}>
@@ -61,12 +68,13 @@ export const SelectedCharacters: FC<SelectedCharactersProps> = ({
       </div>
 
       <div className={s.carusel}>
-        <div className={s.caruselWrapper}>
+        <div className={s.caruselWrapper} onClick={onCharacterGridClick}>
           {selectedCharacters.map((character) => (
             <CharacterCard
               className={s.card}
               key={character.id}
               character={character}
+              isSelected={selectedCharactersMap?.has(character.id) || false}
             />
           ))}
         </div>

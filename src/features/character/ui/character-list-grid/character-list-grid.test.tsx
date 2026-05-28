@@ -12,7 +12,9 @@ describe('CharacterListGrid', () => {
   });
 
   it('returns null when characters array is empty', () => {
-    const { container } = render(<CharacterListGrid characters={[]} />);
+    const { container } = render(
+      <CharacterListGrid characters={[]} selectedCharactersMap={null} />
+    );
 
     expect(container.firstChild).toBeNull();
   });
@@ -21,7 +23,9 @@ describe('CharacterListGrid', () => {
     const characters =
       createCharactersResponse().results.map(toCharacterPreview);
 
-    render(<CharacterListGrid characters={characters} />);
+    render(
+      <CharacterListGrid characters={characters} selectedCharactersMap={null} />
+    );
 
     expect(screen.getByText('Rick Sanchez')).toBeInTheDocument();
     expect(screen.getByText('Morty Smith')).toBeInTheDocument();

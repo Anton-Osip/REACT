@@ -1,24 +1,11 @@
 import { cleanup, render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import { describe, it, expect, afterEach, beforeEach, vi } from 'vitest';
+import { afterEach, describe, expect, it } from 'vitest';
 
 import '@testing-library/jest-dom/vitest';
 import type { CharacterPreview } from '@/features/character/api';
-import { useSelectedCharacterStore } from '@/features/character/model/selected-character-state/selected-character.state.ts';
 import mockImage from '@/shared/assets/image/errorPageImage.png';
 
 import { CharacterCard, type CharacterCardProps } from './character-card.tsx';
-
-const navigateMock = vi.fn();
-
-vi.mock('@tanstack/react-router', async (importOriginal) => {
-  const actual =
-    await importOriginal<typeof import('@tanstack/react-router')>();
-  return {
-    ...actual,
-    useNavigate: () => navigateMock,
-  };
-});
 
 const baseCharacter: CharacterPreview = {
   id: 1,
@@ -29,10 +16,6 @@ const baseCharacter: CharacterPreview = {
   location: { name: 'Earth', url: '' },
   gender: 'Male',
 };
-
-function resetStore() {
-  useSelectedCharacterStore.setState({ selectedCharactersMap: null });
-}
 
 function renderCard(overrides: Partial<CharacterCardProps> = {}) {
   const { character: characterOverride, ...rest } = overrides;
@@ -46,13 +29,6 @@ function renderCard(overrides: Partial<CharacterCardProps> = {}) {
 }
 
 describe('CharacterCard', () => {
-  const user = userEvent.setup();
-
-  beforeEach(() => {
-    resetStore();
-    navigateMock.mockReset();
-  });
-
   afterEach(() => {
     cleanup();
   });
@@ -181,42 +157,34 @@ describe('CharacterCard', () => {
     expect(screen.getByText(longLocation)).toBeInTheDocument();
   });
 
-  it('calls toggleCharacterSelected when star button is clicked', async () => {
+  it('renders favorite button by default', () => {
     renderCard();
 
-    const [selectButton] = screen.getAllByRole('button');
-    await user.click(selectButton);
-
-    expect(
-      useSelectedCharacterStore
-        .getState()
-        .selectedCharactersMap?.has(baseCharacter.id)
-    ).toBe(true);
-    expect(navigateMock).not.toHaveBeenCalled();
+    expect(screen.getByRole('button')).toBeInTheDocument();
   });
 
-  it('navigates to character details when card is clicked', async () => {
-    renderCard({
-      character: { ...baseCharacter, id: 42 },
-    });
-
-    await user.click(screen.getByRole('img', { name: 'Rick Sanchez' }));
-
-    expect(navigateMock).toHaveBeenCalledWith({
-      to: '/character/$id',
-      params: { id: '42' },
-      search: expect.any(Function),
-    });
-    expect(
-      useSelectedCharacterStore.getState().selectedCharactersMap?.has(42)
-    ).toBeFalsy();
-  });
-
-  it('marks star button as selected when character is in store', () => {
-    useSelectedCharacterStore.getState().toggleCharacterSelected(baseCharacter);
+  it('marks favorite button with delegated click action', () => {
     renderCard();
 
-    const [selectButton] = screen.getAllByRole('button');
-    expect(selectButton.className).toMatch(/isSelected/);
+    expect(screen.getByRole('button')).toHaveAttribute(
+      'data-action',
+      'favorite'
+    );
+  });
+
+  it('marks favorite button as selected when isSelected is true', () => {
+    renderCard({ isSelected: true });
+
+    expect(screen.getByRole('button').className).toMatch(/isSelected/);
+  });
+
+  it('adds card id to root element for click delegation', () => {
+    renderCard({ character: { ...baseCharacter, id: 42 } });
+
+    const card = screen
+      .getByRole('img', { name: 'Rick Sanchez' })
+      .closest('[data-card-id]');
+
+    expect(card).toHaveAttribute('data-card-id', '42');
   });
 });

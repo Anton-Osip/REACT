@@ -1,10 +1,8 @@
-import { memo, type MouseEvent } from 'react';
+import { memo } from 'react';
 
-import { useNavigate } from '@tanstack/react-router';
 import clsx from 'clsx';
 
 import type { CharacterPreview } from '@/features/character/api';
-import { useSelectedCharacterStore } from '@/features/character/model/selected-character-state/selected-character.state.ts';
 import { Button, StarIcon, Typography } from '@/shared/ui';
 
 import s from './character-card.module.css';
@@ -12,39 +10,20 @@ import s from './character-card.module.css';
 export type CharacterCardProps = {
   className?: string;
   character: CharacterPreview;
+  isSelected?: boolean;
 };
 
 export const CharacterCard = memo(function CharacterCard({
   className,
   character,
+  isSelected = false,
 }: CharacterCardProps) {
-  const navigate = useNavigate({ from: '/character' });
-
-  const onHandleClick = () => {
-    void navigate({
-      to: '/character/$id',
-      params: { id: String(character.id) },
-      search: (prev) => prev,
-    });
-  };
-
-  const { selectedCharactersMap, toggleCharacterSelected } =
-    useSelectedCharacterStore();
-
-  const onStarClick = (event: MouseEvent<HTMLButtonElement>) => {
-    event.stopPropagation();
-    toggleCharacterSelected(character);
-  };
-
   return (
-    <div className={clsx(s.card, className)} onClick={onHandleClick}>
+    <div className={clsx(s.card, className)} data-card-id={character.id}>
       <Button
         variant={'ghost'}
-        className={clsx(
-          s.stareBtn,
-          selectedCharactersMap?.has(character.id) && s.isSelected
-        )}
-        onClick={onStarClick}
+        data-action="favorite"
+        className={clsx(s.stareBtn, isSelected && s.isSelected)}
       >
         <StarIcon />
       </Button>

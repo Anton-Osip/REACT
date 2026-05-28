@@ -6,6 +6,7 @@ import clsx from 'clsx';
 
 import { useGetCharacters } from '@/features/character/api';
 import { characterQueryKeys } from '@/features/character/api/queries.ts';
+import { useCharacterGridClick } from '@/features/character/model/character-grid-click/use-character-grid-click.ts';
 import { toCharacterPreview } from '@/features/character/model/toCharacterPreview.ts';
 import { Button, Pagination, RefreshIcon } from '@/shared/ui';
 import { getQueryErrorMessage } from '@/shared/utils/get-query-error-message.ts';
@@ -40,6 +41,12 @@ export const CharacterList: FC<Props> = ({ className, searchName, page }) => {
   });
 
   const characters = data?.results.map((c) => toCharacterPreview(c));
+
+  const { onCharacterGridClick, selectedCharactersMap } = useCharacterGridClick(
+    {
+      characters,
+    }
+  );
 
   const handleRefresh = () => {
     void queryClient.invalidateQueries({
@@ -82,7 +89,11 @@ export const CharacterList: FC<Props> = ({ className, searchName, page }) => {
 
   return (
     <div className={clsx(s.characterList, className)}>
-      <CharacterListGrid characters={characters} />
+      <CharacterListGrid
+        characters={characters}
+        onCharacterGridClick={onCharacterGridClick}
+        selectedCharactersMap={selectedCharactersMap}
+      />
       <div className={s.controls}>
         <Pagination
           className={s.pagination}
