@@ -20,10 +20,13 @@ describe('EmptyComponent', () => {
     expect(container).toBeEmptyDOMElement();
   });
 
-  it('renders nothing when isEmpty is undefined', () => {
-    const { container } = render(<EmptyComponent />);
+  it('renders empty UI when isEmpty is undefined', () => {
+    render(<EmptyComponent />);
 
-    expect(container).toBeEmptyDOMElement();
+    expect(
+      screen.getByRole('img', { name: /empty page/i })
+    ).toBeInTheDocument();
+    expect(screen.getByText('Nothing found.')).toBeInTheDocument();
   });
 
   it('renders empty UI when isEmpty is true', () => {

@@ -24,6 +24,14 @@ describe('CharacterLoading', () => {
     expect(grid?.children).toHaveLength(20);
   });
 
+  it('renders a grid when isLoading is undefined', () => {
+    const { container } = render(<CharacterLoading />);
+
+    expect(
+      container.firstElementChild?.firstElementChild?.children
+    ).toHaveLength(20);
+  });
+
   it('renders the requested number of skeletons when length is set', () => {
     const { container } = render(<CharacterLoading isLoading length={5} />);
 

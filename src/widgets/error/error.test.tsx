@@ -29,6 +29,18 @@ describe('ErrorComponent', () => {
     expect(container).toBeEmptyDOMElement();
   });
 
+  it('renders error UI when isError is undefined', () => {
+    render(<ErrorComponent tryAgain={tryAgain} />);
+
+    expect(screen.getByText('Something went wrong')).toBeInTheDocument();
+    expect(
+      screen.getByText('An unexpected error occurred')
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: /try again/i })
+    ).toBeInTheDocument();
+  });
+
   it('renders error UI when isError is true', () => {
     render(<ErrorComponent isError={true} tryAgain={tryAgain} />);
 

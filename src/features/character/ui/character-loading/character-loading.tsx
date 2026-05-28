@@ -9,7 +9,7 @@ import s from './character-loading.module.css';
 export type CharacterLoadingProps = {
   className?: string;
   length?: number;
-  isLoading: boolean;
+  isLoading?: boolean;
 };
 const SKELETON_COUNT = 20;
 
@@ -18,7 +18,7 @@ export const CharacterLoading: FC<CharacterLoadingProps> = ({
   className,
   isLoading,
 }) => {
-  if (!isLoading) return null;
+  if (!isLoading && isLoading !== undefined) return null;
   return (
     <div className={clsx(s.characterList, className)}>
       <div className={s.grid}>

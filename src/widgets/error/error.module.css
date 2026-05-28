@@ -12,7 +12,7 @@
   max-width: 500px;
   width: 100%;
   padding: 16px;
-  background: var(--color-dark-700);
+  background: var(--background-color-700);
   border-radius: 12px;
   border: 1px solid #313131;
 }
@@ -23,12 +23,12 @@
 }
 
 .errorTitle {
-  color: var(--color-light-500);
+  color: var(--text-color-500);
   margin-bottom: 1rem;
 }
 
 .errorMessage {
-  color: var(--color-light-500);
+  color: var(--text-color-500);
   margin-bottom: 1.5rem;
   word-break: break-word;
 }

@@ -9,7 +9,7 @@ import s from './error.module.css';
 
 type Props = {
   errorText?: string;
-  isError: boolean | null;
+  isError?: boolean | null;
   className?: string;
   tryAgain: () => void;
 };
@@ -20,7 +20,7 @@ export const ErrorComponent: FC<Props> = ({
   className,
   tryAgain,
 }) => {
-  if (!isError) return null;
+  if (!isError && isError !== undefined) return null;
   return (
     <div className={clsx(s.error, className)}>
       <div className={s.errorContent}>
