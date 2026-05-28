@@ -1,5 +1,5 @@
 export {
-  SearchFormCharacter,
+  SearchCharacterForm,
   CharacterList,
   CharacterDetails,
   SelectedCharacters,

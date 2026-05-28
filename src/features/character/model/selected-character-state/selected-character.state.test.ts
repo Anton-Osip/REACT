@@ -22,7 +22,7 @@ const mockCharacter: CharacterPreview = toCharacterPreview({
 });
 
 function resetStore() {
-  useSelectedCharacterStore.setState({ selectedCharacters: null });
+  useSelectedCharacterStore.setState({ selectedCharactersMap: null });
 }
 
 describe('useSelectedCharacterStore', () => {
@@ -31,25 +31,27 @@ describe('useSelectedCharacterStore', () => {
   });
 
   it('starts with no selected characters', () => {
-    expect(useSelectedCharacterStore.getState().selectedCharacters).toBeNull();
+    expect(
+      useSelectedCharacterStore.getState().selectedCharactersMap
+    ).toBeNull();
   });
 
-  it('adds character to selectedCharacters on toggle', () => {
+  it('adds character to selectedCharactersMap on toggle', () => {
     useSelectedCharacterStore.getState().toggleCharacterSelected(mockCharacter);
 
-    const { selectedCharacters } = useSelectedCharacterStore.getState();
-    expect(selectedCharacters?.has(mockCharacter.id)).toBe(true);
-    expect(selectedCharacters?.get(mockCharacter.id)).toEqual(mockCharacter);
+    const { selectedCharactersMap } = useSelectedCharacterStore.getState();
+    expect(selectedCharactersMap?.has(mockCharacter.id)).toBe(true);
+    expect(selectedCharactersMap?.get(mockCharacter.id)).toEqual(mockCharacter);
   });
 
-  it('removes character from selectedCharacters when toggled again', () => {
+  it('removes character from selectedCharactersMap when toggled again', () => {
     const { toggleCharacterSelected } = useSelectedCharacterStore.getState();
 
     toggleCharacterSelected(mockCharacter);
     toggleCharacterSelected(mockCharacter);
 
-    const { selectedCharacters } = useSelectedCharacterStore.getState();
-    expect(selectedCharacters?.has(mockCharacter.id)).toBe(false);
+    const { selectedCharactersMap } = useSelectedCharacterStore.getState();
+    expect(selectedCharactersMap?.has(mockCharacter.id)).toBe(false);
   });
 
   it('keeps multiple selected characters independently', () => {
@@ -64,22 +66,24 @@ describe('useSelectedCharacterStore', () => {
       .getState()
       .toggleCharacterSelected(secondCharacter);
 
-    const { selectedCharacters } = useSelectedCharacterStore.getState();
-    expect(selectedCharacters?.size).toBe(2);
-    expect(selectedCharacters?.has(1)).toBe(true);
-    expect(selectedCharacters?.has(2)).toBe(true);
+    const { selectedCharactersMap } = useSelectedCharacterStore.getState();
+    expect(selectedCharactersMap?.size).toBe(2);
+    expect(selectedCharactersMap?.has(1)).toBe(true);
+    expect(selectedCharactersMap?.has(2)).toBe(true);
   });
 
   it('clears all selected characters on resetCharacterSelected', () => {
     useSelectedCharacterStore.getState().toggleCharacterSelected(mockCharacter);
     useSelectedCharacterStore.getState().resetCharacterSelected();
 
-    expect(useSelectedCharacterStore.getState().selectedCharacters).toBeNull();
+    expect(
+      useSelectedCharacterStore.getState().selectedCharactersMap
+    ).toBeNull();
   });
 
-  it('does not mutate previous selectedCharacters map', () => {
+  it('does not mutate previous selectedCharactersMap map', () => {
     useSelectedCharacterStore.getState().toggleCharacterSelected(mockCharacter);
-    const firstMap = useSelectedCharacterStore.getState().selectedCharacters;
+    const firstMap = useSelectedCharacterStore.getState().selectedCharactersMap;
 
     useSelectedCharacterStore
       .getState()
@@ -87,7 +91,7 @@ describe('useSelectedCharacterStore', () => {
 
     expect(firstMap?.has(2)).toBe(false);
     expect(
-      useSelectedCharacterStore.getState().selectedCharacters?.has(2)
+      useSelectedCharacterStore.getState().selectedCharactersMap?.has(2)
     ).toBe(true);
   });
 });

@@ -24,7 +24,7 @@ const mockCharacter = toCharacterPreview(createCharactersResponse().results[0]);
 const mockMorty = toCharacterPreview(createCharactersResponse().results[1]);
 
 function resetStore() {
-  useSelectedCharacterStore.setState({ selectedCharacters: null });
+  useSelectedCharacterStore.setState({ selectedCharactersMap: null });
 }
 
 function selectCharacters(...characters: CharacterPreview[]) {
@@ -107,7 +107,9 @@ describe('SelectedCharacters', () => {
 
     await user.click(screen.getByRole('button', { name: 'Reset' }));
 
-    expect(useSelectedCharacterStore.getState().selectedCharacters).toBeNull();
+    expect(
+      useSelectedCharacterStore.getState().selectedCharactersMap
+    ).toBeNull();
     expect(screen.queryByText(/Selected characters/i)).not.toBeInTheDocument();
   });
 
@@ -137,9 +139,9 @@ describe('SelectedCharacters', () => {
 
     await user.click(mortySelectButton);
 
-    expect(useSelectedCharacterStore.getState().selectedCharacters?.size).toBe(
-      1
-    );
+    expect(
+      useSelectedCharacterStore.getState().selectedCharactersMap?.size
+    ).toBe(1);
     expect(screen.getByText('Selected characters ( 1 )')).toBeInTheDocument();
     expect(within(carousel).queryByText('Morty Smith')).not.toBeInTheDocument();
   });

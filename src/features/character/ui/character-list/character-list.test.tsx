@@ -39,7 +39,7 @@ function getCharacterSelectButton(characterName: string): HTMLButtonElement {
 }
 
 function resetSelectedStore() {
-  useSelectedCharacterStore.setState({ selectedCharacters: null });
+  useSelectedCharacterStore.setState({ selectedCharactersMap: null });
 }
 
 describe('CharacterList', () => {
@@ -249,7 +249,7 @@ describe('CharacterList', () => {
     await user.click(getCharacterSelectButton('Rick Sanchez'));
 
     expect(
-      useSelectedCharacterStore.getState().selectedCharacters?.has(1)
+      useSelectedCharacterStore.getState().selectedCharactersMap?.has(1)
     ).toBe(true);
     expect(getCharacterSelectButton('Rick Sanchez').className).toMatch(
       /isSelected/
@@ -266,7 +266,7 @@ describe('CharacterList', () => {
     await user.click(selectButton);
 
     expect(
-      useSelectedCharacterStore.getState().selectedCharacters?.has(1)
+      useSelectedCharacterStore.getState().selectedCharactersMap?.has(1)
     ).toBe(false);
   });
 
@@ -276,7 +276,7 @@ describe('CharacterList', () => {
     await user.click(getCharacterSelectButton('Rick Sanchez'));
 
     expect(
-      useSelectedCharacterStore.getState().selectedCharacters?.has(1)
+      useSelectedCharacterStore.getState().selectedCharactersMap?.has(1)
     ).toBe(true);
 
     await router.navigate({ to: '/about' });
@@ -319,7 +319,7 @@ describe('CharacterList', () => {
       })
     );
     expect(
-      useSelectedCharacterStore.getState().selectedCharacters?.has(1)
+      useSelectedCharacterStore.getState().selectedCharactersMap?.has(1)
     ).toBe(true);
 
     await user.click(screen.getByRole('button', { name: '1' }));

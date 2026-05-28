@@ -28,7 +28,7 @@ export const CharacterCard = memo(function CharacterCard({
     });
   };
 
-  const { selectedCharacters, toggleCharacterSelected } =
+  const { selectedCharactersMap, toggleCharacterSelected } =
     useSelectedCharacterStore();
 
   const onStarClick = (event: MouseEvent<HTMLButtonElement>) => {
@@ -42,7 +42,7 @@ export const CharacterCard = memo(function CharacterCard({
         variant={'ghost'}
         className={clsx(
           s.stareBtn,
-          selectedCharacters?.has(character.id) && s.isSelected
+          selectedCharactersMap?.has(character.id) && s.isSelected
         )}
         onClick={onStarClick}
       >

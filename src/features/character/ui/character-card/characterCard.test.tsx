@@ -31,7 +31,7 @@ const baseCharacter: CharacterPreview = {
 };
 
 function resetStore() {
-  useSelectedCharacterStore.setState({ selectedCharacters: null });
+  useSelectedCharacterStore.setState({ selectedCharactersMap: null });
 }
 
 function renderCard(overrides: Partial<CharacterCardProps> = {}) {
@@ -190,7 +190,7 @@ describe('CharacterCard', () => {
     expect(
       useSelectedCharacterStore
         .getState()
-        .selectedCharacters?.has(baseCharacter.id)
+        .selectedCharactersMap?.has(baseCharacter.id)
     ).toBe(true);
     expect(navigateMock).not.toHaveBeenCalled();
   });
@@ -208,7 +208,7 @@ describe('CharacterCard', () => {
       search: expect.any(Function),
     });
     expect(
-      useSelectedCharacterStore.getState().selectedCharacters?.has(42)
+      useSelectedCharacterStore.getState().selectedCharactersMap?.has(42)
     ).toBeFalsy();
   });
 

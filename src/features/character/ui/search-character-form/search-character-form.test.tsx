@@ -16,7 +16,7 @@ vi.mock('@/shared/utils', async (importOriginal) => {
 
 const mockedSaveToStorage = vi.mocked(saveToStorage);
 
-describe('SearchFormCharacter', () => {
+describe('SearchCharacterForm', () => {
   const user = userEvent.setup();
 
   beforeEach(() => {

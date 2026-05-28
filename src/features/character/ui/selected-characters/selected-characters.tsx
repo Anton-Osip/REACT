@@ -4,7 +4,7 @@ import clsx from 'clsx';
 
 import { useSelectedCharacterStore } from '@/features/character/model/selected-character-state/selected-character.state.ts';
 import { Button, Typography } from '@/shared/ui';
-import { generateCSV } from '@/shared/utils';
+import { createCsvDownloadMeta } from '@/shared/utils';
 
 import { CharacterCard } from '../character-card';
 
@@ -17,23 +17,16 @@ interface SelectedCharactersProps {
 export const SelectedCharacters: FC<SelectedCharactersProps> = ({
   className,
 }) => {
-  const { selectedCharacters, resetCharacterSelected } =
+  const { selectedCharactersMap, resetCharacterSelected } =
     useSelectedCharacterStore();
 
-  const downloadMeta = useMemo(() => {
-    if (!selectedCharacters || selectedCharacters.size === 0) return null;
-
-    const csvData = generateCSV(Array.from(selectedCharacters.values()));
-    const blob = new Blob(['\uFEFF' + csvData], {
-      type: 'text/csv;charset=utf-8;',
-    });
-
-    return {
-      url: URL.createObjectURL(blob),
-      fileName: `${selectedCharacters.size}_characters.csv`,
-      blob,
-    };
-  }, [selectedCharacters]);
+  const downloadMeta = useMemo(
+    () =>
+      selectedCharactersMap
+        ? createCsvDownloadMeta([...selectedCharactersMap.values()])
+        : null,
+    [selectedCharactersMap]
+  );
 
   useEffect(() => {
     const url = downloadMeta?.url;
@@ -42,15 +35,15 @@ export const SelectedCharacters: FC<SelectedCharactersProps> = ({
     return () => URL.revokeObjectURL(url);
   }, [downloadMeta?.url]);
 
-  if (!selectedCharacters || selectedCharacters.size === 0) return null;
+  if (!selectedCharactersMap || selectedCharactersMap.size === 0) return null;
 
-  const arraySelectedCharacters = [...selectedCharacters.values()];
+  const selectedCharacters = [...selectedCharactersMap.values()];
 
   return (
     <div className={clsx(s.selectedCharacters, className)}>
       <div className={s.header}>
         <Typography variant={'h2'}>
-          Selected characters ( {arraySelectedCharacters.length} )
+          Selected characters ( {selectedCharacters.length} )
         </Typography>
         <div className={s.controlBtn}>
           <Button variant={'secondary'} onClick={resetCharacterSelected}>
@@ -69,7 +62,7 @@ export const SelectedCharacters: FC<SelectedCharactersProps> = ({
 
       <div className={s.carusel}>
         <div className={s.caruselWrapper}>
-          {arraySelectedCharacters.map((character) => (
+          {selectedCharacters.map((character) => (
             <CharacterCard
               className={s.card}
               key={character.id}

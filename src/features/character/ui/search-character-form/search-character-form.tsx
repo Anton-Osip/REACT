@@ -14,14 +14,14 @@ import { STORAGE_KEY } from '@/features/character/model/constants.ts';
 import { Button, SearchIcon, TextField } from '@/shared/ui';
 import { saveToStorage } from '@/shared/utils';
 
-import s from './search-form-character.module.css';
+import s from './search-character-form.module.css';
 
 type Props = {
   className?: string;
   defaultValue?: string | null;
 };
 
-export const SearchFormCharacter: FC<Props> = ({
+export const SearchCharacterForm: FC<Props> = ({
   className,
   defaultValue = '',
 }) => {

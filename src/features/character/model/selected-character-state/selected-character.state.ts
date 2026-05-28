@@ -3,18 +3,18 @@ import { create } from 'zustand/react';
 import { type CharacterPreview } from '@/features/character/api';
 
 export interface SelectedCharacterState {
-  selectedCharacters: Map<number, CharacterPreview> | null;
+  selectedCharactersMap: Map<number, CharacterPreview> | null;
   toggleCharacterSelected: (character: CharacterPreview) => void;
   resetCharacterSelected: () => void;
 }
 
 export const useSelectedCharacterStore = create<SelectedCharacterState>(
   (set) => ({
-    selectedCharacters: null,
+    selectedCharactersMap: null,
 
     toggleCharacterSelected: (character: CharacterPreview) => {
       set((state) => {
-        const next = new Map(state.selectedCharacters ?? undefined);
+        const next = new Map(state.selectedCharactersMap ?? undefined);
 
         if (next.has(character.id)) {
           next.delete(character.id);
@@ -22,12 +22,12 @@ export const useSelectedCharacterStore = create<SelectedCharacterState>(
           next.set(character.id, character);
         }
 
-        return { selectedCharacters: next };
+        return { selectedCharactersMap: next };
       });
     },
 
     resetCharacterSelected: () => {
-      set({ selectedCharacters: null });
+      set({ selectedCharactersMap: null });
     },
   })
 );

@@ -5,7 +5,7 @@ import clsx from 'clsx';
 
 import {
   CharacterList,
-  SearchFormCharacter,
+  SearchCharacterForm,
   SelectedCharacters,
 } from '@/features/character';
 import { Container } from '@/shared/ui';
@@ -21,7 +21,7 @@ export const CharacterPage: FC = () => {
 
   return (
     <Container className={s.characterPage}>
-      <SearchFormCharacter defaultValue={search} />
+      <SearchCharacterForm defaultValue={search} />
       <div
         className={clsx(s.characterContent, selectCardId && s.withSelectedCard)}
       >
