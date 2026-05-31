@@ -9,11 +9,17 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './pages/__root'
+import { Route as FormsRouteRouteImport } from './pages/forms/route'
 import { Route as CharacterRouteRouteImport } from './pages/character/route'
 import { Route as AboutRouteRouteImport } from './pages/about/route'
 import { Route as IndexRouteImport } from './pages/index'
 import { Route as CharacterIdRouteImport } from './pages/character/$id'
 
+const FormsRouteRoute = FormsRouteRouteImport.update({
+  id: '/forms',
+  path: '/forms',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CharacterRouteRoute = CharacterRouteRouteImport.update({
   id: '/character',
   path: '/character',
@@ -39,12 +45,14 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRouteRoute
   '/character': typeof CharacterRouteRouteWithChildren
+  '/forms': typeof FormsRouteRoute
   '/character/$id': typeof CharacterIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRouteRoute
   '/character': typeof CharacterRouteRouteWithChildren
+  '/forms': typeof FormsRouteRoute
   '/character/$id': typeof CharacterIdRoute
 }
 export interface FileRoutesById {
@@ -52,24 +60,33 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/about': typeof AboutRouteRoute
   '/character': typeof CharacterRouteRouteWithChildren
+  '/forms': typeof FormsRouteRoute
   '/character/$id': typeof CharacterIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about' | '/character' | '/character/$id'
+  fullPaths: '/' | '/about' | '/character' | '/forms' | '/character/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/character' | '/character/$id'
-  id: '__root__' | '/' | '/about' | '/character' | '/character/$id'
+  to: '/' | '/about' | '/character' | '/forms' | '/character/$id'
+  id: '__root__' | '/' | '/about' | '/character' | '/forms' | '/character/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRouteRoute: typeof AboutRouteRoute
   CharacterRouteRoute: typeof CharacterRouteRouteWithChildren
+  FormsRouteRoute: typeof FormsRouteRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/forms': {
+      id: '/forms'
+      path: '/forms'
+      fullPath: '/forms'
+      preLoaderRoute: typeof FormsRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/character': {
       id: '/character'
       path: '/character'
@@ -117,6 +134,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRouteRoute: AboutRouteRoute,
   CharacterRouteRoute: CharacterRouteRouteWithChildren,
+  FormsRouteRoute: FormsRouteRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
