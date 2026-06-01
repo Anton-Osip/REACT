@@ -3,7 +3,7 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - app-state-management
+      - api-queries
 
 permissions:
   contents: read
