@@ -32,6 +32,9 @@ jobs:
 
       - name: Build
         run: npm run build
+        env:
+          VITE_API_BASE_URL: https://rickandmortyapi.com
+          VITE_QUERY_STALE_TIME_MS: 300000
 
       - name: Setup SPA fallback
         run: cp dist/index.html dist/404.html
