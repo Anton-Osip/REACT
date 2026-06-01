@@ -4,10 +4,10 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import '@testing-library/jest-dom/vitest';
 import { SelectedCharacters } from '@/features/character';
-import type { Character } from '@/features/character/api';
+import type { CharacterPreview } from '@/features/character/api';
+import { useSelectedCharacterStore } from '@/features/character/model/selected-character-state/selected-character.state.ts';
+import { toCharacterPreview } from '@/features/character/model/toCharacterPreview.ts';
 import { createCharactersResponse } from '@/shared/test-utils';
-
-import { useCharacterListStore } from '../../model/character-list-state/character-list.state.ts';
 
 const navigateMock = vi.fn();
 
@@ -20,21 +20,16 @@ vi.mock('@tanstack/react-router', async (importOriginal) => {
   };
 });
 
-const mockCharacter = createCharactersResponse().results[0];
-const mockMorty = createCharactersResponse().results[1];
+const mockCharacter = toCharacterPreview(createCharactersResponse().results[0]);
+const mockMorty = toCharacterPreview(createCharactersResponse().results[1]);
 
 function resetStore() {
-  useCharacterListStore.setState({
-    characters: null,
-    charactersIsLoading: false,
-    charactersIsError: null,
-    selectedCharacters: null,
-  });
+  useSelectedCharacterStore.setState({ selectedCharactersMap: null });
 }
 
-function selectCharacters(...characters: Character[]) {
+function selectCharacters(...characters: CharacterPreview[]) {
   for (const character of characters) {
-    useCharacterListStore.getState().toggleCharacterSelected(character);
+    useSelectedCharacterStore.getState().toggleCharacterSelected(character);
   }
 }
 
@@ -112,7 +107,9 @@ describe('SelectedCharacters', () => {
 
     await user.click(screen.getByRole('button', { name: 'Reset' }));
 
-    expect(useCharacterListStore.getState().selectedCharacters).toBeNull();
+    expect(
+      useSelectedCharacterStore.getState().selectedCharactersMap
+    ).toBeNull();
     expect(screen.queryByText(/Selected characters/i)).not.toBeInTheDocument();
   });
 
@@ -133,18 +130,29 @@ describe('SelectedCharacters', () => {
     expect(getPanelElement().className).toMatch(/selectedCharacters/);
   });
 
-  it('removes character from selection when star is toggled in carousel', async () => {
+  it('renders favorite buttons inside carousel cards', () => {
     selectCharacters(mockCharacter, mockMorty);
     render(<SelectedCharacters />);
 
     const carousel = getCarouselElement();
-    const [, mortySelectButton] = within(carousel).getAllByRole('button');
 
-    await user.click(mortySelectButton);
+    expect(within(carousel).getAllByRole('button')).toHaveLength(2);
+    expect(
+      useSelectedCharacterStore.getState().selectedCharactersMap?.size
+    ).toBe(2);
+  });
 
-    expect(useCharacterListStore.getState().selectedCharacters?.size).toBe(1);
-    expect(screen.getByText('Selected characters ( 1 )')).toBeInTheDocument();
-    expect(within(carousel).queryByText('Morty Smith')).not.toBeInTheDocument();
+  it('navigates to character details when selected card is clicked', async () => {
+    selectCharacters(mockCharacter);
+    render(<SelectedCharacters />);
+
+    await user.click(screen.getByRole('img', { name: 'Rick Sanchez' }));
+
+    expect(navigateMock).toHaveBeenCalledWith({
+      to: '/character/$id',
+      params: { id: String(mockCharacter.id) },
+      search: expect.any(Function),
+    });
   });
 
   describe('CSV download', () => {

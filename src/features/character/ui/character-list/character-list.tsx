@@ -1,13 +1,18 @@
-import { useEffect, type FC } from 'react';
+import { useEffect, type FC, useCallback } from 'react';
 
+import { useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from '@tanstack/react-router';
 import clsx from 'clsx';
 
-import { Pagination } from '@/shared/ui';
+import { useGetCharacters } from '@/features/character/api';
+import { characterQueryKeys } from '@/features/character/api/queries.ts';
+import { useCharacterGridClick } from '@/features/character/model/character-grid-click/use-character-grid-click.ts';
+import { toCharacterPreview } from '@/features/character/model/toCharacterPreview.ts';
+import { Button, Pagination, RefreshIcon } from '@/shared/ui';
+import { getQueryErrorMessage } from '@/shared/utils/get-query-error-message.ts';
 import { EmptyComponent } from '@/widgets/empty';
 import { ErrorComponent } from '@/widgets/error';
 
-import { useCharacterListStore } from '../../model/character-list-state/character-list.state';
 import { CharacterListGrid } from '../character-list-grid';
 import { CharacterLoading } from '../character-loading';
 
@@ -21,50 +26,91 @@ type Props = {
 
 export const CharacterList: FC<Props> = ({ className, searchName, page }) => {
   const navigate = useNavigate({ from: '/character' });
+  const queryClient = useQueryClient();
   const {
-    characters,
-    charactersIsLoading,
-    charactersIsError,
-    fetchCharacters,
-  } = useCharacterListStore();
+    error,
+    isError,
+    isLoading,
+    isFetching,
+    isRefetching,
+    data,
+    refetch: fetchCharacters,
+  } = useGetCharacters({
+    name: searchName,
+    page,
+  });
 
-  useEffect(() => {
-    void fetchCharacters({ name: searchName, page });
-  }, [fetchCharacters, searchName, page]);
+  const characters = data?.results.map((c) => toCharacterPreview(c));
+
+  const { onCharacterGridClick, selectedCharactersMap } = useCharacterGridClick(
+    {
+      characters,
+    }
+  );
+
+  const handleRefresh = () => {
+    void queryClient.invalidateQueries({
+      queryKey: characterQueryKeys.list({ name: searchName, page }),
+    });
+  };
+
+  const onPageChange = useCallback(
+    (nextPage: number) => {
+      void navigate({
+        search: (prev) => ({ ...prev, page: nextPage }),
+      });
+    },
+    [navigate]
+  );
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [searchName]);
 
-  return (
-    <>
+  const charactersIsLoading = isFetching || isLoading || isRefetching;
+  const isListEmpty = characters?.length === 0 || characters === undefined;
+
+  if (isError) {
+    return (
       <ErrorComponent
-        isError={!!charactersIsError}
-        errorText={charactersIsError?.message}
-        tryAgain={() => void fetchCharacters({ name: searchName, page })}
+        errorText={error ? getQueryErrorMessage(error) : undefined}
+        tryAgain={() => void fetchCharacters()}
       />
+    );
+  }
 
-      <EmptyComponent
-        isEmpty={characters?.results.length === 0 && !charactersIsLoading}
+  if (charactersIsLoading) {
+    return <CharacterLoading />;
+  }
+
+  if (isListEmpty) {
+    return <EmptyComponent />;
+  }
+
+  return (
+    <div className={clsx(s.characterList, className)}>
+      <CharacterListGrid
+        characters={characters}
+        onCharacterGridClick={onCharacterGridClick}
+        selectedCharactersMap={selectedCharactersMap}
       />
+      <div className={s.controls}>
+        <Pagination
+          className={s.pagination}
+          pages={data?.info.pages ?? 1}
+          currentPage={page}
+          onPageChange={onPageChange}
+        />
 
-      <CharacterLoading isLoading={!characters && charactersIsLoading} />
-
-      {characters && characters.results.length !== 0 && (
-        <div className={clsx(s.characterList, className)}>
-          <CharacterListGrid characters={characters.results} />
-          <Pagination
-            className={s.pagination}
-            pages={characters.info.pages ?? 1}
-            currentPage={page}
-            onPageChange={(nextPage: number) => {
-              void navigate({
-                search: (prev) => ({ ...prev, page: nextPage }),
-              });
-            }}
-          />
-        </div>
-      )}
-    </>
+        <Button
+          variant={'primary'}
+          className={s.refreshDetails}
+          onClick={handleRefresh}
+          icon={<RefreshIcon size={18} />}
+        >
+          Refresh characters
+        </Button>
+      </div>
+    </div>
   );
 };

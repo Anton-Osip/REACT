@@ -1,14 +1,10 @@
 import { cleanup, screen } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { getCharacters } from '@/features/character/api';
-import {
-  createCharactersResponse,
-  renderWithRouter,
-} from '@/shared/test-utils';
+import { renderWithRouter } from '@/shared/test-utils';
 import { loadFromStorage } from '@/shared/utils';
 
-import { RS_SCHOOL_REACT_URL, author } from './-about-page';
+import { ABOUT_AUTHOR, RS_SCHOOL_REACT_URL } from './-constants.ts';
 
 vi.mock('@/shared/utils', async (importOriginal) => {
   const actual = await importOriginal<typeof import('@/shared/utils')>();
@@ -18,20 +14,13 @@ vi.mock('@/shared/utils', async (importOriginal) => {
   };
 });
 
-vi.mock('@/features/character/api', () => ({
-  getCharacters: vi.fn(),
-}));
-
 const mockedLoadFromStorage = vi.mocked(loadFromStorage);
-const mockedGetCharacters = vi.mocked(getCharacters);
 
 describe('AboutPage', () => {
   beforeEach(() => {
     vi.stubGlobal('scrollTo', vi.fn());
     mockedLoadFromStorage.mockReset();
     mockedLoadFromStorage.mockReturnValue('');
-    mockedGetCharacters.mockReset();
-    mockedGetCharacters.mockResolvedValue(createCharactersResponse());
   });
 
   afterEach(() => {
@@ -40,7 +29,7 @@ describe('AboutPage', () => {
   });
 
   it('renders the About page title', async () => {
-    renderWithRouter('/about');
+    await renderWithRouter('/about');
 
     expect(
       await screen.findByRole('heading', { name: 'About' })
@@ -48,13 +37,13 @@ describe('AboutPage', () => {
   });
 
   it('renders the author name', async () => {
-    renderWithRouter('/about');
+    await renderWithRouter('/about');
 
-    expect(await screen.findByText(author.name)).toBeInTheDocument();
+    expect(await screen.findByText(ABOUT_AUTHOR.name)).toBeInTheDocument();
   });
 
   it('renders the RS School React course link with safe external attributes', async () => {
-    renderWithRouter('/about');
+    await renderWithRouter('/about');
 
     const courseLink = await screen.findByRole('link', {
       name: 'RS School React course',

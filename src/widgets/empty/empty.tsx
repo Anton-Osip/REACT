@@ -18,7 +18,7 @@ export const EmptyComponent: FC<Props> = ({
   emptyText,
   className,
 }) => {
-  if (!isEmpty) return null;
+  if (!isEmpty && isEmpty !== undefined) return null;
   return (
     <div className={clsx(s.empty, className)}>
       <img className={s.emptyImage} src={emptyPageImage} alt="empty page" />

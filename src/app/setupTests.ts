@@ -1,5 +1,12 @@
 import '@testing-library/jest-dom/vitest';
-import { vi } from 'vitest';
+import { beforeEach, vi } from 'vitest';
+
+import { setupDefaultCharacterApiMocks } from '@/shared/test-utils/mock-character-api.ts';
+
+beforeEach(() => {
+  setupDefaultCharacterApiMocks();
+  vi.stubGlobal('scrollTo', vi.fn());
+});
 
 Object.defineProperty(window, 'matchMedia', {
   writable: true,

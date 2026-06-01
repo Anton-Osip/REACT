@@ -8,12 +8,8 @@ import { cleanup, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { getCharacters } from '@/features/character/api';
 import { ThemeProvider } from '@/features/theme';
-import {
-  createCharactersResponse,
-  renderWithRouter,
-} from '@/shared/test-utils';
+import { renderWithRouter } from '@/shared/test-utils';
 import { loadFromStorage } from '@/shared/utils';
 
 import { Header } from './header.tsx';
@@ -26,12 +22,7 @@ vi.mock('@/shared/utils', async (importOriginal) => {
   };
 });
 
-vi.mock('@/features/character/api', () => ({
-  getCharacters: vi.fn(),
-}));
-
 const mockedLoadFromStorage = vi.mocked(loadFromStorage);
-const mockedGetCharacters = vi.mocked(getCharacters);
 
 async function renderHeader(className?: string) {
   const rootRoute = createRootRoute({
@@ -60,8 +51,6 @@ describe('Header', () => {
     vi.stubGlobal('scrollTo', vi.fn());
     mockedLoadFromStorage.mockReset();
     mockedLoadFromStorage.mockReturnValue('');
-    mockedGetCharacters.mockReset();
-    mockedGetCharacters.mockResolvedValue(createCharactersResponse());
   });
 
   afterEach(() => {
@@ -106,9 +95,11 @@ describe('Header', () => {
   });
 
   it('navigates to /about when About is clicked from /character', async () => {
-    const { router } = renderWithRouter('/character');
+    const { router } = await renderWithRouter('/character');
 
-    await screen.findByPlaceholderText('Search');
+    await waitFor(() => {
+      expect(screen.getByRole('link', { name: 'About' })).toBeInTheDocument();
+    });
 
     await user.click(screen.getByRole('link', { name: 'About' }));
 

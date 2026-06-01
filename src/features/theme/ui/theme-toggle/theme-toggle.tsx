@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { ThemeMode } from '@/features/theme/modal/theme.context.ts';
 import { Button, MoonIcon, SunIcon } from '@/shared/ui';
 
 import { useTheme } from '../../modal';
@@ -15,7 +16,11 @@ export const ThemeToggle: React.FC = () => {
       aria-label="Switch theme"
       className={s.themeToggle}
     >
-      {theme === 'light' ? <MoonIcon size={20} /> : <SunIcon size={20} />}
+      {theme === ThemeMode.light ? (
+        <MoonIcon size={20} />
+      ) : (
+        <SunIcon size={20} />
+      )}
     </Button>
   );
 };

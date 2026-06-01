@@ -71,6 +71,32 @@ describe('ErrorBoundary', () => {
     consoleSpy.mockRestore();
   });
 
+  it('shows fallback message when error has no message', () => {
+    class ThrowWithoutMessage extends Component<
+      Record<string, never>,
+      Record<string, never>
+    > {
+      render(): ReactNode {
+        throw new Error('');
+        return null;
+      }
+    }
+
+    const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+
+    render(
+      <ErrorBoundary>
+        <ThrowWithoutMessage />
+      </ErrorBoundary>
+    );
+
+    expect(
+      screen.getByText('An unexpected error occurred')
+    ).toBeInTheDocument();
+
+    consoleSpy.mockRestore();
+  });
+
   it('reloads the page when Try Again is clicked', async () => {
     const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
     const reloadSpy = vi.fn();

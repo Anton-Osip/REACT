@@ -1,16 +1,12 @@
+import { type FC } from 'react';
+
 import { Typography } from '@/shared/ui';
+
+import { ABOUT_AUTHOR, RS_SCHOOL_REACT_URL } from './-constants.ts';
 
 import s from './about-page.module.css';
 
-export const RS_SCHOOL_REACT_URL = 'https://rs.school/courses/reactjs';
-
-export const author = {
-  name: 'Антон',
-  github: 'https://github.com/Anton-Osip',
-  bio: 'This app lets you browse Rick and Morty characters from the public API — search by name, paginate results, and open character details. It was built as a learning project for the RS School React course.',
-} as const;
-
-export function AboutPage() {
+export const AboutPage: FC = () => {
   return (
     <div className={s.about}>
       <article className={s.aboutContent}>
@@ -44,15 +40,15 @@ export function AboutPage() {
             Who are you?
           </Typography>
           <Typography variant="subtitle1" className={s.authorName}>
-            {author.name}
+            {ABOUT_AUTHOR.name}
           </Typography>
           <Typography variant="body2" className={s.sectionText}>
-            {author.bio}
+            {ABOUT_AUTHOR.bio}
           </Typography>
           <Typography
             as="a"
             variant="link1"
-            href={author.github}
+            href={ABOUT_AUTHOR.github}
             target="_blank"
             rel="noopener noreferrer"
             className={s.authorLink}
@@ -84,4 +80,4 @@ export function AboutPage() {
       </article>
     </div>
   );
-}
+};

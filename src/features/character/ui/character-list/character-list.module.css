@@ -10,3 +10,9 @@
 .pagination {
   height: 24px;
 }
+
+.controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}

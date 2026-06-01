@@ -1,13 +1,13 @@
-import { describe, expect, it } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
+import type { Character, CharacterPreview } from '@/features/character/api';
 import { createCharactersResponse } from '@/shared/test-utils';
 
-import type {
-  Character,
-  CharacterPreview,
-} from '../../features/character/api/getCharacters.type.ts';
-
-import { generateCSV } from './csvUtils.ts';
+import {
+  createCsvDownloadMeta,
+  CSV_MIME_TYPE,
+  generateCSV,
+} from './csvUtils.ts';
 
 describe('generateCSV', () => {
   const [rick, morty] = createCharactersResponse().results;
@@ -65,6 +65,19 @@ describe('generateCSV', () => {
     expect(csv).toContain('Morty Smith');
   });
 
+  it('renders empty cells for null and undefined escaped values', () => {
+    const character: CharacterPreview = {
+      ...toPreview(rick),
+      species: 'Human',
+      location: { name: 'Earth', url: '' },
+    };
+
+    const csv = generateCSV([character]);
+    const [, row] = csv.split('\n');
+
+    expect(row).toMatch(/^1,Rick Sanchez,Alive,Human,Earth,,/);
+  });
+
   it('escapes values containing commas, quotes, or newlines', () => {
     const character: CharacterPreview = {
       ...toPreview(rick),
@@ -77,5 +90,88 @@ describe('generateCSV', () => {
 
     expect(row).toContain('"Rick ""Pickle"", Sanchez"');
     expect(row).toContain('"Human, Alien"');
+  });
+
+  it('escapes values containing newline characters', () => {
+    const character: CharacterPreview = {
+      ...toPreview(rick),
+      name: 'Rick\nSanchez',
+    };
+
+    const csv = generateCSV([character]);
+
+    expect(csv).toMatch(/1,"Rick\nSanchez",Alive/);
+  });
+
+  it('escapes status, location URL, and image URL when they contain special characters', () => {
+    const character: CharacterPreview = {
+      ...toPreview(rick),
+      status: 'Alive, maybe' as CharacterPreview['status'],
+      location: {
+        name: 'Earth',
+        url: 'https://example.com/loc?foo="bar",baz',
+      },
+      image: 'https://example.com/img,1.png',
+    };
+
+    const csv = generateCSV([character]);
+    const [, row] = csv.split('\n');
+
+    expect(row).toContain('"Alive, maybe"');
+    expect(row).toContain('"https://example.com/loc?foo=""bar"",baz"');
+    expect(row).toContain('"https://example.com/img,1.png"');
+  });
+});
+
+describe('createCsvDownloadMeta', () => {
+  let createObjectURLSpy: ReturnType<typeof vi.spyOn>;
+
+  beforeEach(() => {
+    createObjectURLSpy = vi
+      .spyOn(URL, 'createObjectURL')
+      .mockReturnValue('blob:mock-url');
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
+  it('returns null for an empty items array', () => {
+    expect(createCsvDownloadMeta([])).toBeNull();
+    expect(createObjectURLSpy).not.toHaveBeenCalled();
+  });
+
+  it('creates a UTF-8 CSV blob with BOM and object URL', async () => {
+    const [rick] = createCharactersResponse().results;
+    const character: CharacterPreview = {
+      id: rick.id,
+      name: rick.name,
+      status: rick.status,
+      species: rick.species,
+      image: rick.image,
+      location: rick.location,
+      gender: rick.gender,
+    };
+
+    const meta = createCsvDownloadMeta([character]);
+
+    expect(meta).not.toBeNull();
+    if (!meta) throw new Error('Expected download meta to be created');
+
+    expect(meta).toEqual({
+      url: 'blob:mock-url',
+      fileName: '1_characters.csv',
+      blob: expect.any(Blob),
+    });
+    expect(createObjectURLSpy).toHaveBeenCalledOnce();
+
+    const bytes = new Uint8Array(await meta.blob.arrayBuffer());
+    expect(bytes[0]).toBe(0xef);
+    expect(bytes[1]).toBe(0xbb);
+    expect(bytes[2]).toBe(0xbf);
+
+    const csvText = await meta.blob.text();
+    expect(csvText).toContain('Rick Sanchez');
+    expect(meta.blob.type).toBe(CSV_MIME_TYPE);
   });
 });

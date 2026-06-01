@@ -2,10 +2,11 @@ import { type FC, useEffect, useMemo } from 'react';
 
 import clsx from 'clsx';
 
+import { useCharacterGridClick } from '@/features/character/model/character-grid-click/use-character-grid-click.ts';
+import { useSelectedCharacterStore } from '@/features/character/model/selected-character-state/selected-character.state.ts';
 import { Button, Typography } from '@/shared/ui';
-import { generateCSV } from '@/shared/utils';
+import { createCsvDownloadMeta } from '@/shared/utils';
 
-import { useCharacterListStore } from '../../model/character-list-state/character-list.state.ts';
 import { CharacterCard } from '../character-card';
 
 import s from './selected-characters.module.css';
@@ -17,23 +18,24 @@ interface SelectedCharactersProps {
 export const SelectedCharacters: FC<SelectedCharactersProps> = ({
   className,
 }) => {
-  const { selectedCharacters, resetCharacterSelected } =
-    useCharacterListStore();
+  const { selectedCharactersMap, resetCharacterSelected } =
+    useSelectedCharacterStore();
 
-  const downloadMeta = useMemo(() => {
-    if (!selectedCharacters || selectedCharacters.size === 0) return null;
+  const selectedCharacters = selectedCharactersMap
+    ? [...selectedCharactersMap.values()]
+    : [];
 
-    const csvData = generateCSV(Array.from(selectedCharacters.values()));
-    const blob = new Blob(['\uFEFF' + csvData], {
-      type: 'text/csv;charset=utf-8;',
-    });
+  const { onCharacterGridClick } = useCharacterGridClick({
+    characters: selectedCharacters,
+  });
 
-    return {
-      url: URL.createObjectURL(blob),
-      fileName: `${selectedCharacters.size}_characters.csv`,
-      blob,
-    };
-  }, [selectedCharacters]);
+  const downloadMeta = useMemo(
+    () =>
+      selectedCharactersMap
+        ? createCsvDownloadMeta([...selectedCharactersMap.values()])
+        : null,
+    [selectedCharactersMap]
+  );
 
   useEffect(() => {
     const url = downloadMeta?.url;
@@ -42,15 +44,13 @@ export const SelectedCharacters: FC<SelectedCharactersProps> = ({
     return () => URL.revokeObjectURL(url);
   }, [downloadMeta?.url]);
 
-  if (!selectedCharacters || selectedCharacters.size === 0) return null;
-
-  const arraySelectedCharacters = [...selectedCharacters.values()];
+  if (!selectedCharactersMap || selectedCharactersMap.size === 0) return null;
 
   return (
     <div className={clsx(s.selectedCharacters, className)}>
       <div className={s.header}>
         <Typography variant={'h2'}>
-          Selected characters ( {arraySelectedCharacters.length} )
+          Selected characters ( {selectedCharacters.length} )
         </Typography>
         <div className={s.controlBtn}>
           <Button variant={'secondary'} onClick={resetCharacterSelected}>
@@ -68,12 +68,13 @@ export const SelectedCharacters: FC<SelectedCharactersProps> = ({
       </div>
 
       <div className={s.carusel}>
-        <div className={s.caruselWrapper}>
-          {arraySelectedCharacters.map((character) => (
+        <div className={s.caruselWrapper} onClick={onCharacterGridClick}>
+          {selectedCharacters.map((character) => (
             <CharacterCard
               className={s.card}
               key={character.id}
               character={character}
+              isSelected={selectedCharactersMap?.has(character.id) || false}
             />
           ))}
         </div>

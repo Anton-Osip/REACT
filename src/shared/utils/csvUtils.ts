@@ -1,5 +1,29 @@
 import type { CharacterPreview } from '../../features/character/api/getCharacters.type.ts';
 
+export const CSV_UTF8_BOM = '\uFEFF';
+export const CSV_MIME_TYPE = 'text/csv;charset=utf-8;';
+
+export type CsvDownloadMeta = {
+  url: string;
+  fileName: string;
+  blob: Blob;
+};
+
+export const createCsvDownloadMeta = (
+  items: CharacterPreview[]
+): CsvDownloadMeta | null => {
+  if (items.length === 0) return null;
+
+  const csvData = generateCSV(items);
+  const blob = new Blob([CSV_UTF8_BOM + csvData], { type: CSV_MIME_TYPE });
+
+  return {
+    url: URL.createObjectURL(blob),
+    fileName: `${items.length}_characters.csv`,
+    blob,
+  };
+};
+
 export const generateCSV = (items: CharacterPreview[]): string => {
   const headers = [
     'ID',
@@ -26,13 +50,13 @@ export const generateCSV = (items: CharacterPreview[]): string => {
     };
 
     return [
-      character.id,
+      escapeCSV(character.id),
       escapeCSV(character.name),
-      character.status,
+      escapeCSV(character.status),
       escapeCSV(character.species),
       escapeCSV(character.location.name),
-      character.location.url,
-      character.image,
+      escapeCSV(character.location.url),
+      escapeCSV(character.image),
     ].join(',');
   });
 
