@@ -7,4 +7,5 @@ export { Pagination } from './pagination';
 export { Modal } from './modal';
 export { Checkbox } from './checkbox';
 export { RadioGroup } from './radio-group';
+export { FileField } from './file-field';
 export * from './icons';
