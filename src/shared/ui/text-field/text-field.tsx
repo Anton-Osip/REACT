@@ -1,4 +1,9 @@
-import { type ComponentPropsWithoutRef, type FC, type ReactNode } from 'react';
+import {
+  type ComponentPropsWithoutRef,
+  type FC,
+  type ReactNode,
+  useId,
+} from 'react';
 
 import clsx from 'clsx';
 
@@ -14,6 +19,7 @@ export type InputProps = {
   iconStart?: ReactNode;
   isError?: boolean;
   errorText?: string;
+  id?: string;
 } & ComponentPropsWithoutRef<'input'>;
 
 export const TextField: FC<InputProps> = ({
@@ -24,18 +30,28 @@ export const TextField: FC<InputProps> = ({
   iconStart,
   isError,
   errorText,
+  id,
   ...props
 }) => {
+  const generatedId = useId();
+  const inputId = id ?? generatedId;
+
   return (
     <div>
       {label && (
-        <Typography className={s.label} variant={'body2'}>
+        <Typography
+          as={'label'}
+          htmlFor={inputId}
+          className={s.label}
+          variant={'body2'}
+        >
           {label}
         </Typography>
       )}
       <div className={s.inputWrapper}>
         {iconStart && <div className={s.iconStart}>{iconStart}</div>}
         <input
+          id={inputId}
           type={type}
           className={clsx(
             s.input,

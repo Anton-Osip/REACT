@@ -3,6 +3,7 @@ import {
   type FC,
   type ReactNode,
   useEffect,
+  useId,
   useRef,
 } from 'react';
 
@@ -17,7 +18,7 @@ import s from './checkbox.module.css';
 type Props = {
   checked: boolean | 'indeterminate';
   onCheckedChange: (checked: boolean) => void;
-  id: string;
+  id?: string;
   children: ReactNode;
   className?: string;
 };
@@ -26,8 +27,11 @@ export const Checkbox: FC<Props> & {
   Indicator: typeof CheckboxIndicator;
   Label: typeof CheckboxLabel;
 } = ({ children, id, checked, onCheckedChange, className }) => {
+  const generatedId = useId();
+  const inputId = id ?? generatedId;
+
   return (
-    <CheckboxContext.Provider value={{ checked, onCheckedChange, id }}>
+    <CheckboxContext.Provider value={{ checked, onCheckedChange, id: inputId }}>
       <div className={clsx(s.checkbox, className)}>{children}</div>
     </CheckboxContext.Provider>
   );
