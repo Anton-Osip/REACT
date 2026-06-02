@@ -5,4 +5,6 @@ export { Typography } from './typography';
 export { Container } from './container';
 export { Pagination } from './pagination';
 export { Modal } from './modal';
+export { Checkbox } from './checkbox';
+export { RadioGroup } from './radio-group';
 export * from './icons';
