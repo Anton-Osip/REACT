@@ -4,8 +4,7 @@ import clsx from 'clsx';
 
 import { FormRhf } from '@/features/forms/ui/form-rhf/form-rhf.tsx';
 import { FormUncontrolled } from '@/features/forms/ui/form-uncontrolled/form-uncontrolled.tsx';
-import { Button } from '@/shared/ui';
-import { ModalForm } from '@/widgets/modal-form';
+import { Button, ModalForm } from '@/shared/ui';
 
 import s from './form-section.module.css';
 

@@ -27,7 +27,7 @@ const renderCheckbox = (
   );
 };
 
-describe('Checkbox', () => {
+describe('CheckboxField', () => {
   afterEach(() => {
     cleanup();
     vi.clearAllMocks();

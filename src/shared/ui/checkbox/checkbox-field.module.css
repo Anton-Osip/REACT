@@ -1,0 +1,4 @@
+.errorText {
+  margin-top: 5px;
+  color: var(--color-danger-300);
+}

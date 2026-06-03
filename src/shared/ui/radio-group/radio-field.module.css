@@ -1,0 +1,14 @@
+.label {
+  color: var(--color-dark-100);
+}
+
+.group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.errorText {
+  margin-top: 5px;
+  color: var(--color-danger-300);
+}

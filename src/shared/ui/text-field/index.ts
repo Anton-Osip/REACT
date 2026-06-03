@@ -1,1 +1,2 @@
-export { TextField } from './text-field.tsx';
+export { TextField } from './text-field';
+export { TextFieldController } from './text-field-controller';

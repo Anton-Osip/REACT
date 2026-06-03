@@ -11,7 +11,7 @@ import { Typography } from '@/shared/ui';
 
 import s from './text-field.module.css';
 
-export type InputProps = {
+export type TextFieldProps = {
   type?: 'text' | 'password';
   label?: string;
   buttonIconEnd?: ReactNode;
@@ -22,7 +22,7 @@ export type InputProps = {
   id?: string;
 } & ComponentPropsWithoutRef<'input'>;
 
-export const TextField: FC<InputProps> = ({
+export const TextField: FC<TextFieldProps> = ({
   type = 'text',
   label,
   buttonIconEnd,

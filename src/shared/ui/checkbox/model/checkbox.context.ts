@@ -1,4 +1,4 @@
-import { createContext } from 'react';
+import { type FocusEventHandler, createContext } from 'react';
 
 export const CHECKBOX_INDETERMINATE = 'indeterminate' as const;
 
@@ -7,6 +7,7 @@ export type CheckboxCheckedState = boolean | typeof CHECKBOX_INDETERMINATE;
 export type CheckboxContextType = {
   checked: CheckboxCheckedState;
   onCheckedChange: (checked: boolean) => void;
+  onBlur?: FocusEventHandler<HTMLInputElement>;
   id: string;
 };
 

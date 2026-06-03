@@ -9,7 +9,7 @@ export const useCheckbox = (): CheckboxContextType => {
   const context = useContext(CheckboxContext);
   if (!context) {
     throw new Error(
-      'Checkbox.* компонент должен использоваться внутри <Checkbox>'
+      'CheckboxField.* компонент должен использоваться внутри <CheckboxField>'
     );
   }
   return context;

@@ -12,17 +12,17 @@ describe('useCheckbox', () => {
     cleanup();
   });
 
-  it('throws when used outside Checkbox', () => {
+  it('throws when used outside CheckboxField', () => {
     const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
 
     expect(() => renderHook(() => useCheckbox())).toThrow(
-      'Checkbox.* компонент должен использоваться внутри <Checkbox>'
+      'CheckboxField.* компонент должен использоваться внутри <CheckboxField>'
     );
 
     consoleSpy.mockRestore();
   });
 
-  it('returns checked, onCheckedChange and id inside Checkbox', () => {
+  it('returns checked, onCheckedChange and id inside CheckboxField', () => {
     const onCheckedChange = vi.fn();
     const wrapper = ({ children }: { children: ReactNode }) => (
       <Checkbox id="terms" checked={true} onCheckedChange={onCheckedChange}>

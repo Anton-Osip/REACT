@@ -1,9 +1,10 @@
-import { createContext, useContext } from 'react';
+import { type FocusEventHandler, createContext, useContext } from 'react';
 
-interface RadioGroupContextValue {
+export interface RadioGroupContextValue {
   name: string;
   selectedValue: string;
   onChange: (value: string) => void;
+  onBlur?: FocusEventHandler<HTMLInputElement>;
 }
 
 const RadioGroupContext = createContext<RadioGroupContextValue | null>(null);

@@ -20,7 +20,7 @@ export const RadioItem: React.FC<Props> = ({
   children,
   className = '',
 }) => {
-  const { name, selectedValue, onChange } = useRadioGroup();
+  const { name, selectedValue, onChange, onBlur } = useRadioGroup();
   const checked = selectedValue === value;
 
   return (
@@ -32,6 +32,7 @@ export const RadioItem: React.FC<Props> = ({
           value={value}
           checked={checked}
           onChange={() => onChange(value)}
+          onBlur={onBlur}
           disabled={disabled}
           className={s.input}
         />

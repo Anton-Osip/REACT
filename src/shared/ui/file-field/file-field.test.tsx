@@ -7,11 +7,13 @@ import { FileField } from './file-field.tsx';
 const renderFileField = (
   props: {
     onChange?: (files: FileList | null) => void;
+    onBlur?: () => void;
     accept?: string;
     multiple?: boolean;
     disabled?: boolean;
     label?: string;
     className?: string;
+    errorText?: string;
   } = {}
 ) => {
   const onChange = props.onChange ?? vi.fn();
@@ -21,11 +23,13 @@ const renderFileField = (
     ...render(
       <FileField
         onChange={onChange}
+        onBlur={props.onBlur}
         accept={props.accept}
         multiple={props.multiple}
         disabled={props.disabled}
         label={props.label}
         className={props.className}
+        errorText={props.errorText}
       />
     ),
   };
@@ -120,6 +124,45 @@ describe('FileField', () => {
   it('merges custom className onto the root element', () => {
     const { container } = renderFileField({ className: 'extra-class' });
 
-    expect(container.firstChild).toHaveClass('extra-class');
+    expect(container.querySelector('.extra-class')).toBeInTheDocument();
+  });
+
+  it('renders error text when provided', () => {
+    renderFileField({ errorText: 'File is required' });
+
+    expect(screen.getByText('File is required')).toBeInTheDocument();
+  });
+
+  it('assigns inputRef callback when provided', () => {
+    const inputRef = vi.fn();
+    const { container } = render(
+      <FileField onChange={vi.fn()} inputRef={inputRef} />
+    );
+
+    expect(inputRef).toHaveBeenCalledWith(getFileInput(container));
+  });
+
+  it('forwards null to inputRef callback on unmount', () => {
+    const inputRef = vi.fn();
+    const { container, unmount } = render(
+      <FileField onChange={vi.fn()} inputRef={inputRef} />
+    );
+    const input = getFileInput(container);
+
+    expect(inputRef).toHaveBeenCalledWith(input);
+
+    unmount();
+
+    expect(inputRef).toHaveBeenLastCalledWith(null);
+  });
+
+  it('calls onBlur when input loses focus', () => {
+    const onBlur = vi.fn();
+    const { container } = renderFileField({ onBlur });
+    const input = getFileInput(container);
+
+    fireEvent.blur(input);
+
+    expect(onBlur).toHaveBeenCalledTimes(1);
   });
 });

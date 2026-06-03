@@ -18,6 +18,7 @@ import s from './checkbox.module.css';
 type Props = {
   checked: boolean | 'indeterminate';
   onCheckedChange: (checked: boolean) => void;
+  onBlur?: ComponentPropsWithoutRef<'input'>['onBlur'];
   id?: string;
   children: ReactNode;
   className?: string;
@@ -26,12 +27,14 @@ type Props = {
 export const Checkbox: FC<Props> & {
   Indicator: typeof CheckboxIndicator;
   Label: typeof CheckboxLabel;
-} = ({ children, id, checked, onCheckedChange, className }) => {
+} = ({ children, id, checked, onCheckedChange, onBlur, className }) => {
   const generatedId = useId();
   const inputId = id ?? generatedId;
 
   return (
-    <CheckboxContext.Provider value={{ checked, onCheckedChange, id: inputId }}>
+    <CheckboxContext.Provider
+      value={{ checked, onCheckedChange, onBlur, id: inputId }}
+    >
       <div className={clsx(s.checkbox, className)}>{children}</div>
     </CheckboxContext.Provider>
   );
@@ -44,7 +47,7 @@ const CheckboxIndicator: FC<IndicatorProps> = ({
   children,
   ...props
 }) => {
-  const { checked, onCheckedChange, id } = useCheckbox();
+  const { checked, onCheckedChange, onBlur, id } = useCheckbox();
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -62,6 +65,7 @@ const CheckboxIndicator: FC<IndicatorProps> = ({
         className={s.input}
         checked={checked === true}
         onChange={(event) => onCheckedChange(event.target.checked)}
+        onBlur={onBlur}
       />
       <label htmlFor={id} className={clsx(s.indicator, className)} {...props}>
         {children}

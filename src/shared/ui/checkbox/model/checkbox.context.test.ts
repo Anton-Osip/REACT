@@ -14,7 +14,7 @@ describe('CheckboxContext', () => {
     cleanup();
   });
 
-  it('is undefined outside Checkbox', () => {
+  it('is undefined outside CheckboxField', () => {
     const { result } = renderHook(() => useContext(CheckboxContext));
 
     expect(result.current).toBeUndefined();
