@@ -3,6 +3,11 @@ import { memo } from 'react';
 import clsx from 'clsx';
 
 import type { CharacterPreview } from '@/features/character/api';
+import {
+  CHARACTER_CARD_FAVORITE_ACTION,
+  CHARACTER_CARD_FAVORITE_ACTION_ATTRIBUTE,
+  CHARACTER_CARD_ID_ATTRIBUTE,
+} from '@/features/character/model/constants.ts';
 import { Button, StarIcon, Typography } from '@/shared/ui';
 
 import s from './character-card.module.css';
@@ -19,11 +24,17 @@ export const CharacterCard = memo(function CharacterCard({
   isSelected = false,
 }: CharacterCardProps) {
   return (
-    <div className={clsx(s.card, className)} data-card-id={character.id}>
+    <div
+      className={clsx(s.card, className)}
+      {...{ [CHARACTER_CARD_ID_ATTRIBUTE]: character.id }}
+    >
       <Button
         variant={'ghost'}
-        data-action="favorite"
         className={clsx(s.stareBtn, isSelected && s.isSelected)}
+        {...{
+          [CHARACTER_CARD_FAVORITE_ACTION_ATTRIBUTE]:
+            CHARACTER_CARD_FAVORITE_ACTION,
+        }}
       >
         <StarIcon />
       </Button>

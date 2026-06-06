@@ -1,4 +1,5 @@
 @import '../../../node_modules/normalize.css/normalize.css';
 @import '_boilerplate.css';
 @import '_colors.css';
+@import '_scrollbar.css';
 @import '_typography.css';
