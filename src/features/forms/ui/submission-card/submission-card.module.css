@@ -9,6 +9,24 @@
   min-width: 0;
 }
 
+.isHighlighted {
+  animation: highlightBlink 1s ease-in-out 5;
+}
+
+@keyframes highlightBlink {
+  0%,
+  100% {
+    background-color: var(--background-color-700);
+    border-color: #313131;
+  }
+
+  50% {
+    background-color: rgb(128 255 191 / 0.18);
+    border-color: var(--color-success-100);
+    box-shadow: 0 0 12px rgb(34 229 132 / 0.35);
+  }
+}
+
 .imageWrapper {
   flex-shrink: 0;
   width: 100px;

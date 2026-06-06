@@ -32,7 +32,9 @@ export const userSchema = z
     gender: z.enum([GenderOption.male, GenderOption.female], {
       message: USER_FORM_VALIDATION_MESSAGES.gender.invalid,
     }),
-    termsAccepted: z.boolean(),
+    termsAccepted: z.boolean().refine((val) => val === true, {
+      message: USER_FORM_VALIDATION_MESSAGES.termsAccepted.required,
+    }),
     password: z
       .string()
       .min(6, USER_FORM_VALIDATION_MESSAGES.password.minLength),

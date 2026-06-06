@@ -121,4 +121,21 @@ describe('userSchema', () => {
       );
     }
   });
+
+  it('rejects when terms are not accepted', () => {
+    const result = userSchema.safeParse({
+      ...validData,
+      termsAccepted: false,
+    });
+
+    expect(result.success).toBe(false);
+    if (!result.success) {
+      const termsError = result.error.issues.find(
+        (issue) => issue.path[0] === 'termsAccepted'
+      );
+      expect(termsError?.message).toBe(
+        USER_FORM_VALIDATION_MESSAGES.termsAccepted.required
+      );
+    }
+  });
 });

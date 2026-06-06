@@ -1,10 +1,11 @@
 import { cleanup, render, screen } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
+import { SubmissionsList } from '@/features/forms';
 import { useFormsStore } from '@/features/forms/model/forms.store.ts';
 import type { UserCard } from '@/features/forms/model/forms.types.ts';
 
-import { SubmissionsList } from './submissions-list.tsx';
+import s from '../submission-card/submission-card.module.css';
 
 const createSubmission = (id: string): UserCard => ({
   id,
@@ -27,12 +28,13 @@ describe('SubmissionsList', () => {
         createSubmission('2'),
         createSubmission('3'),
       ],
+      lastAddedCardId: null,
     });
   });
 
   afterEach(() => {
     cleanup();
-    useFormsStore.setState({ submissions: [] });
+    useFormsStore.setState({ submissions: [], lastAddedCardId: null });
   });
 
   it('renders a card for each submission in the store', () => {
@@ -46,5 +48,35 @@ describe('SubmissionsList', () => {
     const { container } = render(<SubmissionsList classNames="custom-list" />);
 
     expect(container.firstElementChild).toHaveClass('custom-list');
+  });
+
+  it('renders empty state when there are no submissions', () => {
+    useFormsStore.setState({ submissions: [], lastAddedCardId: null });
+
+    render(<SubmissionsList />);
+
+    expect(screen.getByText('Nothing found.')).toBeInTheDocument();
+    expect(screen.getByRole('img', { name: 'empty page' })).toBeInTheDocument();
+  });
+
+  it('highlights the last added submission card', () => {
+    useFormsStore.setState({
+      submissions: [createSubmission('1'), createSubmission('2')],
+      lastAddedCardId: '2',
+    });
+
+    const { container } = render(<SubmissionsList />);
+
+    const cards = container.querySelectorAll(`.${s.submissionsCard}`);
+    expect(cards[1]).toHaveClass(s.isHighlighted);
+    expect(cards[0]).not.toHaveClass(s.isHighlighted);
+  });
+
+  it('does not highlight any card when lastAddedCardId is null', () => {
+    const { container } = render(<SubmissionsList />);
+
+    container.querySelectorAll(`.${s.submissionsCard}`).forEach((card) => {
+      expect(card).not.toHaveClass(s.isHighlighted);
+    });
   });
 });

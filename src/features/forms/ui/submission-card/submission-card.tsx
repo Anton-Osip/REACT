@@ -13,11 +13,25 @@ import { Typography } from '@/shared/ui';
 
 import s from './submission-card.module.css';
 
-type Props = { classNames?: string; submission: UserCard };
+type Props = {
+  classNames?: string;
+  submission: UserCard;
+  isHighlighted: boolean;
+};
 
-export const SubmissionCard: FC<Props> = ({ classNames, submission }) => {
+export const SubmissionCard: FC<Props> = ({
+  classNames,
+  submission,
+  isHighlighted,
+}) => {
   return (
-    <div className={clsx(s.submissionsCard, classNames)}>
+    <div
+      className={clsx(
+        s.submissionsCard,
+        isHighlighted && s.isHighlighted,
+        classNames
+      )}
+    >
       <div className={s.imageWrapper}>
         <img className={s.image} src={submission.image} alt={submission.name} />
       </div>

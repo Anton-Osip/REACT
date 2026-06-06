@@ -13,6 +13,9 @@ export const USER_FORM_VALIDATION_MESSAGES = {
   gender: {
     invalid: 'Select male or female',
   },
+  termsAccepted: {
+    required: 'You must accept the terms',
+  },
   password: {
     minLength: 'Password must contain at least 6 characters',
     mismatch: 'Passwords do not match',

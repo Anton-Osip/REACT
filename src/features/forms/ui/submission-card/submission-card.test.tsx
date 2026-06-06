@@ -5,6 +5,8 @@ import type { UserCard } from '@/features/forms/model/forms.types.ts';
 
 import { SubmissionCard } from './submission-card.tsx';
 
+import s from './submission-card.module.css';
+
 const createSubmission = (overrides: Partial<UserCard> = {}): UserCard => ({
   id: '1',
   age: 29,
@@ -25,7 +27,9 @@ describe('SubmissionCard', () => {
   });
 
   it('renders submission details', () => {
-    render(<SubmissionCard submission={createSubmission()} />);
+    render(
+      <SubmissionCard submission={createSubmission()} isHighlighted={false} />
+    );
 
     expect(screen.getByRole('img', { name: 'Anton' })).toHaveAttribute(
       'src',
@@ -47,6 +51,7 @@ describe('SubmissionCard', () => {
           termsAccepted: true,
           formVariant: 'rhf',
         })}
+        isHighlighted={false}
       />
     );
 
@@ -59,9 +64,26 @@ describe('SubmissionCard', () => {
       <SubmissionCard
         classNames="custom-card"
         submission={createSubmission()}
+        isHighlighted={false}
       />
     );
 
     expect(container.firstElementChild).toHaveClass('custom-card');
+  });
+
+  it('applies highlight class when isHighlighted is true', () => {
+    const { container } = render(
+      <SubmissionCard submission={createSubmission()} isHighlighted={true} />
+    );
+
+    expect(container.firstElementChild).toHaveClass(s.isHighlighted);
+  });
+
+  it('does not apply highlight class when isHighlighted is false', () => {
+    const { container } = render(
+      <SubmissionCard submission={createSubmission()} isHighlighted={false} />
+    );
+
+    expect(container.firstElementChild).not.toHaveClass(s.isHighlighted);
   });
 });

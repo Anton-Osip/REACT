@@ -42,13 +42,14 @@ describe('FormsPage', () => {
         createSubmission('2'),
         createSubmission('3'),
       ],
+      lastAddedCardId: null,
     });
   });
 
   afterEach(() => {
     cleanup();
     document.body.style.overflow = '';
-    useFormsStore.setState({ submissions: [] });
+    useFormsStore.setState({ submissions: [], lastAddedCardId: null });
   });
 
   it('renders form action buttons', async () => {

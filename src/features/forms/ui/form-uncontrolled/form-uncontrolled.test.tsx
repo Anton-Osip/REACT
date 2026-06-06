@@ -29,13 +29,13 @@ describe('FormUncontrolled', () => {
   const user = userEvent.setup();
 
   beforeEach(() => {
-    useFormsStore.setState({ submissions: [] });
+    useFormsStore.setState({ submissions: [], lastAddedCardId: null });
   });
 
   afterEach(() => {
     cleanup();
     document.body.style.overflow = '';
-    useFormsStore.setState({ submissions: [] });
+    useFormsStore.setState({ submissions: [], lastAddedCardId: null });
   });
 
   it('renders form fields', () => {

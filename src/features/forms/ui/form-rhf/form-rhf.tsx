@@ -30,10 +30,11 @@ export const FormRhf: FC<Props> = ({ className }) => {
   const {
     control,
     handleSubmit,
-    formState: { errors },
+    reset,
+    formState: { errors, isValid },
   } = useForm<UserFormInput, unknown, UserFormData>({
     resolver: zodResolver(userSchema),
-    mode: 'onSubmit',
+    mode: 'onChange',
     defaultValues: {
       name: '',
       age: 0,
@@ -59,7 +60,7 @@ export const FormRhf: FC<Props> = ({ className }) => {
       name: data.name,
       termsAccepted: data.termsAccepted,
     });
-
+    reset();
     onClose();
   };
 
@@ -126,9 +127,12 @@ export const FormRhf: FC<Props> = ({ className }) => {
         name={'termsAccepted'}
         control={control}
         label={'Accept terms'}
+        errorText={errors?.termsAccepted?.message}
       />
 
-      <Button type={'submit'}>Submit</Button>
+      <Button disabled={!isValid} type={'submit'}>
+        Submit
+      </Button>
     </form>
   );
 };
