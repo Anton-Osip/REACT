@@ -24,5 +24,4 @@ export const createAppViteConfig = (mode: string): UserConfig => ({
   ],
 });
 
-// https://vite.dev/config/
 export default defineConfig(({ mode }) => createAppViteConfig(mode));

@@ -1,5 +1,5 @@
 .label {
-  color: var(--color-dark-100);
+  color: var(--color-dark-100) !important;
 }
 
 .inputWrapper {
@@ -92,5 +92,5 @@
 
 .errorText {
   margin-top: 5px;
-  color: var(--color-danger-300);
+  color: var(--color-danger-300) !important;
 }

@@ -3,6 +3,11 @@ import { type MouseEvent, useCallback, useMemo } from 'react';
 import { useNavigate } from '@tanstack/react-router';
 
 import type { CharacterPreview } from '@/features/character/api';
+import {
+  CHARACTER_CARD_FAVORITE_ACTION,
+  CHARACTER_CARD_FAVORITE_ACTION_ATTRIBUTE,
+  CHARACTER_CARD_ID_ATTRIBUTE,
+} from '@/features/character/model/constants.ts';
 import { useSelectedCharacterStore } from '@/features/character/model/selected-character-state/selected-character.state.ts';
 
 type UseCharacterGridClickParams = {
@@ -26,14 +31,18 @@ export function useCharacterGridClick({
       const target = e.target;
       if (!(target instanceof Element)) return;
 
-      const card = target.closest<HTMLElement>('[data-card-id]');
+      const card = target.closest<HTMLElement>(
+        `[${CHARACTER_CARD_ID_ATTRIBUTE}]`
+      );
       if (!card?.dataset.cardId) return;
 
       const cardId = Number(card.dataset.cardId);
       if (!Number.isFinite(cardId)) return;
 
       const isFavoriteClick = Boolean(
-        target.closest('[data-action="favorite"]')
+        target.closest(
+          `[${CHARACTER_CARD_FAVORITE_ACTION_ATTRIBUTE}="${CHARACTER_CARD_FAVORITE_ACTION}"]`
+        )
       );
 
       if (isFavoriteClick) {

@@ -3,6 +3,10 @@ import { afterEach, describe, expect, it } from 'vitest';
 
 import '@testing-library/jest-dom/vitest';
 import type { CharacterPreview } from '@/features/character/api';
+import {
+  CHARACTER_CARD_FAVORITE_ACTION,
+  CHARACTER_CARD_FAVORITE_ACTION_ATTRIBUTE,
+} from '@/features/character/model/constants.ts';
 import mockImage from '@/shared/assets/image/errorPageImage.png';
 
 import { CharacterCard, type CharacterCardProps } from './character-card.tsx';
@@ -167,8 +171,8 @@ describe('CharacterCard', () => {
     renderCard();
 
     expect(screen.getByRole('button')).toHaveAttribute(
-      'data-action',
-      'favorite'
+      CHARACTER_CARD_FAVORITE_ACTION_ATTRIBUTE,
+      CHARACTER_CARD_FAVORITE_ACTION
     );
   });
 

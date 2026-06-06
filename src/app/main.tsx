@@ -16,7 +16,6 @@ const router = createRouter({
   scrollRestoration: true,
 });
 
-// Register things for typesafety
 declare module '@tanstack/react-router' {
   interface Register {
     router: typeof router;

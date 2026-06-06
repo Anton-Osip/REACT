@@ -34,6 +34,9 @@ export const Header: FC<Props> = ({ className }) => {
           <Button as={Link} to="/about" variant="ghost" fullWidth>
             About
           </Button>
+          <Button as={Link} to="/forms" variant="ghost" fullWidth>
+            Forms
+          </Button>
         </nav>
         <div className={s.controls}>
           <ErrorButton />

@@ -7,3 +7,4 @@ export {
   generateCSV,
   type CsvDownloadMeta,
 } from './csvUtils.ts';
+export { toMilliseconds } from './to-milliseconds.ts';

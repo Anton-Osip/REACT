@@ -6,3 +6,6 @@ export { MoonIcon } from './moon-icon';
 export { SunIcon } from './sun-icon';
 export { StarIcon } from './star-icon';
 export { RefreshIcon } from './refresh-icon';
+export { CheckIcon, CheckIconSvg } from './check-icon';
+export { EyeIcon } from './eye-icon';
+export { EyeOffIcon } from './eye-off-icon';

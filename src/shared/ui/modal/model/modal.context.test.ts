@@ -3,20 +3,20 @@ import { useContext } from 'react';
 import { cleanup, renderHook } from '@testing-library/react';
 import { afterEach, describe, expect, it } from 'vitest';
 
-import { ThemeContext } from './theme.context';
+import { ModalContext } from './modal.context';
 
-describe('ThemeContext', () => {
+describe('ModalContext', () => {
   afterEach(() => {
     cleanup();
   });
 
-  it('is undefined outside ThemeProvider', () => {
-    const { result } = renderHook(() => useContext(ThemeContext));
+  it('is undefined outside Modal', () => {
+    const { result } = renderHook(() => useContext(ModalContext));
 
     expect(result.current).toBeUndefined();
   });
 
   it('exposes a Provider component', () => {
-    expect(ThemeContext.Provider).toBeDefined();
+    expect(ModalContext.Provider).toBeDefined();
   });
 });

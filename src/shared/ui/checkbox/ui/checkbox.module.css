@@ -1,0 +1,79 @@
+.root {
+  position: relative;
+  display: inline-flex;
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  align-items: center;
+  justify-content: center;
+}
+
+.checkbox {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.label {
+  cursor: pointer;
+}
+
+.input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.indicator {
+  position: relative;
+  display: block;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  width: 20px;
+  height: 20px;
+  border: 1px solid var(--color-dark-100);
+  border-radius: 4px;
+  background: var(--background-color-700);
+  color: var(--color-light-100);
+  cursor: pointer;
+  transition:
+    background var(--hover-transform),
+    border-color var(--hover-transform);
+}
+
+.indicator:hover {
+  border-color: var(--color-accent-300);
+}
+
+.input:focus-visible + .indicator {
+  outline: 2px solid var(--color-info-700);
+  outline-offset: 2px;
+}
+
+.input:checked + .indicator,
+.input:indeterminate + .indicator {
+  background: var(--color-accent-500);
+  border-color: var(--color-accent-500);
+}
+
+.checkIcon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: block;
+  width: 14px;
+  height: 14px;
+  opacity: 0;
+  transform: translate(-50%, -50%);
+  transition: opacity var(--hover-transform);
+}
+
+.input:checked + .indicator .checkIcon {
+  opacity: 1;
+}
