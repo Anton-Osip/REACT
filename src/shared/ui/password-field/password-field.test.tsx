@@ -44,14 +44,4 @@ describe('PasswordField', () => {
 
     expect(screen.getByText('Password is required')).toBeInTheDocument();
   });
-
-  it('wraps field in extra container when withPasswordStrengthIndicator is true', () => {
-    const { container } = render(
-      <PasswordField withPasswordStrengthIndicator label="Password" />
-    );
-
-    const wrapper = container.firstElementChild;
-    expect(wrapper?.tagName).toBe('DIV');
-    expect(wrapper?.querySelector('input')).toBeInTheDocument();
-  });
 });

@@ -8,7 +8,6 @@ import { cleanup, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { ThemeProvider } from '@/features/theme';
 import { renderWithRouter } from '@/shared/test-utils';
 import { loadFromStorage } from '@/shared/utils';
 
@@ -26,11 +25,7 @@ const mockedLoadFromStorage = vi.mocked(loadFromStorage);
 
 async function renderHeader(className?: string) {
   const rootRoute = createRootRoute({
-    component: () => (
-      <ThemeProvider>
-        <Header className={className} />
-      </ThemeProvider>
-    ),
+    component: () => <Header className={className} />,
   });
 
   const router = createRouter({

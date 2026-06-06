@@ -2,8 +2,6 @@ import { cleanup, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
-import { ThemeProvider } from '../../modal/theme-context.tsx';
-
 import { ThemeToggle } from './theme-toggle.tsx';
 
 const MOON_PATH_FRAGMENT = 'M20.354';
@@ -12,14 +10,6 @@ const SUN_PATH_FRAGMENT = 'M12 3v1';
 function getToggleIconPath() {
   const button = screen.getByRole('button', { name: 'Switch theme' });
   return button.querySelector('path')?.getAttribute('d') ?? '';
-}
-
-function renderThemeToggle() {
-  return render(
-    <ThemeProvider>
-      <ThemeToggle />
-    </ThemeProvider>
-  );
 }
 
 describe('ThemeToggle', () => {
@@ -38,7 +28,7 @@ describe('ThemeToggle', () => {
 
   it('renders a theme switch button with accessible label', () => {
     localStorage.setItem('theme', JSON.stringify('light'));
-    renderThemeToggle();
+    render(<ThemeToggle />);
 
     expect(
       screen.getByRole('button', { name: 'Switch theme' })
@@ -47,7 +37,7 @@ describe('ThemeToggle', () => {
 
   it('shows moon icon in light mode and sun icon in dark mode', async () => {
     localStorage.setItem('theme', JSON.stringify('light'));
-    renderThemeToggle();
+    render(<ThemeToggle />);
 
     expect(getToggleIconPath()).toContain(MOON_PATH_FRAGMENT);
 
@@ -60,7 +50,7 @@ describe('ThemeToggle', () => {
 
   it('toggles document theme class when clicked', async () => {
     localStorage.setItem('theme', JSON.stringify('light'));
-    renderThemeToggle();
+    render(<ThemeToggle />);
 
     expect(document.documentElement).toHaveClass('light');
 

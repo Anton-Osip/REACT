@@ -1,8 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { loadFromStorage, saveToStorage } from '@/shared/utils';
 
-import { ThemeContext, type Theme, ThemeMode } from './theme.context';
+export const ThemeMode = {
+  dark: 'dark',
+  light: 'light',
+} as const;
+
+export type Theme = keyof typeof ThemeMode;
 
 const isTheme = (value: unknown): value is Theme =>
   value === ThemeMode.light || value === ThemeMode.dark;
@@ -17,9 +22,7 @@ const getInitialTheme = () => {
   return ThemeMode.light;
 };
 
-export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
-  children,
-}) => {
+export const useThemeState = () => {
   const [theme, setTheme] = useState<Theme>(getInitialTheme);
 
   useEffect(() => {
@@ -36,9 +39,5 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
     );
   };
 
-  return (
-    <ThemeContext.Provider value={{ theme, toggleTheme }}>
-      {children}
-    </ThemeContext.Provider>
-  );
+  return { theme, toggleTheme };
 };

@@ -120,7 +120,6 @@ export const FormRhf: FC<Props> = ({ className }) => {
         placeholder={'Confirm password'}
         errorText={errors?.confirmPassword?.message}
         isError={Boolean(errors?.confirmPassword?.message)}
-        withPasswordStrengthIndicator={true}
       />
 
       <CheckboxFieldController

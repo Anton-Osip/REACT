@@ -8,5 +8,4 @@ export { Pagination } from './pagination';
 export { Modal, ModalForm } from './modal';
 export { Checkbox, CheckboxField, CheckboxFieldController } from './checkbox';
 export { RadioGroup, RadioField, RadioFieldController } from './radio-group';
-export { FileField, FileFieldController } from './file-field';
 export * from './icons';
