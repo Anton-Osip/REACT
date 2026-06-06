@@ -28,7 +28,10 @@ describe('FormSection', () => {
 
     await user.click(screen.getByRole('button', { name: 'Uncontrolled' }));
 
-    expect(screen.getByText('UncontrolledForms')).toBeInTheDocument();
+    expect(screen.getByLabelText('Name')).toBeInTheDocument();
+    expect(screen.getByLabelText('Password')).toBeInTheDocument();
+    expect(screen.getByLabelText('Confirm password')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Submit' })).toBeInTheDocument();
   });
 
   it('opens react hook form modal when React Hook Form is clicked', async () => {

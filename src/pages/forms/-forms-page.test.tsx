@@ -75,6 +75,9 @@ describe('FormsPage', () => {
       await screen.findByRole('button', { name: 'Uncontrolled' })
     );
 
-    expect(screen.getByText('UncontrolledForms')).toBeInTheDocument();
+    expect(screen.getByLabelText('Name')).toBeInTheDocument();
+    expect(screen.getByLabelText('Password')).toBeInTheDocument();
+    expect(screen.getByLabelText('Confirm password')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Submit' })).toBeInTheDocument();
   });
 });
