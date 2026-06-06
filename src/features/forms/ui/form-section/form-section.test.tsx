@@ -36,7 +36,9 @@ describe('FormSection', () => {
 
     await user.click(screen.getByRole('button', { name: 'React Hook Form' }));
 
-    expect(screen.getByText('FormRhf')).toBeInTheDocument();
+    expect(screen.getByLabelText('Name')).toBeInTheDocument();
+    expect(screen.getByLabelText('Password')).toBeInTheDocument();
+    expect(screen.getByLabelText('Confirm password')).toBeInTheDocument();
   });
 
   it('merges custom className onto the root element', () => {

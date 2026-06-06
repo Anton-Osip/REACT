@@ -1,13 +1,11 @@
 import { cleanup, render, screen } from '@testing-library/react';
 import { afterEach, describe, expect, it } from 'vitest';
 
-import type { FormSubmission } from '@/features/forms/model/forms.types.ts';
+import type { UserCard } from '@/features/forms/model/forms.types.ts';
 
 import { SubmissionCard } from './submission-card.tsx';
 
-const createSubmission = (
-  overrides: Partial<FormSubmission> = {}
-): FormSubmission => ({
+const createSubmission = (overrides: Partial<UserCard> = {}): UserCard => ({
   id: '1',
   age: 29,
   country: 'BLR',

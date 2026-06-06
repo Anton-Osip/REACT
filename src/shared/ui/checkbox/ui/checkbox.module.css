@@ -1,6 +1,9 @@
 .root {
   position: relative;
   display: inline-flex;
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
   align-items: center;
   justify-content: center;
 }
@@ -28,9 +31,9 @@
 }
 
 .indicator {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+  position: relative;
+  display: block;
+  flex-shrink: 0;
   box-sizing: border-box;
   width: 20px;
   height: 20px;
@@ -59,7 +62,18 @@
   border-color: var(--color-accent-500);
 }
 
-.indicator svg {
+.checkIcon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: block;
   width: 14px;
   height: 14px;
+  opacity: 0;
+  transform: translate(-50%, -50%);
+  transition: opacity var(--hover-transform);
+}
+
+.input:checked + .indicator .checkIcon {
+  opacity: 1;
 }

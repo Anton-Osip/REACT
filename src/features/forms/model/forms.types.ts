@@ -13,8 +13,6 @@ export const FormVariant = {
 export type FormVariant = keyof typeof FormVariant;
 
 export type FormSubmission = {
-  id: string;
-  submittedAt: string;
   name: string;
   age: number;
   email: string;
@@ -24,3 +22,8 @@ export type FormSubmission = {
   image: string;
   formVariant: FormVariant;
 };
+
+export type UserCard = {
+  id: string;
+  submittedAt: string;
+} & FormSubmission;

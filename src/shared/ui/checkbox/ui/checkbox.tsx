@@ -10,6 +10,7 @@ import {
 import clsx from 'clsx';
 
 import { Typography } from '@/shared/ui';
+import { CheckIconSvg } from '@/shared/ui/icons/components/check-icon';
 
 import { CheckboxContext, useCheckbox } from '../model';
 
@@ -68,6 +69,7 @@ const CheckboxIndicator: FC<IndicatorProps> = ({
         onBlur={onBlur}
       />
       <label htmlFor={id} className={clsx(s.indicator, className)} {...props}>
+        <CheckIconSvg aria-hidden="true" className={s.checkIcon} />
         {children}
       </label>
     </span>

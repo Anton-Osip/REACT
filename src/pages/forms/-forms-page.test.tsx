@@ -2,6 +2,8 @@ import { cleanup, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
+import { useFormsStore } from '@/features/forms/model/forms.store.ts';
+import type { UserCard } from '@/features/forms/model/forms.types.ts';
 import { renderWithRouter } from '@/shared/test-utils';
 import { loadFromStorage } from '@/shared/utils';
 
@@ -15,17 +17,38 @@ vi.mock('@/shared/utils', async (importOriginal) => {
 
 const mockedLoadFromStorage = vi.mocked(loadFromStorage);
 
+const createSubmission = (id: string): UserCard => ({
+  id,
+  submittedAt: id,
+  name: 'Anton',
+  age: 29,
+  country: 'BLR',
+  formVariant: 'uncontrolled',
+  email: 'test@gmail.com',
+  gender: 'male',
+  image: 'https://example.com/avatar.jpeg',
+  termsAccepted: false,
+});
+
 describe('FormsPage', () => {
   const user = userEvent.setup();
 
   beforeEach(() => {
     mockedLoadFromStorage.mockReset();
     mockedLoadFromStorage.mockReturnValue('');
+    useFormsStore.setState({
+      submissions: [
+        createSubmission('1'),
+        createSubmission('2'),
+        createSubmission('3'),
+      ],
+    });
   });
 
   afterEach(() => {
     cleanup();
     document.body.style.overflow = '';
+    useFormsStore.setState({ submissions: [] });
   });
 
   it('renders form action buttons', async () => {

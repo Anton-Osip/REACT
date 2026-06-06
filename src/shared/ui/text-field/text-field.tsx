@@ -12,7 +12,7 @@ import { Typography } from '@/shared/ui';
 import s from './text-field.module.css';
 
 export type TextFieldProps = {
-  type?: 'text' | 'password';
+  type?: 'text' | 'password' | 'email' | 'number';
   label?: string;
   buttonIconEnd?: ReactNode;
   buttonIconActionEnd?: () => void;

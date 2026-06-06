@@ -2,7 +2,7 @@ import type { FC } from 'react';
 
 import clsx from 'clsx';
 
-import type { FormSubmission } from '@/features/forms/model/forms.types.ts';
+import type { UserCard } from '@/features/forms/model/forms.types.ts';
 import {
   FORM_VARIANT_LABELS,
   formatGender,
@@ -13,7 +13,7 @@ import { Typography } from '@/shared/ui';
 
 import s from './submission-card.module.css';
 
-type Props = { classNames?: string; submission: FormSubmission };
+type Props = { classNames?: string; submission: UserCard };
 
 export const SubmissionCard: FC<Props> = ({ classNames, submission }) => {
   return (

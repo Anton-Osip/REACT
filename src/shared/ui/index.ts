@@ -1,5 +1,6 @@
 export { Button } from './button';
 export { TextField, TextFieldController } from './text-field';
+export { PasswordField, PasswordFieldController } from './password-field';
 export { Skeleton } from './skeleton';
 export { Typography } from './typography';
 export { Container } from './container';
