@@ -1,4 +1,11 @@
-import type { YearData, Country } from '../types';
+import {
+  type Country,
+  SortField,
+  type SortFieldType,
+  SortOrder,
+  type SortOrderType,
+  type YearData,
+} from '../types';
 
 export const getAvailableColumns = (): string[] => {
   return [
@@ -30,7 +37,6 @@ export const createYearDataMap = (data: YearData[]): Map<number, YearData> => {
   data.forEach((d) => {
     map.set(d.year, d);
   });
-
   return map;
 };
 
@@ -55,4 +61,27 @@ export const getAvailableYears = (countries: Country[]): number[] => {
   });
 
   return Array.from(years).sort((a, b) => a - b);
+};
+
+export const getCountryPopulation = (country: Country, year: number): number =>
+  country.data.find((d) => d.year === year)?.population ?? 0;
+
+export const sortCountries = (
+  countries: Country[],
+  sortField: SortFieldType,
+  sortOrder: SortOrderType,
+  selectedYear: number
+): Country[] => {
+  if (sortField === SortField.name) {
+    return [...countries].sort((a, b) =>
+      sortOrder === SortOrder.asc ? a.id.localeCompare(b.id) : b.id.localeCompare(a.id)
+    );
+  }
+
+  return countries
+    .map((country) => ({ country, population: getCountryPopulation(country, selectedYear) }))
+    .sort((a, b) =>
+      sortOrder === SortOrder.asc ? a.population - b.population : b.population - a.population
+    )
+    .map(({ country }) => country);
 };

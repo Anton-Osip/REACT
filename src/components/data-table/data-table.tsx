@@ -2,21 +2,18 @@ import type { YearData } from '../../types';
 import { formatNumber } from '../../utils/format-utils';
 
 import styles from './data-table.module.css';
+import { memo } from 'react';
 
 type DataTableProps = {
-  data: YearData[];
+  record: YearData | undefined;
   year: number;
   columns: string[];
 };
 
-export const DataTable = ({ data, year, columns }: DataTableProps) => {
-  const yearData = data.filter((d) => d.year === year);
-
-  if (yearData.length === 0) {
+export const DataTable = memo(({ record, year, columns }: DataTableProps) => {
+  if (!record) {
     return <div className={styles.noData}>No data available for year {year}</div>;
   }
-
-  const record = yearData[0];
 
   return (
     <table className={styles.table}>
@@ -34,4 +31,4 @@ export const DataTable = ({ data, year, columns }: DataTableProps) => {
       </tbody>
     </table>
   );
-};
+});

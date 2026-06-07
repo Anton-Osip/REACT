@@ -38,7 +38,7 @@ export const useCo2Data = () => {
       }
     };
 
-    fetchData();
+    void fetchData();
   }, []);
 
   return { data, isLoading, error };

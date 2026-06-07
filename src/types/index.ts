@@ -55,3 +55,17 @@ export type ColumnOption = {
   label: string;
   category: 'basic' | 'additional';
 };
+
+export const SortField = {
+  name: 'name',
+  population: 'population',
+} as const;
+
+export type SortFieldType = keyof typeof SortField;
+
+export const SortOrder = {
+  asc: 'asc',
+  desc: 'desc',
+} as const;
+
+export type SortOrderType = keyof typeof SortOrder;
