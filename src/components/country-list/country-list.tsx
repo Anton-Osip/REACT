@@ -4,6 +4,7 @@ import { sortCountries } from '../../utils/data-transformers';
 import { CountryCard } from '../country-card/country-card';
 
 import styles from './country-list.module.css';
+import {  useWindowVirtualizer } from '@tanstack/react-virtual';
 
 type CountryListProps = {
   countries: Country[];
@@ -32,16 +33,40 @@ export const CountryList = memo(
       return sortCountries(filtered, sortField, sortOrder, selectedYear);
     }, [countries, searchQuery, selectedYear, sortField, sortOrder]);
 
+    const virtualizer = useWindowVirtualizer({
+      count: filteredCountries.length,
+      estimateSize: () => 280,
+      gap: 16,
+    });
+
+
     return (
-      <div className={styles.countryList}>
-        {filteredCountries.map((country) => (
-          <CountryCard
-            key={country.id}
-            country={country}
-            selectedYear={selectedYear}
-            selectedColumns={selectedColumns}
-          />
-        ))}
+      <div className={styles.countryList}   style={{
+        height: `${virtualizer.getTotalSize()}px`,
+        position: 'relative',
+        width: '100%',
+      }}>
+     {virtualizer.getVirtualItems().map((virtualItem) => {
+  const item = filteredCountries[virtualItem.index];
+
+          return (
+            <div
+              key={virtualItem.key}
+              ref={virtualizer.measureElement}
+              data-index={virtualItem.index}
+              className={styles.virtualWrapper}
+              style={{
+                transform: `translateY(${virtualItem.start}px)`,
+              }}
+            >
+              <CountryCard
+                country={item}
+                selectedYear={selectedYear}
+                selectedColumns={selectedColumns}
+              />
+            </div>
+          );
+        })}
       </div>
     );
   }
