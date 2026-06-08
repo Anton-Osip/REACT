@@ -30,34 +30,34 @@
 
 ### Interaction A: Sort countries
 
-- **Commit duration**: \_\_\_ s
-- **Render duration**: \_\_\_ ms
-- **Screenshot**: ![sort-optimized](./screenshots/optimized/sort-optimized.png)
+- **Commit duration**: 0.0008 s (0.8 ms)
+- **Render duration**: 13.9 ms
+- **Screenshot**: ![sort-optimized](performance-starter/screenshots/optimized/sort-optimized.png)
 
 ### Interaction B: Search countries
 
-- **Commit duration**: \_\_\_ s
-- **Render duration**: \_\_\_ ms
-- **Screenshot**: ![search-optimized](./screenshots/optimized/search-optimized.png)
+- **Commit duration**: 0.0008 s (0.8 ms)
+- **Render duration**: 15.5 ms
+- **Screenshot**: ![search-optimized](./performance-starter/screenshots/optimized/search-optimized.png)
 
 ### Interaction C: Change year
 
-- **Commit duration**: \_\_\_ s
-- **Render duration**: \_\_\_ ms
-- **Screenshot**: ![year-optimized](./screenshots/optimized/year-optimized.png)
+- **Commit duration**: 0.0011 s (1.1 ms)
+- **Render duration**: 34.1 ms
+- **Screenshot**: ![year-optimized](./performance-starter/screenshots/optimized/year-optimized.png)
 
 ### Interaction D: Toggle column
 
-- **Commit duration**: \_\_\_ s
-- **Render duration**: \_\_\_ ms
-- **Screenshot**: ![column-optimized](./screenshots/optimized/column-optimized.png)
+- **Commit duration**: 0.0010 s (1.0 ms)
+- **Render duration**: 19.9 ms
+- **Screenshot**: ![column-optimized](./performance-starter/screenshots/optimized/column-optimized.png)
 
 ## Summary of Improvements
 
 | Interaction      | Baseline (ms) | Optimized (ms) | Improvement |
 | ---------------- | ------------- | -------------- | ----------- |
-| Sort countries   | \_\_\_        | \_\_\_         | \_\_\_%     |
-| Search countries | \_\_\_        | \_\_\_         | \_\_\_%     |
-| Change year      | \_\_\_        | \_\_\_         | \_\_\_%     |
-| Toggle column    | \_\_\_        | \_\_\_         | \_\_\_%     |
-| **Average**      | **\_\_\_**    | **\_\_\_**     | **\_\_\_%** |
+| Sort countries   | 335.5         | 13.9           | 95.9%       |
+| Search countries | 355.5         | 15.5           | 95.6%       |
+| Change year      | 401           | 34.1           | 91.5%       |
+| Toggle column    | 324.2         | 19.9           | 93.9%       |
+| **Average**      | **354.05**    | **20.85**      | **94.1%**   |
