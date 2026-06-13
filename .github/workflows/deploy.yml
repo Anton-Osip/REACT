@@ -37,9 +37,13 @@ jobs:
 
       - name: Build
         run: pnpm run build
+        env:
+          BASE_PATH: /${{ github.event.repository.name }}
 
       - name: Setup SPA fallback
-        run: cp dist/index.html dist/404.html
+        run: |
+          cp dist/index.html dist/404.html
+          touch dist/.nojekyll
 
       - name: Setup Pages
         uses: actions/configure-pages@v5

@@ -5,7 +5,7 @@ import nextTs from 'eslint-config-next/typescript';
 const eslintConfig = defineConfig([
   ...nextVitals,
   ...nextTs,
-  globalIgnores(['.next/**', 'out/**', 'build/**', 'next-env.d.ts']),
+  globalIgnores(['.next/**', 'out/**', 'build/**', 'dist/**', 'next-env.d.ts']),
   {
     files: ['**/*.{js,jsx,ts,tsx}'],
     rules: {
@@ -104,6 +104,12 @@ const eslintConfig = defineConfig([
           allowExpressions: true,
         },
       ],
+    },
+  },
+  {
+    files: ['src/components/common/icons/components/**/*.{ts,tsx}'],
+    rules: {
+      'max-len': 'off',
     },
   },
 ]);
