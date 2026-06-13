@@ -6,6 +6,7 @@
   --color-surface-900: #1a1a1a;
   --color-surface-800: #1e1e20;
   --color-surface-600: #313234;
+  --color-surface-300: #f1f1f1;
   --color-surface-100: #ffffff;
 
   --color-brand-500: #11b0c8;
@@ -14,12 +15,13 @@
   --color-highlight-500: #bfde42;
 
   --hover-transform: 0.3s ease;
-
+  --card: var(--color-surface-300);
   --background: var(--color-surface-100);
   --foreground: var(--color-surface-800);
 }
 
 .dark {
+  --card: var(--color-surface-600);
   --background: var(--color-surface-800);
   --foreground: var(--color-surface-100);
   color-scheme: dark;
@@ -32,6 +34,7 @@
   --color-surface-900: var(--color-surface-900);
   --color-surface-800: var(--color-surface-800);
   --color-surface-600: var(--color-surface-600);
+  --color-surface-300: var(--color-surface-300);
   --color-surface-100: var(--color-surface-100);
 
   --color-brand-500: var(--color-brand-500);

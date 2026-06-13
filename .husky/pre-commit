@@ -1,1 +1,1 @@
-npm run format && npm run lint-fix && npm run lint && npm run build
+pnpm run format && pnpm run lint-fix && pnpm run lint && pnpm run build
