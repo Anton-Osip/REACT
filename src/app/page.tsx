@@ -1,7 +1,13 @@
-import { FC } from 'react';
+import { FC, Suspense } from 'react';
+
+import { CharactersPage } from '@components/layout';
 
 const Home: FC = () => {
-  return <div className="flex flex-wrap gap-4"></div>;
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <CharactersPage />
+    </Suspense>
+  );
 };
 
 export default Home;

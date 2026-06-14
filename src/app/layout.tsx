@@ -3,7 +3,8 @@ import '../styles/globals.css';
 
 import type { Metadata } from 'next';
 
-import { ErrorBoundary, Header } from '@components/layout';
+import { StoreProvider } from '@/store';
+import { Container, ErrorBoundary, Header } from '@components/layout';
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -17,11 +18,13 @@ type Props = {
 const RootLayout: FC<Readonly<Props>> = ({ children }) => {
   return (
     <html lang="en">
-      <body className="h-dvh w-dvw overflow-hidden dark">
-        <ErrorBoundary>
-          <Header />
-          {children}
-        </ErrorBoundary>
+      <body className="flex h-dvh w-dvw flex-col overflow-hidden">
+        <StoreProvider>
+          <ErrorBoundary>
+            <Header />
+            <Container className="min-h-0 flex-1">{children}</Container>
+          </ErrorBoundary>
+        </StoreProvider>
       </body>
     </html>
   );

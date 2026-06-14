@@ -3,10 +3,11 @@
 import { FC } from 'react';
 
 import { clsx } from 'clsx';
-import { Image } from 'next/dist/client/image-component';
+import Image from 'next/image';
 import Link from 'next/link';
 
 import { ThemeMode, useErrorButton, useTheme } from '@/hooks';
+import { withBasePath } from '@/utils';
 import { Button, MoonIcon, SunIcon } from '@components/common';
 import { Container } from '@components/layout';
 
@@ -17,10 +18,10 @@ export const Header: FC<Props> = ({ className }) => {
   const { simulateError } = useErrorButton();
 
   return (
-    <header className={clsx('w-full pt-16 pb-8', className)}>
+    <header className={clsx('w-full  py-8', className)}>
       <Container className="flex items-center justify-between">
         <Link href="/">
-          <Image src="/logo.svg" alt="Rick and Morty" width={220} height={64} />
+          <Image src={withBasePath('/logo.svg')} alt="Rick and Morty" width={220} height={64} priority />
         </Link>
         <nav className="flex gap-2">
           <Button href="/" variant="ghost" fullWidth>
