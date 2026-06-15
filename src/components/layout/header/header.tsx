@@ -5,7 +5,9 @@ import { FC } from 'react';
 import { clsx } from 'clsx';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
+import { ROUTES } from '@/constants';
 import { ThemeMode, useErrorButton, useTheme } from '@/hooks';
 import { withBasePath } from '@/utils';
 import { Button, MoonIcon, SunIcon } from '@components/common';
@@ -16,18 +18,25 @@ type Props = { className?: string };
 export const Header: FC<Props> = ({ className }) => {
   const { toggleTheme, theme } = useTheme();
   const { simulateError } = useErrorButton();
+  const router = useRouter();
 
   return (
     <header className={clsx('w-full  py-8', className)}>
       <Container className="flex items-center justify-between">
-        <Link href="/">
+        <Link href={ROUTES.HOME}>
           <Image src={withBasePath('/logo.svg')} alt="Rick and Morty" width={220} height={64} priority />
         </Link>
         <nav className="flex gap-2">
-          <Button href="/" variant="ghost" fullWidth>
+          <Button onClick={() => router.replace(ROUTES.HOME)} variant="ghost" fullWidth>
             Home
           </Button>
-          <Button href="/about" variant="ghost" fullWidth>
+          <Button
+            onClick={() => {
+              router.replace(ROUTES.ABOUT);
+            }}
+            variant="ghost"
+            fullWidth
+          >
             About
           </Button>
         </nav>

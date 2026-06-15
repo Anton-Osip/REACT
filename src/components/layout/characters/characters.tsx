@@ -7,9 +7,8 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useGetCharactersQuery } from '@/services';
 import { toCharacterPreview } from '@/utils';
 import { Button, Pagination, Skeleton } from '@components/common';
+import { EmptyComponent, ErrorComponent } from '@components/layout';
 import { CharactersList } from '@components/layout/characters/characters-list';
-import { EmptyComponent } from '@components/layout/empty';
-import { ErrorComponent } from '@components/layout/error';
 
 const SKELETON_COUNT = 24;
 
@@ -25,7 +24,7 @@ export const Characters: FC<Props> = ({ page, name }) => {
 
   const onPageChange = useCallback(
     (nextPage: number) => {
-      const params = new URLSearchParams(searchParams.toString());
+      const params = new URLSearchParams(searchParams?.toString());
 
       params.set('page', String(nextPage));
       router.push(`?${params.toString()}`);

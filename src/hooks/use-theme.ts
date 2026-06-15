@@ -34,18 +34,16 @@ export const useTheme = (): useThemeReturn => {
   }, []);
 
   useEffect(() => {
-    const root = document.body;
+    const root = document.documentElement;
 
     root.classList.remove(ThemeMode.light, ThemeMode.dark);
-    root.classList.add(theme);
-    saveToStorage('theme', theme);
-  }, [theme]);
 
-  useEffect(() => {
-    const root = document.body;
+    if (theme === ThemeMode.dark) {
+      root.classList.add(ThemeMode.dark);
+    } else {
+      root.classList.add(ThemeMode.light);
+    }
 
-    root.classList.remove(ThemeMode.light, ThemeMode.dark);
-    root.classList.add(theme);
     saveToStorage('theme', theme);
   }, [theme]);
 
