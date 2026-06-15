@@ -4,15 +4,46 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="95cc53f7-32d7-4c13-a25a-f68a5d8e954b" name="Changes" comment="feat(layout): add header, container, and error boundary">
-      <change afterPath="$PROJECT_DIR$/src/app/not-found.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/constants/index.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/constants/routes.ts" afterDir="false" />
+    <list default="true" id="95cc53f7-32d7-4c13-a25a-f68a5d8e954b" name="Changes" comment="feat(routing): add not-found page and centralize route constants">
+      <change afterPath="$PROJECT_DIR$/src/services/character/featchCharacter.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/eslint.config.mjs" beforeDir="false" afterPath="$PROJECT_DIR$/eslint.config.mjs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/next.config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/next.config.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/layout.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/not-found.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/not-found.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/common/button/button.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/common/button/button.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/common/icons/components/calendar-blank-icon/calendar-blank-icon.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/common/icons/components/calendar-blank-icon/calendar-blank-icon.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/common/icons/components/caret-left-icon/caret-left-icon.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/common/icons/components/caret-left-icon/caret-left-icon.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/common/icons/components/caret-right-icon/caret-right-icon.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/common/icons/components/caret-right-icon/caret-right-icon.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/common/icons/components/gender-female-icon/gender-female-icon.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/common/icons/components/gender-female-icon/gender-female-icon.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/common/icons/components/gender-male-icon/gender-male-icon.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/common/icons/components/gender-male-icon/gender-male-icon.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/common/icons/components/heart-icon/heart-icon.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/common/icons/components/heart-icon/heart-icon.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/common/icons/components/house-simple-icon/house-simple-icon.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/common/icons/components/house-simple-icon/house-simple-icon.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/common/icons/components/link-icon/link-icon.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/common/icons/components/link-icon/link-icon.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/common/icons/components/map-pin-icon/map-pin-icon.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/common/icons/components/map-pin-icon/map-pin-icon.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/common/icons/components/moon-icon/moon-icon.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/common/icons/components/moon-icon/moon-icon.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/common/icons/components/person-icon/person-icon.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/common/icons/components/person-icon/person-icon.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/common/icons/components/question-icon/question-icon.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/common/icons/components/question-icon/question-icon.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/common/icons/components/queue-icon/queue-icon.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/common/icons/components/queue-icon/queue-icon.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/common/icons/components/robot-icon/robot-icon.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/common/icons/components/robot-icon/robot-icon.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/common/icons/components/skull-icon/skull-icon.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/common/icons/components/skull-icon/skull-icon.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/common/icons/components/sun-icon/sun-icon.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/common/icons/components/sun-icon/sun-icon.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/common/icons/components/x-circle-icon/x-circle-icon.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/common/icons/components/x-circle-icon/x-circle-icon.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/layout/characters/characters-card/characters-card.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/layout/characters/characters-card/characters-card.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/layout/characters/characters-filter/characters-filter.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/layout/characters/characters-filter/characters-filter.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/layout/characters/characters-list/characters-list.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/layout/characters/characters-list/characters-list.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/layout/characters/characters-page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/layout/characters/characters-page.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/layout/characters/characters.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/layout/characters/characters.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/layout/empty/empty.module.css" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/layout/header/header.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/layout/header/header.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/hooks/use-theme.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/hooks/use-theme.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/character/character.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/character/character.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/character/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/character/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/store/hooks.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/store/hooks.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/store/provider.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/store/provider.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/store/store.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/store/store.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tsconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/tsconfig.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -34,37 +65,37 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
-    "git-widget-placeholder": "nextjs-ssr",
-    "javascript.preferred.runtime.type.id": "node",
-    "js.debugger.nextJs.config.created.client": "true",
-    "last_opened_file_path": "D:/kurs/RSSchool/REACT/src/app",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.standard": "true",
-    "node.js.detected.package.stylelint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.standard": "",
-    "node.js.selected.package.stylelint": "",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "pnpm",
-    "npm.build.executor": "Run",
-    "npm.dev.executor": "Run",
-    "npm.format.executor": "Run",
-    "npm.lint-fix.executor": "Run",
-    "npm.lint.executor": "Run",
-    "prettierjs.PrettierConfiguration.Package": "D:\\kurs\\RSSchool\\REACT\\node_modules\\prettier",
-    "settings.editor.selected.configurable": "configurable.stylesheets.stylelint",
-    "ts.external.directory.path": "D:\\kurs\\RSSchool\\REACT\\node_modules\\typescript\\lib",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;nextjs-ssr&quot;,
+    &quot;javascript.preferred.runtime.type.id&quot;: &quot;node&quot;,
+    &quot;js.debugger.nextJs.config.created.client&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/kurs/RSSchool/REACT/src/app&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.standard&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.stylelint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.standard&quot;: &quot;&quot;,
+    &quot;node.js.selected.package.stylelint&quot;: &quot;&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;pnpm&quot;,
+    &quot;npm.build.executor&quot;: &quot;Run&quot;,
+    &quot;npm.dev.executor&quot;: &quot;Run&quot;,
+    &quot;npm.format.executor&quot;: &quot;Run&quot;,
+    &quot;npm.lint-fix.executor&quot;: &quot;Run&quot;,
+    &quot;npm.lint.executor&quot;: &quot;Run&quot;,
+    &quot;prettierjs.PrettierConfiguration.Package&quot;: &quot;D:\\kurs\\RSSchool\\REACT\\node_modules\\prettier&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;configurable.stylesheets.stylelint&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;D:\\kurs\\RSSchool\\REACT\\node_modules\\typescript\\lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\kurs\RSSchool\REACT\src\app" />
@@ -74,10 +105,11 @@
       <recent name="D:\kurs\RSSchool\REACT\src\components\layout" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\kurs\RSSchool\REACT\src\app" />
+      <recent name="D:\kurs\RSSchool\REACT\src\app\(character)" />
       <recent name="D:\kurs\RSSchool\REACT\src\pages" />
       <recent name="D:\kurs\RSSchool\REACT\src\hooks" />
       <recent name="D:\kurs\RSSchool\REACT\src\components\layout" />
-      <recent name="D:\kurs\RSSchool\REACT\src\styles" />
     </key>
   </component>
   <component name="RunManager" selected="npm.dev">
@@ -136,8 +168,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="npm.dev" />
         <item itemvalue="npm.build" />
+        <item itemvalue="npm.dev" />
         <item itemvalue="npm.lint-fix" />
         <item itemvalue="npm.format" />
         <item itemvalue="npm.lint" />
@@ -164,6 +196,7 @@
       <workItem from="1781441854558" duration="2442000" />
       <workItem from="1781460050129" duration="2562000" />
       <workItem from="1781508262972" duration="2608000" />
+      <workItem from="1781527324244" duration="7995000" />
     </task>
     <task id="LOCAL-00001" summary="init">
       <option name="closed" value="true" />

@@ -1,7 +1,7 @@
-import { FC } from 'react';
+import type { FC } from 'react';
 
 import { CharactersCard } from '@components/layout/characters/characters-card';
-import { CharacterPreview } from '@services/character';
+import type { CharacterPreview } from '@services/character';
 
 type Props = {
   characters: CharacterPreview[];

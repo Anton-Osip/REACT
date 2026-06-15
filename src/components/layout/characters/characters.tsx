@@ -1,26 +1,40 @@
 'use client';
 
-import { FC, useCallback } from 'react';
+import { type FC, useCallback, useLayoutEffect, useState } from 'react';
 
 import { useRouter, useSearchParams } from 'next/navigation';
 
-import { useGetCharactersQuery } from '@/services';
+import { charactersApi, useGetCharactersQuery } from '@/services';
+import { useAppDispatch } from '@/store';
 import { toCharacterPreview } from '@/utils';
 import { Button, Pagination, Skeleton } from '@components/common';
 import { EmptyComponent, ErrorComponent } from '@components/layout';
 import { CharactersList } from '@components/layout/characters/characters-list';
+import type { CharactersResponse } from '@services/character';
 
 const SKELETON_COUNT = 24;
 
 type Props = {
   page: number;
   name: string;
+  initialData: CharactersResponse;
 };
 
-export const Characters: FC<Props> = ({ page, name }) => {
+export const Characters: FC<Props> = ({ page, name, initialData }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { data, isLoading, isError, isFetching, refetch } = useGetCharactersQuery({ page, name });
+  const dispatch = useAppDispatch();
+  const [querySkip, setQuerySkip] = useState(Boolean(initialData));
+
+  const { data, isLoading, isError, isFetching, refetch } = useGetCharactersQuery({ page, name }, { skip: querySkip });
+
+  const renderCharacters = initialData || data;
+
+  useLayoutEffect(() => {
+    dispatch(charactersApi.util.upsertQueryData('getCharacters', { page, name: name ?? '' }, initialData));
+
+    setQuerySkip(false);
+  }, [dispatch, initialData, page, name]);
 
   const onPageChange = useCallback(
     (nextPage: number) => {
@@ -38,7 +52,7 @@ export const Characters: FC<Props> = ({ page, name }) => {
     return <ErrorComponent tryAgain={refetch} />;
   }
 
-  const characters = data?.results.map(c => toCharacterPreview(c));
+  const characters = renderCharacters?.results.map(c => toCharacterPreview(c));
   const isListEmpty = characters?.length === 0 || characters === undefined;
 
   if (charactersIsLoading) {
@@ -63,7 +77,7 @@ export const Characters: FC<Props> = ({ page, name }) => {
         <CharactersList characters={characters} />
       </div>
       <div className="flex items-center justify-between">
-        <Pagination pages={data?.info.pages ?? 1} currentPage={page} onPageChange={onPageChange} />
+        <Pagination pages={renderCharacters?.info.pages ?? 1} currentPage={page} onPageChange={onPageChange} />
         <Button variant={'primary'} onClick={refetch}>
           Refresh characters
         </Button>

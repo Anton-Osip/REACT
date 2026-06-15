@@ -2,7 +2,7 @@
 
 import { type FC } from 'react';
 
-import { IconProps, IconWrapper } from '@components/common';
+import { type IconProps, IconWrapper } from '@components/common';
 
 type Props = IconProps;
 

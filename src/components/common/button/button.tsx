@@ -1,6 +1,6 @@
 'use client';
 
-import { type ComponentPropsWithoutRef, type ElementType, FC, type ReactNode } from 'react';
+import { type ComponentPropsWithoutRef, type ElementType, type FC, type ReactNode } from 'react';
 
 import Link from 'next/link';
 import { twMerge } from 'tailwind-merge';

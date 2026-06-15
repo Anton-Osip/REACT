@@ -1,4 +1,4 @@
-import { Character, CharacterPreview } from '@services/character';
+import type { Character, CharacterPreview } from '@services/character';
 
 export const toCharacterPreview = (character: Character): CharacterPreview => ({
   id: character.id,

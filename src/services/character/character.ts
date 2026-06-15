@@ -1,7 +1,7 @@
 import type { FetchBaseQueryError } from '@reduxjs/toolkit/query';
 
 import { baseApi } from '@services/base';
-import { CharactersArgs, CharactersResponse } from '@services/character';
+import type { CharactersArgs, CharactersResponse } from '@services/character';
 
 const EMPTY_CHARACTERS_RESPONSE: CharactersResponse = {
   info: { count: 0, pages: 0, next: null, prev: null },

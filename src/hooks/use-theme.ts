@@ -29,7 +29,6 @@ export const useTheme = (): useThemeReturn => {
   const [theme, setTheme] = useState<Theme>(ThemeMode.dark);
 
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     setTheme(resolveTheme());
   }, []);
 

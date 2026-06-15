@@ -77,6 +77,7 @@ const eslintConfig = defineConfig([
       'react/react-in-jsx-scope': 'off',
       'react/require-default-props': 'off',
       'react-hooks/rules-of-hooks': 'error',
+      'react-hooks/set-state-in-effect': 'off',
       'react-hooks/exhaustive-deps': 'warn',
       'react/jsx-filename-extension': [
         1,

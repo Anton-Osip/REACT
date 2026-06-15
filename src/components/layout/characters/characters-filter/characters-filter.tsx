@@ -1,6 +1,6 @@
 'use client';
 
-import { type ChangeEvent, type FC, SubmitEvent, useCallback, useEffect, useState } from 'react';
+import { type ChangeEvent, type FC, type SubmitEvent, useCallback, useEffect, useState } from 'react';
 
 import clsx from 'clsx';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -21,7 +21,6 @@ export const CharactersFilter: FC<Props> = ({ className, defaultValue = '' }) =>
   const [value, setValue] = useState<string>(defaultValue ?? '');
 
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     setValue(defaultValue ?? '');
   }, [defaultValue]);
 

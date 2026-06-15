@@ -1,6 +1,6 @@
 'use client';
 
-import { FC, useEffect } from 'react';
+import { type FC, useEffect } from 'react';
 
 import { useRouter, useSearchParams } from 'next/navigation';
 
@@ -8,10 +8,18 @@ import { Characters } from './characters';
 
 import { loadFromStorage } from '@/utils';
 import { CharactersFilter, STORAGE_KEY } from '@components/layout';
+import { type CharactersResponse } from '@services/character';
 
-export const CharactersPage: FC = () => {
+type Props = {
+  initialData: CharactersResponse;
+};
+
+export const CharactersPage: FC<Props> = ({ initialData }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
+
+  const search = searchParams.get('search') ?? undefined;
+  const page = Math.max(1, Number(searchParams.get('page')) || 1);
 
   useEffect(() => {
     const params = new URLSearchParams(searchParams.toString());
@@ -36,13 +44,10 @@ export const CharactersPage: FC = () => {
     }
   }, [router, searchParams]);
 
-  const search = searchParams.get('search') ?? undefined;
-  const page = Math.max(1, Number(searchParams.get('page')) || 1);
-
   return (
     <div className="flex h-full min-h-0 flex-col gap-6 pb-8">
       <CharactersFilter defaultValue={search} />
-      <Characters page={page} name={search ?? ''} />
+      <Characters page={page} name={search ?? ''} initialData={initialData} />
     </div>
   );
 };

@@ -1,4 +1,4 @@
-import { FC, ReactNode } from 'react';
+import { type FC, type ReactNode } from 'react';
 import '../styles/globals.css';
 
 import type { Metadata } from 'next';

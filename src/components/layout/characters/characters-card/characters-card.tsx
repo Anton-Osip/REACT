@@ -14,7 +14,7 @@ import {
   SkullIcon,
   Typography,
 } from '@components/common';
-import { CharacterPreview } from '@services/character';
+import type { CharacterPreview } from '@services/character';
 
 type Props = {
   character: CharacterPreview;
