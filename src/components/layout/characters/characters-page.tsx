@@ -1,53 +1,23 @@
-'use client';
+import type { FC } from 'react';
 
-import { type FC, useEffect } from 'react';
-
-import { useRouter, useSearchParams } from 'next/navigation';
-
-import { Characters } from './characters';
-
-import { loadFromStorage } from '@/utils';
-import { CharactersFilter, STORAGE_KEY } from '@components/layout';
-import { type CharactersResponse } from '@services/character';
+import { getCharacters } from '@/services';
+import { Characters, CharactersFilter } from '@components/layout';
 
 type Props = {
-  initialData: CharactersResponse;
+  searchParams: Promise<{ search?: string; page?: string }>;
 };
 
-export const CharactersPage: FC<Props> = ({ initialData }) => {
-  const router = useRouter();
-  const searchParams = useSearchParams();
-
-  const search = searchParams.get('search') ?? undefined;
-  const page = Math.max(1, Number(searchParams.get('page')) || 1);
-
-  useEffect(() => {
-    const params = new URLSearchParams(searchParams.toString());
-    let shouldReplace = false;
-
-    if (!searchParams.has('search')) {
-      const saved = loadFromStorage<string>(STORAGE_KEY, '');
-
-      if (saved) {
-        params.set('search', saved);
-        shouldReplace = true;
-      }
-    }
-
-    if (!searchParams.has('page')) {
-      params.set('page', '1');
-      shouldReplace = true;
-    }
-
-    if (shouldReplace) {
-      router.replace(`?${params.toString()}`);
-    }
-  }, [router, searchParams]);
+export const CharactersPage: FC<Props> = async ({ searchParams }) => {
+  const { search, page } = await searchParams;
+  const currentPage = Number(page) || 1;
+  const characters = await getCharacters({ search, page });
 
   return (
-    <div className="flex h-full min-h-0 flex-col gap-6 pb-8">
+    <div className="flex h-full min-h-0 flex-col gap-6">
       <CharactersFilter defaultValue={search} />
-      <Characters page={page} name={search ?? ''} initialData={initialData} />
+      <div className="min-h-0 flex-1">
+        <Characters page={currentPage} characters={characters} />
+      </div>
     </div>
   );
 };

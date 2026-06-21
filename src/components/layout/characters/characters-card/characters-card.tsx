@@ -2,7 +2,10 @@ import { type FC, type ReactNode } from 'react';
 
 import clsx from 'clsx';
 import { Image } from 'next/dist/client/image-component';
+import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 
+import { ROUTES } from '@/constants';
 import {
   Button,
   HeartIcon,
@@ -41,9 +44,13 @@ const getSpeciesIcon = (species: string): ReactNode => {
 };
 
 export const CharactersCard: FC<Props> = ({ character, priority = false }) => {
+  const searchParams = useSearchParams();
+  const query = searchParams.toString();
+
   return (
-    <article
+    <Link
       className={clsx('character-card flex h-full w-full cursor-pointer flex-col overflow-hidden rounded-xl p-3')}
+      href={`${ROUTES.CHARACTERS}/${character.id}${query ? `?${query}` : ''}`}
     >
       <div className="relative mb-3 h-[200px] w-full shrink-0 overflow-hidden rounded-lg">
         <Image
@@ -85,20 +92,6 @@ export const CharactersCard: FC<Props> = ({ character, priority = false }) => {
           </Typography>
         </div>
       </div>
-
-      <div className="mt-auto flex justify-end pt-3">
-        <Button
-          href={`/character/${character.id}`}
-          variant="ghost"
-          icon={<QuestionIcon size={18} color="currentColor" />}
-          className={clsx(
-            'rounded-full bg-surface-800 px-4 py-1.5 text-surface-100',
-            'enabled:hover:bg-brand-500 dark:bg-surface-900',
-          )}
-        >
-          Learn more
-        </Button>
-      </div>
-    </article>
+    </Link>
   );
 };

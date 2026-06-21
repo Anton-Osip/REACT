@@ -1,1 +1,1 @@
-export { useGetCharactersQuery, charactersApi, getCharacters } from './character';
+export { getCharacters, getCharacterById } from './character';

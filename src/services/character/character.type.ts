@@ -37,6 +37,8 @@ export type Character = {
   created: string;
 };
 
+export type CharacterArg = { id: string };
+
 export type CharacterPreview = Pick<Character, 'id' | 'name' | 'status' | 'species' | 'image' | 'location' | 'gender'>;
 
 export const CharacterStatus = {

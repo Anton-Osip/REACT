@@ -27,7 +27,7 @@ export const Header: FC<Props> = ({ className }) => {
           <Image src={withBasePath('/logo.svg')} alt="Rick and Morty" width={220} height={64} priority />
         </Link>
         <nav className="flex gap-2">
-          <Button onClick={() => router.replace(ROUTES.HOME)} variant="ghost" fullWidth>
+          <Button onClick={() => router.replace(ROUTES.CHARACTERS)} variant="ghost" fullWidth>
             Home
           </Button>
           <Button

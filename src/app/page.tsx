@@ -1,19 +1,20 @@
 import { type FC } from 'react';
 
-import { getCharacters } from '@/services';
-import { CharactersPage } from '@components/layout';
+import { CharactersFilter } from '@components/layout';
 
 type Props = {
-  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+  searchParams: Promise<{ [key: string]: string | undefined }>;
 };
-export const dynamic = 'force-dynamic';
 
 const Home: FC<Props> = async ({ searchParams }) => {
-  const { search, page } = await searchParams;
+  const { search } = await searchParams;
 
-  const result = await getCharacters({ search, page });
-
-  return <CharactersPage initialData={result} />;
+  return (
+    <>
+      <CharactersFilter defaultValue={search} />
+      <div>characters</div>
+    </>
+  );
 };
 
 export default Home;

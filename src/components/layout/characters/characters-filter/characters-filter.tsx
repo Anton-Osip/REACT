@@ -3,12 +3,11 @@
 import { type ChangeEvent, type FC, type SubmitEvent, useCallback, useEffect, useState } from 'react';
 
 import clsx from 'clsx';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
-import { saveToStorage } from '@/utils';
 import { Button, TextField } from '@components/common';
 
-export const STORAGE_KEY = 'character-search';
+export const STORAGE_KEY = 'characters-search';
 
 type Props = {
   className?: string;
@@ -17,6 +16,7 @@ type Props = {
 
 export const CharactersFilter: FC<Props> = ({ className, defaultValue = '' }) => {
   const router = useRouter();
+  const pathname = usePathname();
   const searchParams = useSearchParams();
   const [value, setValue] = useState<string>(defaultValue ?? '');
 
@@ -25,8 +25,6 @@ export const CharactersFilter: FC<Props> = ({ className, defaultValue = '' }) =>
   }, [defaultValue]);
 
   const changeSearchValue = (searchValue: string): void => {
-    saveToStorage(STORAGE_KEY, searchValue);
-
     const params = new URLSearchParams(searchParams.toString());
 
     if (searchValue) {
@@ -36,7 +34,8 @@ export const CharactersFilter: FC<Props> = ({ className, defaultValue = '' }) =>
     }
 
     params.set('page', '1');
-    router.push(`?${params.toString()}`);
+    router.push(`${pathname}?${params.toString()}`);
+    router.refresh();
   };
 
   const onSubmitHandler = (e: SubmitEvent<HTMLFormElement>): void => {

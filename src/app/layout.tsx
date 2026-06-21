@@ -3,7 +3,6 @@ import '../styles/globals.css';
 
 import type { Metadata } from 'next';
 
-import { StoreProvider } from '@/store';
 import { Container, ErrorBoundary, Header } from '@components/layout';
 
 export const metadata: Metadata = {
@@ -33,12 +32,10 @@ const RootLayout: FC<Readonly<Props>> = ({ children }) => {
         <title>Create Next App</title>
       </head>
       <body className="flex h-dvh w-dvw flex-col overflow-hidden" suppressHydrationWarning>
-        <StoreProvider>
-          <ErrorBoundary>
-            <Header />
-            <Container className="min-h-0 flex-1">{children}</Container>
-          </ErrorBoundary>
-        </StoreProvider>
+        <ErrorBoundary>
+          <Header />
+          <Container className="flex min-h-0 flex-1 flex-col">{children}</Container>
+        </ErrorBoundary>
       </body>
     </html>
   );

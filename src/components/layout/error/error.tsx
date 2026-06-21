@@ -1,39 +1,50 @@
-import { type FC } from 'react';
+'use client';
 
-import clsx from 'clsx';
+import type { FC } from 'react';
+
+import { clsx } from 'clsx';
 import Image from 'next/image';
 
 import { withBasePath } from '@/utils';
 import { Button, Typography } from '@components/common';
 
 type Props = {
-  errorText?: string;
-  isError?: boolean | null;
+  title?: string;
+  message: string;
+  actionLabel?: string;
+  onAction?: () => void;
+  href?: string;
   className?: string;
-  tryAgain: () => void;
 };
 
-export const ErrorComponent: FC<Props> = ({ errorText, isError, className, tryAgain }) => {
-  if (!isError && isError !== undefined) return null;
-
+export const ErrorComponent: FC<Props> = ({
+  title = 'ERROR',
+  message,
+  actionLabel = 'Back to Home',
+  onAction,
+  href,
+  className,
+}) => {
   return (
-    <div className={clsx('flex h-full w-full items-center justify-center p-4', className)}>
-      <div className="w-full max-w-[500px] rounded-xl border border-surface-600 bg-card p-4 text-center">
-        <Typography variant="h2" className="mb-4">
-          Something went wrong
-        </Typography>
+    <div className={clsx('flex h-full min-h-0 w-full overflow-y-auto', className)}>
+      <div
+        className={
+          'mx-auto flex min-h-full w-full max-w-2/3 flex-col items-center ' + 'justify-center gap-4 p-4 text-center'
+        }
+      >
+        <Typography variant="h1">{title}</Typography>
         <Image
-          className="mx-auto h-full w-1/2"
           src={withBasePath('/errorPageImage.png')}
-          alt="error image"
+          alt="error message"
           width={528}
           height={528}
+          className="h-auto w-full max-w-60 object-contain"
         />
-        <Typography variant="p" className="mb-6 break-words">
-          {errorText ?? 'An unexpected error occurred'}
+        <Typography variant="h3" className="wrap-break-word">
+          {message}
         </Typography>
-        <Button variant="ghost" onClick={tryAgain} className="mt-4" fullWidth>
-          Try Again
+        <Button variant="primary" onClick={onAction} href={href} fullWidth>
+          {actionLabel}
         </Button>
       </div>
     </div>
