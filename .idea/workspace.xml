@@ -5,46 +5,26 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="95cc53f7-32d7-4c13-a25a-f68a5d8e954b" name="Changes" comment="feat(routing): add not-found page and centralize route constants">
-      <change afterPath="$PROJECT_DIR$/src/services/character/featchCharacter.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/--help/_/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/--help/_/applypatch-msg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/--help/_/commit-msg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/--help/_/h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/--help/_/husky.sh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/--help/_/post-applypatch" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/--help/_/post-checkout" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/--help/_/post-commit" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/--help/_/post-merge" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/--help/_/post-rewrite" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/--help/_/pre-applypatch" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/--help/_/pre-auto-gc" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/--help/_/pre-commit" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/--help/_/pre-merge-commit" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/--help/_/pre-push" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/--help/_/pre-rebase" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/--help/_/prepare-commit-msg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/eslint.config.mjs" beforeDir="false" afterPath="$PROJECT_DIR$/eslint.config.mjs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/next.config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/next.config.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/layout.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/not-found.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/not-found.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/common/button/button.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/common/button/button.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/common/icons/components/calendar-blank-icon/calendar-blank-icon.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/common/icons/components/calendar-blank-icon/calendar-blank-icon.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/common/icons/components/caret-left-icon/caret-left-icon.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/common/icons/components/caret-left-icon/caret-left-icon.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/common/icons/components/caret-right-icon/caret-right-icon.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/common/icons/components/caret-right-icon/caret-right-icon.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/common/icons/components/gender-female-icon/gender-female-icon.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/common/icons/components/gender-female-icon/gender-female-icon.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/common/icons/components/gender-male-icon/gender-male-icon.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/common/icons/components/gender-male-icon/gender-male-icon.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/common/icons/components/heart-icon/heart-icon.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/common/icons/components/heart-icon/heart-icon.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/common/icons/components/house-simple-icon/house-simple-icon.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/common/icons/components/house-simple-icon/house-simple-icon.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/common/icons/components/link-icon/link-icon.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/common/icons/components/link-icon/link-icon.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/common/icons/components/map-pin-icon/map-pin-icon.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/common/icons/components/map-pin-icon/map-pin-icon.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/common/icons/components/moon-icon/moon-icon.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/common/icons/components/moon-icon/moon-icon.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/common/icons/components/person-icon/person-icon.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/common/icons/components/person-icon/person-icon.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/common/icons/components/question-icon/question-icon.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/common/icons/components/question-icon/question-icon.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/common/icons/components/queue-icon/queue-icon.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/common/icons/components/queue-icon/queue-icon.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/common/icons/components/robot-icon/robot-icon.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/common/icons/components/robot-icon/robot-icon.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/common/icons/components/skull-icon/skull-icon.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/common/icons/components/skull-icon/skull-icon.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/common/icons/components/sun-icon/sun-icon.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/common/icons/components/sun-icon/sun-icon.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/common/icons/components/x-circle-icon/x-circle-icon.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/common/icons/components/x-circle-icon/x-circle-icon.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/layout/characters/characters-card/characters-card.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/layout/characters/characters-card/characters-card.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/layout/characters/characters-filter/characters-filter.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/layout/characters/characters-filter/characters-filter.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/layout/characters/characters-list/characters-list.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/layout/characters/characters-list/characters-list.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/characters/@list/loading.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/characters/@list/loading.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/layout/characters/characters-page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/layout/characters/characters-page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/layout/characters/characters.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/layout/characters/characters.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/layout/empty/empty.module.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/layout/header/header.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/layout/header/header.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/hooks/use-theme.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/hooks/use-theme.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/services/character/character.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/character/character.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/services/character/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/character/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/services/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/store/hooks.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/store/hooks.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/store/provider.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/store/provider.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/store/store.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/store/store.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tsconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/tsconfig.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -75,7 +55,7 @@
     &quot;git-widget-placeholder&quot;: &quot;nextjs-ssr&quot;,
     &quot;javascript.preferred.runtime.type.id&quot;: &quot;node&quot;,
     &quot;js.debugger.nextJs.config.created.client&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/kurs/RSSchool/REACT/src/app&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/kurs/RSSchool/REACT/src/app/characters/@details&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.standard&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.stylelint&quot;: &quot;true&quot;,
@@ -98,18 +78,18 @@
 }</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="D:\kurs\RSSchool\REACT\src\app" />
-      <recent name="D:\kurs\RSSchool\REACT\src\app\characters" />
-      <recent name="D:\kurs\RSSchool\REACT\src\components\common" />
-      <recent name="D:\kurs\RSSchool\REACT\src\components\layout\characters" />
-      <recent name="D:\kurs\RSSchool\REACT\src\components\layout" />
+      <recent name="D:\kurs\RSSchool\REACT\src\app\characters\@details" />
+      <recent name="D:\kurs\RSSchool\REACT\src\app\characters\@details\[id]" />
+      <recent name="D:\kurs\RSSchool\REACT\src\app\characters\@list" />
+      <recent name="D:\kurs\RSSchool\REACT\src\app\characters\[[id]]" />
+      <recent name="D:\kurs\RSSchool\REACT\src\app\characters\[...id]" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\kurs\RSSchool\REACT\src\app\characters" />
       <recent name="D:\kurs\RSSchool\REACT\src\app" />
       <recent name="D:\kurs\RSSchool\REACT\src\app\(character)" />
       <recent name="D:\kurs\RSSchool\REACT\src\pages" />
       <recent name="D:\kurs\RSSchool\REACT\src\hooks" />
-      <recent name="D:\kurs\RSSchool\REACT\src\components\layout" />
     </key>
   </component>
   <component name="RunManager" selected="npm.dev">
@@ -169,9 +149,9 @@
     <recent_temporary>
       <list>
         <item itemvalue="npm.build" />
-        <item itemvalue="npm.dev" />
         <item itemvalue="npm.lint-fix" />
         <item itemvalue="npm.format" />
+        <item itemvalue="npm.dev" />
         <item itemvalue="npm.lint" />
       </list>
     </recent_temporary>
@@ -196,7 +176,18 @@
       <workItem from="1781441854558" duration="2442000" />
       <workItem from="1781460050129" duration="2562000" />
       <workItem from="1781508262972" duration="2608000" />
-      <workItem from="1781527324244" duration="7995000" />
+      <workItem from="1781527324244" duration="8299000" />
+      <workItem from="1781539762317" duration="381000" />
+      <workItem from="1781593696541" duration="1139000" />
+      <workItem from="1781597506373" duration="3152000" />
+      <workItem from="1781691558277" duration="3859000" />
+      <workItem from="1781777132284" duration="1452000" />
+      <workItem from="1781934959657" duration="519000" />
+      <workItem from="1781953951943" duration="39000" />
+      <workItem from="1781974221844" duration="47000" />
+      <workItem from="1781991356045" duration="10372000" />
+      <workItem from="1782017890638" duration="8213000" />
+      <workItem from="1782052696972" duration="2089000" />
     </task>
     <task id="LOCAL-00001" summary="init">
       <option name="closed" value="true" />
