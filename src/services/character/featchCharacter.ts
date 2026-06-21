@@ -11,7 +11,9 @@ export const getCharacters = async ({ search, page }: ArgsType): Promise<Charact
   if (searchStr) urlSearchParams.set('name', searchStr);
   if (pageStr) urlSearchParams.set('page', pageStr);
 
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/character/?${urlSearchParams}`, {});
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/character/?${urlSearchParams}`, {
+    cache: 'no-store',
+  });
 
   return await res.json();
 };

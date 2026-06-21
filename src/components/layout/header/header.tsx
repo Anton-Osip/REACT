@@ -23,7 +23,7 @@ export const Header: FC<Props> = ({ className }) => {
   return (
     <header className={clsx('w-full  py-8', className)}>
       <Container className="flex items-center justify-between">
-        <Link href={ROUTES.HOME}>
+        <Link href={ROUTES.CHARACTERS}>
           <Image src={withBasePath('/logo.svg')} alt="Rick and Morty" width={220} height={64} priority />
         </Link>
         <nav className="flex gap-2">

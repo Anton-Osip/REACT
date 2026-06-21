@@ -28,7 +28,6 @@ export const Characters: FC<Props> = ({ page = 1, characters }) => {
 
       params.set('page', String(nextPage));
       router.push(`${pathname}?${params.toString()}`);
-      router.refresh();
     },
     [pathname, router, searchParams],
   );

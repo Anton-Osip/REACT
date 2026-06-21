@@ -2,7 +2,7 @@
 import { type FC, type ReactNode } from 'react';
 
 import clsx from 'clsx';
-import { Image } from 'next/dist/client/image-component';
+import Image from 'next/image';
 import { useRouter, useSearchParams } from 'next/navigation';
 
 import { getGenderIcon, getSpeciesIcon, getStatusIcon } from '../character-icons';

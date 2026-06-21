@@ -13,7 +13,7 @@ const NotFound: FC = () => {
         <Typography variant="h1">404 — Page not found</Typography>
         <Image src={withBasePath('/errorPageImage.png')} alt="error message" width={528} height={528} />
         <Typography variant="h3">The page you are looking for does not exist.</Typography>
-        <Button variant="primary" href={ROUTES.HOME} fullWidth>
+        <Button variant="primary" href={ROUTES.CHARACTERS} fullWidth>
           Back to Home
         </Button>
       </div>

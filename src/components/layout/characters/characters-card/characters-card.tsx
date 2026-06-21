@@ -1,11 +1,11 @@
 import { type FC, type ReactNode } from 'react';
 
 import clsx from 'clsx';
-import { Image } from 'next/dist/client/image-component';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 
-import { ROUTES } from '@/constants';
+import { getCharacterRoute } from '@/constants';
 import {
   Button,
   HeartIcon,
@@ -50,7 +50,7 @@ export const CharactersCard: FC<Props> = ({ character, priority = false }) => {
   return (
     <Link
       className={clsx('character-card flex h-full w-full cursor-pointer flex-col overflow-hidden rounded-xl p-3')}
-      href={`${ROUTES.CHARACTERS}/${character.id}${query ? `?${query}` : ''}`}
+      href={getCharacterRoute(character.id, query || undefined)}
     >
       <div className="relative mb-3 h-[200px] w-full shrink-0 overflow-hidden rounded-lg">
         <Image
@@ -59,7 +59,7 @@ export const CharactersCard: FC<Props> = ({ character, priority = false }) => {
           fill
           className="object-cover"
           sizes="294px"
-          loading={priority ? 'eager' : 'lazy'}
+          priority={priority}
         />
       </div>
 

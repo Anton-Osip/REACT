@@ -11,18 +11,18 @@ export const STORAGE_KEY = 'characters-search';
 
 type Props = {
   className?: string;
-  defaultValue?: string | null;
 };
 
-export const CharactersFilter: FC<Props> = ({ className, defaultValue = '' }) => {
+export const CharactersFilter: FC<Props> = ({ className }) => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const [value, setValue] = useState<string>(defaultValue ?? '');
+  const searchFromUrl = searchParams.get('search') ?? '';
+  const [value, setValue] = useState<string>(searchFromUrl);
 
   useEffect(() => {
-    setValue(defaultValue ?? '');
-  }, [defaultValue]);
+    setValue(searchFromUrl);
+  }, [searchFromUrl]);
 
   const changeSearchValue = (searchValue: string): void => {
     const params = new URLSearchParams(searchParams.toString());
@@ -35,7 +35,6 @@ export const CharactersFilter: FC<Props> = ({ className, defaultValue = '' }) =>
 
     params.set('page', '1');
     router.push(`${pathname}?${params.toString()}`);
-    router.refresh();
   };
 
   const onSubmitHandler = (e: SubmitEvent<HTMLFormElement>): void => {
