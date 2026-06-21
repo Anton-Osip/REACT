@@ -4,7 +4,6 @@ import { Characters } from '../characters';
 
 import { getCharacters } from '@/services';
 
-
 type Props = {
   search?: string;
   page?: string;
