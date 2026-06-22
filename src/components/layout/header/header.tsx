@@ -4,50 +4,47 @@ import type { FC } from 'react';
 
 import { clsx } from 'clsx';
 import Image from 'next/image';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 
 import { ROUTES } from '@/constants';
 import { ThemeMode, useErrorButton, useTheme } from '@/hooks';
+import { Link, useRouter } from '@/i18n';
 import { withBasePath } from '@/utils';
 import { Button, MoonIcon, SunIcon } from '@components/common';
-import { Container } from '@components/layout';
+import { Container, LocaleSwitcher } from '@components/layout';
 
 type Props = { className?: string };
 
 export const Header: FC<Props> = ({ className }) => {
-  const { toggleTheme, theme } = useTheme();
-  const { simulateError } = useErrorButton();
+  const t = useTranslations('Header');
   const router = useRouter();
 
+  const { toggleTheme, theme } = useTheme();
+  const { simulateError } = useErrorButton();
+
   return (
-    <header className={clsx('w-full  py-8', className)}>
+    <header className={clsx('w-full py-8', className)}>
       <Container className="flex items-center justify-between">
         <Link href={ROUTES.CHARACTERS}>
           <Image src={withBasePath('/logo.svg')} alt="Rick and Morty" width={220} height={64} priority />
         </Link>
         <nav className="flex gap-2">
           <Button onClick={() => router.replace(ROUTES.CHARACTERS)} variant="ghost" fullWidth>
-            Home
+            {t('navigate.homePage')}
           </Button>
-          <Button
-            onClick={() => {
-              router.replace(ROUTES.ABOUT);
-            }}
-            variant="ghost"
-            fullWidth
-          >
-            About
+          <Button onClick={() => router.replace(ROUTES.ABOUT)} variant="ghost" fullWidth>
+            {t('navigate.aboutPage')}
           </Button>
         </nav>
         <div className="flex gap-2">
+          <LocaleSwitcher />
           <Button variant="primary" className="p-2" onClick={simulateError}>
-            simulate error
+            {t('navigate.simulateError')}
           </Button>
           <Button
             variant="primary"
             onClick={toggleTheme}
-            aria-label="Switch theme"
+            aria-label={t('switchTheme')}
             className="p-2"
             icon={theme === ThemeMode.light ? <MoonIcon /> : <SunIcon />}
           />

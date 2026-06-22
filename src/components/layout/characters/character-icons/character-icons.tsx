@@ -1,5 +1,6 @@
 import { type ReactNode } from 'react';
 
+import { type Character, CharacterGender, type CharacterPreview, CharacterStatus } from '@/services';
 import {
   GenderFemaleIcon,
   GenderMaleIcon,
@@ -9,8 +10,6 @@ import {
   RobotIcon,
   SkullIcon,
 } from '@components/common';
-import type { Character, CharacterPreview } from '@services/character';
-import { CharacterGender, CharacterStatus } from '@services/character/character.type';
 
 const ICON_SIZE = 20;
 

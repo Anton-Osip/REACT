@@ -1,11 +1,14 @@
+'use client';
+
 import { type FC, type ReactNode } from 'react';
 
 import clsx from 'clsx';
 import Image from 'next/image';
-import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 
 import { getCharacterRoute } from '@/constants';
+import { Link } from '@/i18n';
+import type { CharacterPreview } from '@/services';
 import {
   Button,
   HeartIcon,
@@ -17,7 +20,6 @@ import {
   SkullIcon,
   Typography,
 } from '@components/common';
-import type { CharacterPreview } from '@services/character';
 
 type Props = {
   character: CharacterPreview;

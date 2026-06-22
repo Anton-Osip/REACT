@@ -1,11 +1,10 @@
 'use client';
 
-import { Component, type ErrorInfo, type ReactNode } from 'react';
+import { Component, type ErrorInfo, type FC, type ReactNode } from 'react';
 
-import Image from 'next/image';
+import { useTranslations } from 'next-intl';
 
-import { withBasePath } from '@/utils';
-import { Button, Typography } from '@components/common';
+import { ErrorComponent } from '@components/layout/error';
 
 type ErrorBoundaryProps = {
   children: ReactNode;
@@ -15,6 +14,23 @@ type ErrorBoundaryProps = {
 type ErrorBoundaryState = {
   hasError: boolean;
   error: Error | null;
+};
+
+type ErrorBoundaryFallbackProps = {
+  error: Error | null;
+  onReset: () => void;
+};
+
+const ErrorBoundaryFallback: FC<ErrorBoundaryFallbackProps> = ({ error, onReset }) => {
+  const t = useTranslations('Error');
+
+  return (
+    <ErrorComponent
+      title={t('somethingWentWrong')}
+      message={error?.message ?? t('unexpectedError')}
+      onAction={onReset}
+    />
+  );
 };
 
 export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
@@ -43,18 +59,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
 
   render(): ReactNode {
     if (this.state.hasError) {
-      return (
-        <div className="flex items-center justify-center h-full w-full">
-          <div className="text-center max-w-2/3 w-full p-4 flex flex-col items-center justify-center gap-4">
-            <Typography variant="h1">Something went wrong</Typography>
-            <Image src={withBasePath('/errorPageImage.png')} alt="error message" width={528} height={528} />
-            <Typography variant="h3">{this.state.error?.message || 'An unexpected error occurred'}</Typography>
-            <Button variant="primary" onClick={this.handleReset} fullWidth>
-              Try Again
-            </Button>
-          </div>
-        </div>
-      );
+      return <ErrorBoundaryFallback error={this.state.error} onReset={this.handleReset} />;
     }
 
     return this.props.children;

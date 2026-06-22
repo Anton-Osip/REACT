@@ -1,0 +1,54 @@
+{
+  "Header": {
+    "navigate": {
+      "homePage": "Home",
+      "aboutPage": "About",
+      "simulateError": "Simulate error"
+    },
+    "switchTheme": "Switch theme",
+    "language": "Language"
+  },
+  "About": {
+    "title": "About",
+    "whatIsThis": {
+      "title": "What is this?",
+      "description": "A React client for the Rick and Morty API. Explore characters from the show, search by name, and view details — powered by the REST API at rickandmortyapi.com."
+    },
+    "whoAreYou": {
+      "title": "Who are you?",
+      "githubProfile": "GitHub profile"
+    },
+    "course": {
+      "title": "Course",
+      "link": "RS School React course"
+    }
+  },
+  "NotFound": {
+    "title": "404 — Page not found",
+    "description": "The page you are looking for does not exist.",
+    "backToHome": "Back to Home"
+  },
+  "Empty": {
+    "message": "Nothing found."
+  },
+  "Characters": {
+    "refresh": "Refresh characters",
+    "searchPlaceholder": "Search",
+    "search": "Search"
+  },
+  "CharacterDetails": {
+    "gender": "Gender",
+    "status": "Status",
+    "species": "Species",
+    "location": "Location",
+    "closeDetails": "Close details",
+    "refreshDetails": "Refresh details"
+  },
+  "Error": {
+    "title": "ERROR",
+    "somethingWentWrong": "Something went wrong",
+    "unexpectedError": "An unexpected error occurred",
+    "tryAgain": "Try again",
+    "imageAlt": "Error message"
+  }
+}

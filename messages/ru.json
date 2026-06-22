@@ -1,0 +1,54 @@
+{
+  "Header": {
+    "navigate": {
+      "homePage": "Главная",
+      "aboutPage": "О проекте",
+      "simulateError": "Симулировать ошибку"
+    },
+    "switchTheme": "Сменить тему",
+    "language": "Язык"
+  },
+  "About": {
+    "title": "О проекте",
+    "whatIsThis": {
+      "title": "Что это?",
+      "description": "React-клиент для Rick and Morty API. Просматривайте персонажей сериала, ищите по имени и смотрите детали — на основе REST API rickandmortyapi.com."
+    },
+    "whoAreYou": {
+      "title": "Кто вы?",
+      "githubProfile": "Профиль GitHub"
+    },
+    "course": {
+      "title": "Курс",
+      "link": "Курс RS School React"
+    }
+  },
+  "NotFound": {
+    "title": "404 — Страница не найдена",
+    "description": "Страница, которую вы ищете, не существует.",
+    "backToHome": "На главную"
+  },
+  "Empty": {
+    "message": "Ничего не найдено."
+  },
+  "Characters": {
+    "refresh": "Обновить персонажей",
+    "searchPlaceholder": "Поиск",
+    "search": "Найти"
+  },
+  "CharacterDetails": {
+    "gender": "Пол",
+    "status": "Статус",
+    "species": "Вид",
+    "location": "Локация",
+    "closeDetails": "Закрыть детали",
+    "refreshDetails": "Обновить детали"
+  },
+  "Error": {
+    "title": "ОШИБКА",
+    "somethingWentWrong": "Что-то пошло не так",
+    "unexpectedError": "Произошла непредвиденная ошибка",
+    "tryAgain": "Попробовать снова",
+    "imageAlt": "Сообщение об ошибке"
+  }
+}

@@ -1,16 +1,52 @@
 'use client';
 
-import { type FC, useCallback, useMemo } from 'react';
+import { type FC, type ReactNode, useMemo } from 'react';
 
 import clsx from 'clsx';
 
 import { Button, CaretLeftIcon, CaretRightIcon, Typography } from '@components/common';
 
+type PageFormProps = {
+  page: number;
+  search?: string;
+  characterId?: string | null;
+  formAction: (payload: FormData) => void;
+  isPending?: boolean;
+  disabled?: boolean;
+  className?: string;
+  children: ReactNode;
+  'aria-label'?: string;
+};
+
+const PageForm: FC<PageFormProps> = ({
+  page,
+  search,
+  characterId,
+  formAction,
+  isPending = false,
+  disabled = false,
+  className,
+  children,
+  'aria-label': ariaLabel,
+}) => (
+  <form action={formAction}>
+    <input type="hidden" name="page" value={page} />
+    {search ? <input type="hidden" name="search" value={search} /> : null}
+    {characterId ? <input type="hidden" name="characterId" value={characterId} /> : null}
+    <Button type="submit" variant="ghost" className={className} disabled={disabled || isPending} aria-label={ariaLabel}>
+      {children}
+    </Button>
+  </form>
+);
+
 type Props = {
   className?: string;
   pages: number;
   currentPage: number;
-  onPageChange: (page: number) => void;
+  formAction: (payload: FormData) => void;
+  search?: string;
+  characterId?: string | null;
+  isPending?: boolean;
 };
 
 const pageButtonClassName =
@@ -32,7 +68,15 @@ const EARLY_CENTER_PAGES = [2, 3, 4, 5] as const;
 const LATE_PAGE_OFFSETS = [4, 3, 2, 1] as const;
 const NEIGHBOR_PAGE_OFFSET = 1;
 
-export const Pagination: FC<Props> = ({ className, pages, currentPage, onPageChange }) => {
+export const Pagination: FC<Props> = ({
+  className,
+  pages,
+  currentPage,
+  formAction,
+  search,
+  characterId,
+  isPending = false,
+}) => {
   const isFirstPage = currentPage === FIRST_PAGE;
   const isLastPage = currentPage === pages;
   const showLeftDots = currentPage > LEFT_DOTS_THRESHOLD;
@@ -51,35 +95,33 @@ export const Pagination: FC<Props> = ({ className, pages, currentPage, onPageCha
     return [currentPage - NEIGHBOR_PAGE_OFFSET, currentPage, currentPage + NEIGHBOR_PAGE_OFFSET];
   }, [currentPage, pages]);
 
-  const handlePageChange = useCallback(
-    (page: number) => {
-      if (page >= FIRST_PAGE && page <= pages) {
-        onPageChange(page);
-      }
-    },
-    [pages, onPageChange],
-  );
-
   if (pages <= FIRST_PAGE) return null;
 
   return (
     <nav className={clsx('flex items-center gap-3', className)} aria-label="Pagination">
-      <Button
-        variant="ghost"
+      <PageForm
+        page={currentPage - 1}
+        search={search}
+        characterId={characterId}
+        formAction={formAction}
+        isPending={isPending}
         disabled={isFirstPage}
         className={chevronButtonClassName}
-        onClick={() => handlePageChange(currentPage - 1)}
         aria-label="Previous page"
-        icon={<CaretLeftIcon size={16} />}
-      />
+      >
+        <CaretLeftIcon size={16} />
+      </PageForm>
 
-      <Button
-        variant="ghost"
+      <PageForm
+        page={FIRST_PAGE}
+        search={search}
+        characterId={characterId}
+        formAction={formAction}
+        isPending={isPending}
         className={clsx(pageButtonClassName, isFirstPage && activePageClassName)}
-        onClick={() => handlePageChange(FIRST_PAGE)}
       >
         {FIRST_PAGE}
-      </Button>
+      </PageForm>
 
       {showLeftDots && (
         <Typography variant="p" aria-hidden="true" className="w-6 text-center text-foreground">
@@ -87,15 +129,18 @@ export const Pagination: FC<Props> = ({ className, pages, currentPage, onPageCha
         </Typography>
       )}
 
-      {centerPages.map(p => (
-        <Button
-          key={p}
-          variant="ghost"
-          className={clsx(pageButtonClassName, currentPage === p && activePageClassName)}
-          onClick={() => handlePageChange(p)}
+      {centerPages.map(page => (
+        <PageForm
+          key={page}
+          page={page}
+          search={search}
+          characterId={characterId}
+          formAction={formAction}
+          isPending={isPending}
+          className={clsx(pageButtonClassName, currentPage === page && activePageClassName)}
         >
-          {p}
-        </Button>
+          {page}
+        </PageForm>
       ))}
 
       {showRightDots && (
@@ -104,22 +149,29 @@ export const Pagination: FC<Props> = ({ className, pages, currentPage, onPageCha
         </Typography>
       )}
 
-      <Button
-        variant="ghost"
+      <PageForm
+        page={pages}
+        search={search}
+        characterId={characterId}
+        formAction={formAction}
+        isPending={isPending}
         className={clsx(pageButtonClassName, isLastPage && activePageClassName)}
-        onClick={() => handlePageChange(pages)}
       >
         {pages}
-      </Button>
+      </PageForm>
 
-      <Button
-        variant="ghost"
+      <PageForm
+        page={currentPage + 1}
+        search={search}
+        characterId={characterId}
+        formAction={formAction}
+        isPending={isPending}
         disabled={isLastPage}
         className={chevronButtonClassName}
-        onClick={() => handlePageChange(currentPage + 1)}
         aria-label="Next page"
-        icon={<CaretRightIcon size={16} />}
-      />
+      >
+        <CaretRightIcon size={16} />
+      </PageForm>
     </nav>
   );
 };

@@ -5,47 +5,50 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="95cc53f7-32d7-4c13-a25a-f68a5d8e954b" name="Changes" comment="feat(routing): add not-found page and centralize route constants">
-      <change afterPath="$PROJECT_DIR$/src/app/(characters)/@list/[id]/page.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/app/(characters)/@list/default.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/app/(characters)/@list/loading.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/app/(characters)/@list/page.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/app/about/page.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/layout/characters/character-icons/index.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/layout/characters/characters-list-loading/characters-list-loading.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/layout/characters/characters-list-loading/index.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/layout/characters/characters-list/characters-list.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/layout/characters/characters-list/index.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/layout/characters/characters-page/characters-page.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/layout/characters/characters-page/index.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/constants/about.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/messages/en.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/actions/search-characters.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/i18n/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/i18n/request.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/i18n/routing.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/next.config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/next.config.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/characters/@details/[id]/default.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(characters)/@details/[id]/default.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/characters/@details/[id]/error.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(characters)/@details/[id]/error.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/characters/@details/[id]/loading.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(characters)/@details/[id]/loading.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/characters/@details/[id]/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(characters)/@details/[id]/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/characters/@details/default.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(characters)/@details/default.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/characters/@details/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(characters)/@details/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/characters/@list/default.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/characters/@list/error.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(characters)/@list/error.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/characters/@list/loading.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/characters/@list/page.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/characters/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(characters)/layout.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/characters/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(characters)/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pnpm-lock.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pnpm-lock.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(characters)/@details/[id]/default.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(characters)/@details/[id]/error.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(characters)/@details/[id]/loading.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(characters)/@details/[id]/page.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(characters)/@details/default.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(characters)/@details/page.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(characters)/@list/[id]/page.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(characters)/@list/default.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(characters)/@list/error.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(characters)/@list/loading.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(characters)/@list/page.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(characters)/layout.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(characters)/page.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/about/page.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/layout.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app/not-found.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/not-found.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/page.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/common/button/button.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/common/button/button.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/common/pagination/pagination.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/common/pagination/pagination.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/layout/characters/character-details/character-details.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/layout/characters/character-details/character-details.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/layout/characters/character-icons.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/layout/characters/character-icons/character-icons.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/layout/characters/character-icons/character-icons.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/layout/characters/character-icons/character-icons.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/layout/characters/characters-card/characters-card.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/layout/characters/characters-card/characters-card.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/layout/characters/characters-filter/characters-filter.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/layout/characters/characters-filter/characters-filter.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/layout/characters/characters-page.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/layout/characters/characters-page/characters-page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/layout/characters/characters-page/characters-page.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/layout/characters/characters.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/layout/characters/characters.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/layout/characters/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/layout/characters/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/layout/empty/empty.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/layout/empty/empty.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/layout/error-boundary/error-boundary.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/layout/error-boundary/error-boundary.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/layout/error/error.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/layout/error/error.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/layout/header/header.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/layout/header/header.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/layout/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/layout/index.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/constants/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/constants/index.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/constants/routes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/constants/routes.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/services/character/featchCharacter.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/character/featchCharacter.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/character/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/character/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tsconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/tsconfig.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -106,11 +109,11 @@
       <recent name="D:\kurs\RSSchool\REACT\src\app\characters\[...id]" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\kurs\RSSchool\REACT\src\components\layout" />
       <recent name="D:\kurs\RSSchool\REACT\src\app\characters" />
       <recent name="D:\kurs\RSSchool\REACT\src\app" />
       <recent name="D:\kurs\RSSchool\REACT\src\app\(character)" />
       <recent name="D:\kurs\RSSchool\REACT\src\pages" />
-      <recent name="D:\kurs\RSSchool\REACT\src\hooks" />
     </key>
   </component>
   <component name="RunManager" selected="npm.dev">
@@ -169,11 +172,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="npm.dev" />
-        <item itemvalue="npm.build" />
         <item itemvalue="npm.lint-fix" />
         <item itemvalue="npm.format" />
+        <item itemvalue="npm.dev" />
         <item itemvalue="npm.lint" />
+        <item itemvalue="npm.build" />
       </list>
     </recent_temporary>
   </component>
@@ -209,7 +212,9 @@
       <workItem from="1781991356045" duration="10372000" />
       <workItem from="1782017890638" duration="8213000" />
       <workItem from="1782052696972" duration="2579000" />
-      <workItem from="1782055357629" duration="1950000" />
+      <workItem from="1782055357629" duration="2492000" />
+      <workItem from="1782059625995" duration="465000" />
+      <workItem from="1782097924382" duration="5634000" />
     </task>
     <task id="LOCAL-00001" summary="init">
       <option name="closed" value="true" />
@@ -246,7 +251,19 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="nextjs-ssr" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
           </value>
         </entry>
       </map>

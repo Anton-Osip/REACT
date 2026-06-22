@@ -1,7 +1,9 @@
 import type { FC } from 'react';
 
+import { redirect } from 'next/navigation';
+
 const Page: FC = () => {
-  return null;
+  redirect('/en');
 };
 
 export default Page;

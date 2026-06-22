@@ -1,7 +1,7 @@
 import type { FC } from 'react';
 
+import { getCharacterById } from '@/services';
 import { CharacterDetails } from '@components/layout';
-import { getCharacterById } from '@services/character/featchCharacter';
 
 type Props = {
   params: Promise<{ id: string }>;

@@ -1,10 +1,14 @@
 'use client';
 
-import { type ChangeEvent, type FC, type SubmitEvent, useCallback, useEffect, useState } from 'react';
+import { type FC, useActionState, useEffect, useState } from 'react';
 
 import clsx from 'clsx';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 
+import { searchCharacters, type SearchState } from '@/actions/search-characters';
+import { parseCharacterIdFromPathname } from '@/constants';
+import { usePathname } from '@/i18n';
 import { Button, TextField } from '@components/common';
 
 export const STORAGE_KEY = 'characters-search';
@@ -14,53 +18,31 @@ type Props = {
 };
 
 export const CharactersFilter: FC<Props> = ({ className }) => {
-  const router = useRouter();
+  const t = useTranslations('Characters');
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const searchFromUrl = searchParams.get('search') ?? '';
-  const [value, setValue] = useState<string>(searchFromUrl);
+  const characterId = parseCharacterIdFromPathname(pathname);
+
+  const [, formAction, isPending] = useActionState<SearchState | null, FormData>(searchCharacters, null);
+  const [value, setValue] = useState(searchFromUrl);
 
   useEffect(() => {
     setValue(searchFromUrl);
   }, [searchFromUrl]);
 
-  const changeSearchValue = (searchValue: string): void => {
-    const params = new URLSearchParams(searchParams.toString());
-
-    if (searchValue) {
-      params.set('search', searchValue);
-    } else {
-      params.delete('search');
-    }
-
-    params.set('page', '1');
-    router.push(`${pathname}?${params.toString()}`);
-  };
-
-  const onSubmitHandler = (e: SubmitEvent<HTMLFormElement>): void => {
-    e.preventDefault();
-
-    const inputText = value.trim();
-
-    if (inputText === '' && value !== '') {
-      return;
-    }
-
-    changeSearchValue(inputText);
-    setValue(inputText);
-  };
-
-  const onChangeHandler = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-    setValue(e.target.value);
-  }, []);
-
   return (
-    <form
-      className={clsx('grid w-full grid-cols-[1fr_103px] items-center gap-4', className)}
-      onSubmit={onSubmitHandler}
-    >
-      <TextField placeholder="Search" value={value} onChange={onChangeHandler} />
-      <Button type="submit">Search</Button>
+    <form className={clsx('grid w-full grid-cols-[1fr_103px] items-center gap-4', className)} action={formAction}>
+      {characterId && <input type="hidden" name="characterId" value={characterId} />}
+      <TextField
+        name="search"
+        placeholder={t('searchPlaceholder')}
+        value={value}
+        onChange={e => setValue(e.target.value)}
+      />
+      <Button type="submit" disabled={isPending}>
+        {t('search')}
+      </Button>
     </form>
   );
 };

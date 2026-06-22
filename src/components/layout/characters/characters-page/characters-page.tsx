@@ -1,10 +1,7 @@
 import { Suspense, type FC } from 'react';
 
-import { CharactersFilter } from '../characters-filter';
-import { CharactersList } from '../characters-list';
-import { CharactersListLoading } from '../characters-list-loading';
-
 import { Skeleton } from '@components/common';
+import { CharactersFilter, CharactersList, CharactersListLoading } from '@components/layout';
 
 type Props = {
   searchParams: Promise<{ search?: string; page?: string }>;

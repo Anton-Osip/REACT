@@ -27,7 +27,8 @@
       "@utils/*": ["./src/utils/*"],
       "@store/*": ["./src/store/*"],
       "@services/*": ["./src/services/*"],
-      "@constants/*": ["./src/constants/*"]
+      "@constants/*": ["./src/constants/*"],
+      "@i18n/*": ["./src/i18n/*"]
     }
   },
   "include": [

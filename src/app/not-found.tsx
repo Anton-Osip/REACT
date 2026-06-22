@@ -1,23 +1,25 @@
 import type { FC } from 'react';
 
 import Image from 'next/image';
+import Link from 'next/link';
 
-import { ROUTES } from '@/constants';
 import { withBasePath } from '@/utils';
-import { Button, Typography } from '@components/common';
+import { Typography } from '@components/common';
 
 const NotFound: FC = () => {
   return (
-    <div className="flex items-center justify-center h-full w-full">
-      <div className="text-center max-w-2/3 w-full p-4 flex flex-col items-center justify-center gap-4">
-        <Typography variant="h1">404 — Page not found</Typography>
-        <Image src={withBasePath('/errorPageImage.png')} alt="error message" width={528} height={528} />
-        <Typography variant="h3">The page you are looking for does not exist.</Typography>
-        <Button variant="primary" href={ROUTES.CHARACTERS} fullWidth>
-          Back to Home
-        </Button>
-      </div>
-    </div>
+    <html lang="en">
+      <body className="flex h-dvh w-dvw items-center justify-center">
+        <div className="flex w-full max-w-2/3 flex-col items-center justify-center gap-4 p-4 text-center">
+          <Typography variant="h1">404 — Page not found</Typography>
+          <Image src={withBasePath('/errorPageImage.png')} alt="error message" width={528} height={528} />
+          <Typography variant="h3">The page you are looking for does not exist.</Typography>
+          <Link href="/" className="text-brand-500 underline-offset-2 hover:underline">
+            Back to Home
+          </Link>
+        </div>
+      </body>
+    </html>
   );
 };
 

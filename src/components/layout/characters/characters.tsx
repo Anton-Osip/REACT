@@ -1,14 +1,17 @@
 'use client';
 
-import { type FC, useCallback } from 'react';
+import { type FC, useActionState, useCallback } from 'react';
 
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 
+import { paginateCharacters, type PaginateState } from '@/actions/paginate-characters';
+import { parseCharacterIdFromPathname } from '@/constants';
+import { usePathname, useRouter } from '@/i18n';
+import type { CharactersResponse } from '@/services';
 import { toCharacterPreview } from '@/utils';
 import { Button, Pagination } from '@components/common';
-import { EmptyComponent } from '@components/layout';
-import { CharactersCard } from '@components/layout/characters/characters-card';
-import type { CharactersResponse } from '@services/character';
+import { EmptyComponent, CharactersCard } from '@components/layout';
 
 type Props = {
   page?: number;
@@ -18,26 +21,21 @@ type Props = {
 const COUNT_PRIORITY_IMAGES = 4;
 
 export const Characters: FC<Props> = ({ page = 1, characters }) => {
+  const t = useTranslations('Characters');
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const search = searchParams.get('search') ?? '';
+  const characterId = parseCharacterIdFromPathname(pathname);
 
-  const onPageChange = useCallback(
-    (nextPage: number) => {
-      const params = new URLSearchParams(searchParams?.toString());
-
-      params.set('page', String(nextPage));
-      router.push(`${pathname}?${params.toString()}`);
-    },
-    [pathname, router, searchParams],
-  );
+  const [, paginateAction, isPaginating] = useActionState<PaginateState | null, FormData>(paginateCharacters, null);
 
   const refetch = useCallback(() => {
     router.refresh();
   }, [router]);
 
-  const charactersToRender = characters?.results.map(c => toCharacterPreview(c));
-  const isListEmpty = charactersToRender?.length === 0 || characters === undefined;
+  const charactersToRender = characters?.results?.map(c => toCharacterPreview(c)) ?? [];
+  const isListEmpty = charactersToRender.length === 0;
 
   if (isListEmpty) {
     return <EmptyComponent />;
@@ -53,9 +51,16 @@ export const Characters: FC<Props> = ({ page = 1, characters }) => {
         </div>
       </div>
       <div className="flex shrink-0 items-center justify-between">
-        <Pagination pages={characters?.info.pages ?? 1} currentPage={page} onPageChange={onPageChange} />
+        <Pagination
+          pages={characters?.info.pages ?? 1}
+          currentPage={page}
+          formAction={paginateAction}
+          search={search}
+          characterId={characterId}
+          isPending={isPaginating}
+        />
         <Button variant={'primary'} onClick={refetch}>
-          Refresh characters
+          {t('refresh')}
         </Button>
       </div>
     </div>

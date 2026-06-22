@@ -3,13 +3,15 @@ import { type FC, type ReactNode } from 'react';
 
 import clsx from 'clsx';
 import Image from 'next/image';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 
 import { getGenderIcon, getSpeciesIcon, getStatusIcon } from '../character-icons';
 
 import { ROUTES } from '@/constants';
+import { useRouter } from '@/i18n';
+import type { Character } from '@/services';
 import { Button, MapPinIcon, QueueIcon, Typography, XCircleIcon } from '@components/common';
-import { type Character } from '@services/character';
 
 const articleClassName =
   'characters-card relative flex h-fit max-h-full w-full flex-col self-start overflow-y-auto rounded-xl p-4';
@@ -49,6 +51,7 @@ const DetailItem: FC<DetailItemProps> = ({ label, value, icon }) => (
 );
 
 export const CharacterDetails: FC<CharacterDetailsProps> = ({ className, details }) => {
+  const t = useTranslations('CharacterDetails');
   const searchParams = useSearchParams();
   const router = useRouter();
 
@@ -78,14 +81,14 @@ export const CharacterDetails: FC<CharacterDetailsProps> = ({ className, details
           variant="ghost"
           className={clsx(overlayButtonClassName, 'absolute top-3 right-3 z-10')}
           href={`${ROUTES.CHARACTERS}${query ? `?${query}` : ''}`}
-          aria-label="Close details"
+          aria-label={t('closeDetails')}
         >
           <XCircleIcon size={20} />
         </Button>
         <Button
           variant="ghost"
           className={clsx(overlayButtonClassName, 'absolute top-3 left-3 z-10')}
-          aria-label="Refresh details"
+          aria-label={t('refreshDetails')}
           onClick={refetch}
         >
           <QueueIcon size={18} />
@@ -97,10 +100,10 @@ export const CharacterDetails: FC<CharacterDetailsProps> = ({ className, details
       </Typography>
 
       <div className="w-full">
-        <DetailItem label="gender" value={details.gender} icon={getGenderIcon(details.gender)} />
-        <DetailItem label="status" value={details.status} icon={getStatusIcon(details.status)} />
-        <DetailItem label="species" value={details.species} icon={getSpeciesIcon(details.species)} />
-        <DetailItem label="location" value={details.location.name} icon={<MapPinIcon size={20} />} />
+        <DetailItem label={t('gender')} value={details.gender} icon={getGenderIcon(details.gender)} />
+        <DetailItem label={t('status')} value={details.status} icon={getStatusIcon(details.status)} />
+        <DetailItem label={t('species')} value={details.species} icon={getSpeciesIcon(details.species)} />
+        <DetailItem label={t('location')} value={details.location.name} icon={<MapPinIcon size={20} />} />
       </div>
     </article>
   );

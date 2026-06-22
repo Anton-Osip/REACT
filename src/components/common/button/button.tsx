@@ -2,8 +2,9 @@
 
 import { type ComponentPropsWithoutRef, type ElementType, type FC, type ReactNode } from 'react';
 
-import Link from 'next/link';
 import { twMerge } from 'tailwind-merge';
+
+import { Link } from '@/i18n/navigation';
 
 const ButtonVariant = {
   primary: 'primary',
